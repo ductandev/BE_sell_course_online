@@ -1,0 +1,122 @@
+package vn.io.ductandev.course.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import vn.io.ductandev.course.entity.CategoryEntity;
+import vn.io.ductandev.course.entity.CourseEntity;
+import vn.io.ductandev.course.model.CategoryDTO;
+import vn.io.ductandev.course.model.CourseDTO;
+import vn.io.ductandev.course.repository.CategoryRepository;
+import vn.io.ductandev.course.service.CategoryService;
+
+@Service
+public class CategoryServiceImpl implements CategoryService {
+	
+	@Autowired
+	CategoryRepository categoryRepository;
+
+	@Override
+	public List<CategoryDTO> getListCategory() {
+		
+		List<CategoryEntity> liEntities = categoryRepository.findAll();
+		
+		List<CategoryDTO> listDTO = new ArrayList<>();
+		
+		for(CategoryEntity categoryEntity : liEntities) {
+			
+			CategoryDTO categoryDTO = new CategoryDTO();
+			
+			categoryDTO.setName(categoryEntity.getName());
+			
+			List<CourseDTO> listCourseDTOs = new ArrayList<>();
+			
+			for(CourseEntity courseEntity : categoryEntity.getCourses()) {
+				
+				CourseDTO courseDTO = new CourseDTO();
+				
+				courseDTO.setTitle(courseEntity.getTitle());
+				courseDTO.setPrice(courseEntity.getPrice());
+				courseDTO.setLecturer(courseEntity.getLecturer());
+				courseDTO.setCreateDate(courseEntity.getCreateDate());
+				courseDTO.setImage(courseEntity.getImage());
+				courseDTO.setDescription(courseEntity.getDescription());
+				courseDTO.setIsTopCourse(courseEntity.getIsTopCourse());
+				courseDTO.setIsDelete(courseEntity.getIsDelete());
+//				courseDTO.setCategory(courseEntity.getCategory().getId());
+				
+				
+				
+			}
+			
+			categoryDTO.setCourses(listCourseDTOs);
+			
+			listDTO.add(categoryDTO);
+			
+		}
+		return listDTO;
+	}
+
+	@Override
+	public boolean addCategory(String name) {
+		boolean isSuccess = false;
+		
+		try {
+			
+			CategoryEntity categoryEntity = new CategoryEntity();
+			
+			categoryEntity.setName(name);
+			
+			categoryRepository.save(categoryEntity);
+			
+			isSuccess = true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return isSuccess;
+	}
+
+	@Override
+	public boolean updateCategory(int id, String name) {
+		boolean isSuccess = false;
+		
+		CategoryEntity categoryEntity = categoryRepository.getById(id);
+		
+		if(categoryEntity != null) {
+			
+			categoryEntity.setName(name);
+			
+			categoryRepository.save(categoryEntity);
+			
+			isSuccess = true;
+		}
+		
+		
+		return isSuccess;
+	}
+
+	@Override
+	public boolean deleteCategory(int id) {
+		
+		boolean isSuccess = false;
+		
+		CategoryEntity categoryEntity = categoryRepository.getById(id);
+		
+		if(categoryEntity != null) {
+			
+			categoryEntity.setIsDelete(1);
+			
+			categoryRepository.save(categoryEntity);
+			
+			isSuccess = true;
+		}
+		
+		return false;
+	}
+
+}
