@@ -1,4 +1,4 @@
 package vn.io.ductandev.course.model;
 
-public class UserDTO {
+public class PersonDTO {
 }

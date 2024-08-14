@@ -1,4 +1,4 @@
 package vn.io.ductandev.course.entity;
 
-public class UserEntity {
+public class PersonEntity {
 }

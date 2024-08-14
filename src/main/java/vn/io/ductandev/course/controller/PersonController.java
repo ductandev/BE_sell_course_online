@@ -1,4 +1,4 @@
 package vn.io.ductandev.course.controller;
 
-public class UserController {
+public class PersonController {
 }
