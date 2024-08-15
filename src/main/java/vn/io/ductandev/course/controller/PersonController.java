@@ -1,9 +1,12 @@
 package vn.io.ductandev.course.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import vn.io.ductandev.course.entity.PersonEntity;
 import vn.io.ductandev.course.entity.RoleEntity;
+import vn.io.ductandev.course.model.CategoryDTO;
 import vn.io.ductandev.course.model.PersonDTO;
 import vn.io.ductandev.course.model.RoleDTO;
 import vn.io.ductandev.course.payload.ResponData;
+import vn.io.ductandev.course.repository.PersonRepository;
+import vn.io.ductandev.course.service.PersonService;
 import vn.io.ductandev.course.service.impl.PersonServiceImpl;
 
 @RestController
@@ -24,7 +30,13 @@ import vn.io.ductandev.course.service.impl.PersonServiceImpl;
 public class PersonController {
 	
 	  @Autowired
-	  PersonServiceImpl personServiceImpl;
+	  PersonService personService;
+	  
+	  @GetMapping
+	    public ResponseEntity<?> getAllCategories() {
+	        List<PersonDTO> personDTOs = personService.getListPerson();
+	        return ResponseEntity.ok(personDTOs);
+	    }
 	
 	  @PostMapping("/add")
 	    public ResponseEntity<?> addPerson(
@@ -42,7 +54,7 @@ public class PersonController {
 	        personDTO.setFirstName(firstName);
 	        personDTO.setLastName(lastName);
 		  
-			Boolean isSuccess = personServiceImpl.addPerson(personDTO);
+			Boolean isSuccess = personService.addPerson(personDTO);
 
 			responData.setData(isSuccess);
 			
@@ -75,7 +87,7 @@ public class PersonController {
 		    personDTO.setLastName(lastName);
 		    personDTO.setIsDelete(isDelete);		
 			  
-	        boolean isUpdated = personServiceImpl.updatePerson(id, personDTO);
+	        boolean isUpdated = personService.updatePerson(id, personDTO);
 	        
 	        if (isUpdated) {
 	            return new ResponseEntity<>("Person updated successfully", HttpStatus.OK);
@@ -87,7 +99,7 @@ public class PersonController {
 	  @DeleteMapping("/delete/{id}")
 	  public ResponseEntity<?> deletePerson(@PathVariable int id) {
 		 
-		  boolean isDelete = personServiceImpl.deletePerson(id);
+		  boolean isDelete = personService.deletePerson(id);
 		  
 		  if (isDelete) {
 	            return new ResponseEntity<>("Person delete successfully", HttpStatus.OK);

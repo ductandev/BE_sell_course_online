@@ -26,10 +26,10 @@ public class PersonEntity {
 	    @Column(name = "password", nullable = false)
 	    private String password;
 
-	    @Column(name="firstname")
+	    @Column(name="FIRSTNAME")
 	    private String firstName;
 
-	    @Column(name="lastname")
+	    @Column(name="LASTNAME")
 	    private String lastName;
 
 	    @Column(name = "is_Delete", nullable = false, columnDefinition = "INT DEFAULT 0")
