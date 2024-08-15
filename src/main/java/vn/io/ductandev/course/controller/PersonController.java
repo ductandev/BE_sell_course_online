@@ -3,6 +3,7 @@ package vn.io.ductandev.course.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,6 +81,18 @@ public class PersonController {
 	            return new ResponseEntity<>("Person updated successfully", HttpStatus.OK);
 	        } else {		
 	            return new ResponseEntity<>("Failed to update person", HttpStatus.BAD_REQUEST);
+	        }
+	    }
+	  
+	  @DeleteMapping("/delete/{id}")
+	  public ResponseEntity<?> deletePerson(@PathVariable int id) {
+		 
+		  boolean isDelete = personServiceImpl.deletePerson(id);
+		  
+		  if (isDelete) {
+	            return new ResponseEntity<>("Person delete successfully", HttpStatus.OK);
+	        } else {		
+	            return new ResponseEntity<>("Failed to delete person", HttpStatus.BAD_REQUEST);
 	        }
 	    }
 	
