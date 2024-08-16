@@ -92,7 +92,6 @@ public class PersonController {
             return new ResponseEntity<>("Failed to delete person", HttpStatus.BAD_REQUEST);
         }
     }
-
 	
 //	  private PersonDTO convertToDTO(PersonEntity personEntity) {
 //		    PersonDTO personDTO = new PersonDTO();

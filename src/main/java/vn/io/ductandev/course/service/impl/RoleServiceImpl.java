@@ -1,7 +1,5 @@
 package vn.io.ductandev.course.service.impl;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,15 +27,23 @@ public class RoleServiceImpl implements RoleService{
 
 	@Override
 	public Boolean update(int id, RoleDTO roleDTO) {
-		 Optional<RoleEntity> existingRoleOpt = roleRepository.findById(id);
-	        if (existingRoleOpt.isPresent()) {
-	            RoleEntity existingRole = existingRoleOpt.get();
-//	            existingRole.setName(roleEntity.getName());
-	            roleRepository.save(existingRole);
-	            return true;
-	        } else {
-	            return false;
-	        }
+		
+		Boolean isSuccess = false;
+		
+		try {
+			 RoleEntity roleEntity = roleRepository.getById(id);
+			 
+			 roleEntity.setName(roleDTO.getName());
+
+	         roleRepository.save(roleEntity);
+	         
+	         isSuccess = true;
+	         
+	         return true;
+	     } catch (Exception e) {
+	         return isSuccess;
+	     }
+		 
 	}
 
 	private RoleDTO convertToDTO(RoleEntity roleEntity) {

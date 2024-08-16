@@ -32,7 +32,7 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 	
-	@PostMapping("/add")
+	@PostMapping
 	public ResponseEntity<?> addCategory(@RequestBody CategoryDTO categoryDTO){
 		ResponData responData = new ResponData();
 	    try {
