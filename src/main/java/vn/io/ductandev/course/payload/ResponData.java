@@ -8,6 +8,4 @@ public class ResponData {
 	private String desc;
 	private Object data;
 	private boolean isSuccess = true;
-	
-	private String username;
 }
