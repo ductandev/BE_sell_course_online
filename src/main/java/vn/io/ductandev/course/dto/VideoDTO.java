@@ -1,4 +1,4 @@
-package vn.io.ductandev.course.model;
+package vn.io.ductandev.course.dto;
 
 import lombok.Data;
 

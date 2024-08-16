@@ -3,7 +3,6 @@ package vn.io.ductandev.course.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +10,8 @@ import vn.io.ductandev.course.config.Config;
 import vn.io.ductandev.course.config.Mapper;
 import vn.io.ductandev.course.entity.PersonEntity;
 import vn.io.ductandev.course.entity.RoleEntity;
-import vn.io.ductandev.course.model.PersonDTO;
-import vn.io.ductandev.course.model.RoleDTO;
+import vn.io.ductandev.course.dto.PersonDTO;
+import vn.io.ductandev.course.dto.RoleDTO;
 import vn.io.ductandev.course.repository.PersonRepository;
 import vn.io.ductandev.course.repository.RoleRepository;
 import vn.io.ductandev.course.service.PersonService;

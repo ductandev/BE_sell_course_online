@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import vn.io.ductandev.course.model.CategoryDTO;
+import vn.io.ductandev.course.dto.CategoryDTO;
 import vn.io.ductandev.course.payload.ResponData;
 import vn.io.ductandev.course.service.CategoryService;
 
 @RestController
-@RequestMapping("/api/categorys")
+@RequestMapping("/api/v1/categorys")
 public class CategoryController {
 	
 	@Autowired

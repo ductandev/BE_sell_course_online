@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import vn.io.ductandev.course.entity.CategoryEntity;
-import vn.io.ductandev.course.entity.CourseEntity;
-import vn.io.ductandev.course.model.CategoryDTO;
-import vn.io.ductandev.course.model.CourseDTO;
+import vn.io.ductandev.course.dto.CategoryDTO;
 import vn.io.ductandev.course.repository.CategoryRepository;
 import vn.io.ductandev.course.service.CategoryService;
 
