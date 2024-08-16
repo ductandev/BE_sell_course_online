@@ -1,14 +1,18 @@
 package vn.io.ductandev.course.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import vn.io.ductandev.course.config.Config;
+import vn.io.ductandev.course.config.Mapper;
 import vn.io.ductandev.course.entity.PersonEntity;
 import vn.io.ductandev.course.entity.RoleEntity;
 import vn.io.ductandev.course.model.PersonDTO;
+import vn.io.ductandev.course.model.RoleDTO;
 import vn.io.ductandev.course.repository.PersonRepository;
 import vn.io.ductandev.course.repository.RoleRepository;
 import vn.io.ductandev.course.service.PersonService;
@@ -21,12 +25,45 @@ public class PersonServiceImpl implements PersonService{
 	
 	@Autowired
 	RoleRepository roleRepository;
+	
+	@Autowired
+	Config appConfig;
+	
+	@Autowired
+	Mapper<PersonDTO> personMapper;
 
 
 	@Override
 	public List<PersonDTO> getListPerson() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<PersonEntity> listEntities = personRepository.findAll();
+		
+		List<PersonDTO> listDtos = new ArrayList<>();
+		
+		for(PersonEntity p : listEntities) {
+			
+			PersonDTO personDTO = new PersonDTO();
+			
+			personDTO.setId(p.getId());
+			personDTO.setFirstName(p.getFirstName());
+			personDTO.setLastName(p.getLastName());
+			personDTO.setUsername(p.getUsername());
+			personDTO.setPassword(p.getPassword());
+			
+			RoleEntity role = roleRepository.getById(p.getRole().getId());
+			
+			RoleDTO roleDTO = new RoleDTO();
+			
+			roleDTO.setId(role.getId());
+			roleDTO.setName(role.getName());
+			
+			personDTO.setRole(roleDTO);
+				
+			listDtos.add(personDTO);
+			
+		}
+		
+		return listDtos;
 	}
 
 	@Override
@@ -34,22 +71,13 @@ public class PersonServiceImpl implements PersonService{
 		
 		boolean isSuccess = false;
 		
-		PersonEntity personEntity = new PersonEntity();
-		
-		personEntity.setUsername(personDTO.getUsername());
-		personEntity.setPassword(personDTO.getPassword());
-		personEntity.setFirstName(personDTO.getFirstName());
-		personEntity.setLastName(personDTO.getLastName());
-//		personEntity.setIsDelete(personDTO.getIsDelete());
-		
 		RoleEntity r = roleRepository.getById(2);
 		
-		personEntity.setRole(r);
-
-//		personRepository.addPerson(personEntity.getFirstName(), personEntity.getLastName(),  
-//				personEntity.getPassword(),  personEntity.getRole().getId(), personEntity.getUsername());
+		PersonEntity p = personMapper.convert(personDTO, PersonEntity.class);
 		
-		personRepository.save(personEntity);
+		p.setRole(r);
+		
+		personRepository.save(p	);
 		
 		isSuccess = true;
 		
@@ -58,24 +86,11 @@ public class PersonServiceImpl implements PersonService{
 
 	@Override
 	public boolean updatePerson(int id, PersonDTO personDTO) {
-//		 PersonEntity p = personRepository.getById(id);
-//		 if(p!= null) {
-////			 PersonEntity person = personRepository.getById(id);
-//		        // Update fields
-////		        person.setUsername(personDTO.getUsername());
-////		        person.setPassword(personDTO.getPassword());
-////		        person.setFirstName(personDTO.getFirstName());
-////		        person.setLastName(personDTO.getLastName());
-////		        person.setIsDelete(personDTO.getIsDelete());
-//			 
-//			 	modelMapper.map(personDTO, p);
-//
-//		        personRepository.save(p);
-//			return true;
-//		 }
-//		 return false;
+		
+		Boolean isSuccess = false;
+		
 		try {
-		 PersonEntity person = personRepository.findById(id).orElseThrow(() -> new RuntimeException("Person not found"));
+		 PersonEntity person = personRepository.getById(id);
 
          person.setUsername(personDTO.getUsername());
          person.setPassword(personDTO.getPassword());
@@ -84,15 +99,30 @@ public class PersonServiceImpl implements PersonService{
          person.setIsDelete(personDTO.getIsDelete());
 
          personRepository.save(person);
-         return true;
+         
+         isSuccess = true;
+         
+         return isSuccess;
      } catch (Exception e) {
-         return false;
+         return isSuccess;
      }
 	}
 
 	@Override
 	public boolean deletePerson(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		Boolean isSuccess = false;
+		
+		PersonEntity person = personRepository.getById(id);
+		 
+		if(person != null) {
+			 person.setIsDelete(1);
+			 personRepository.save(person);
+			 isSuccess = true;
+			 return isSuccess;
+		}
+		return isSuccess;
 	}
+	
+	
+	
 }

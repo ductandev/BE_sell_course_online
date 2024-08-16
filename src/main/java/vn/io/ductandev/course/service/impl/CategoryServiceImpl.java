@@ -30,29 +30,8 @@ public class CategoryServiceImpl implements CategoryService {
 			
 			CategoryDTO categoryDTO = new CategoryDTO();
 			
+			categoryDTO.setId(categoryEntity.getId());
 			categoryDTO.setName(categoryEntity.getName());
-			
-			List<CourseDTO> listCourseDTOs = new ArrayList<>();
-			
-			for(CourseEntity courseEntity : categoryEntity.getCourses()) {
-				
-				CourseDTO courseDTO = new CourseDTO();
-				
-				courseDTO.setTitle(courseEntity.getTitle());
-				courseDTO.setPrice(courseEntity.getPrice());
-				courseDTO.setLecturer(courseEntity.getLecturer());
-				courseDTO.setCreateDate(courseEntity.getCreateDate());
-				courseDTO.setImage(courseEntity.getImage());
-				courseDTO.setDescription(courseEntity.getDescription());
-				courseDTO.setIsTopCourse(courseEntity.getIsTopCourse());
-				courseDTO.setIsDelete(courseEntity.getIsDelete());
-//				courseDTO.setCategory(courseEntity.getCategory().getId());
-				
-				
-				
-			}
-			
-			categoryDTO.setCourses(listCourseDTOs);
 			
 			listDTO.add(categoryDTO);
 			
@@ -107,16 +86,17 @@ public class CategoryServiceImpl implements CategoryService {
 		
 		CategoryEntity categoryEntity = categoryRepository.getById(id);
 		
-		if(categoryEntity != null) {
+		if(categoryEntity != null) {	
 			
 			categoryEntity.setIsDelete(1);
 			
 			categoryRepository.save(categoryEntity);
 			
 			isSuccess = true;
+			return isSuccess;
 		}
 		
-		return false;
+		return isSuccess;
 	}
 
 }
