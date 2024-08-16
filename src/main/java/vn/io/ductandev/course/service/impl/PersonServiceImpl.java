@@ -71,17 +71,23 @@ public class PersonServiceImpl implements PersonService{
 		
 		boolean isSuccess = false;
 		
-		RoleEntity r = roleRepository.getById(2);
-		
-		PersonEntity p = personMapper.convert(personDTO, PersonEntity.class);
-		
-		p.setRole(r);
-		
-		personRepository.save(p	);
-		
-		isSuccess = true;
-		
+		try {
+			RoleEntity r = roleRepository.getById(2);
+			
+			PersonEntity p = personMapper.convert(personDTO, PersonEntity.class);
+			
+			p.setRole(r);
+			
+			personRepository.save(p	);
+			
+			isSuccess = true;
+			
+			return isSuccess;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return isSuccess;
+		
 	}
 
 	@Override

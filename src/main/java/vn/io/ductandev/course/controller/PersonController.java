@@ -23,7 +23,7 @@ import vn.io.ductandev.course.payload.ResponData;
 import vn.io.ductandev.course.service.PersonService;
 
 @RestController
-@RequestMapping("/api/persons")
+@RequestMapping("/api/v1/persons")
 public class PersonController {
 	
 	  @Autowired
@@ -35,7 +35,7 @@ public class PersonController {
 	        return ResponseEntity.ok(personDTOs);
 	    }
 	
-	  @PostMapping("/add")
+	  @PostMapping
 	  public ResponseEntity<?> addPerson(@RequestBody PersonDTO personDTO) {
 	      ResponData responData = new ResponData();
 	      

@@ -39,6 +39,15 @@ public class VideoServiceImpl implements VideoService{
 	            CourseDTO courseDTO = new CourseDTO();
 	            courseDTO.setId(videoEntity.getCourse().getId());
 	            courseDTO.setTitle(videoEntity.getCourse().getTitle());
+	            courseDTO.setPrice(videoEntity.getCourse().getPrice());
+	            courseDTO.setLecturer(videoEntity.getCourse().getLecturer());
+	            courseDTO.setCreateDate(videoEntity.getCourse().getCreateDate());
+	            courseDTO.setImage(videoEntity.getCourse().getImage());
+	            courseDTO.setDescription(videoEntity.getCourse().getDescription());
+	            courseDTO.setIsTopCourse(videoEntity.getCourse().getIsTopCourse());
+	            courseDTO.setIsDelete(videoEntity.getCourse().getIsDelete());
+//	            courseDTO.set(videoEntity.getCourse().getDescription());
+	            
 	            videoDTO.setCourse(courseDTO);
 
 	            videoDTOs.add(videoDTO);

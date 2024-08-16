@@ -15,7 +15,7 @@ import vn.io.ductandev.course.model.VideoDTO;
 import vn.io.ductandev.course.service.VideoService;
 
 @RestController
-@RequestMapping("/api/videos")
+@RequestMapping("/api/v1/videos")
 public class VideoController {
 
 	@Autowired

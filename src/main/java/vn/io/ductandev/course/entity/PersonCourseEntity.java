@@ -18,11 +18,11 @@ import lombok.Data;
 @Table(name = "tb_person_course")
 @IdClass(PersonCourseId.class)
 @Data
-public class PersonCourse {
+public class PersonCourseEntity {
 
 	@Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id", referencedColumnName = "id")
+    @JoinColumn(name = "person_id", referencedColumnName = "id")
     private PersonEntity person;
 
     @Id
@@ -30,7 +30,7 @@ public class PersonCourse {
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private CourseEntity course;
 
-    @Column(name = "dateBuy")
+    @Column(name = "DATEBUY")
     @Temporal(TemporalType.DATE)
     private Date dateBuy;
 	
