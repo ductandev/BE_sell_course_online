@@ -2,7 +2,7 @@ package vn.io.ductandev.course.service;
 
 import java.util.List;
 
-import vn.io.ductandev.course.model.CategoryDTO;
+import vn.io.ductandev.course.dto.CategoryDTO;
 
 public interface CategoryService  {
 	

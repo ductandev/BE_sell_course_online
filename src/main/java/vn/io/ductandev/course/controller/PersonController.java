@@ -1,10 +1,21 @@
 package vn.io.ductandev.course.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import org.springframework.web.bind.annotation.*;
+
+import vn.io.ductandev.course.entity.PersonEntity;
+import vn.io.ductandev.course.entity.RoleEntity;
+import vn.io.ductandev.course.dto.PersonDTO;
+import vn.io.ductandev.course.dto.RoleDTO;
+import vn.io.ductandev.course.request.PersonRequest;
+import vn.io.ductandev.course.response.ResponseDTO;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -15,59 +26,72 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import vn.io.ductandev.course.entity.PersonEntity;
-import vn.io.ductandev.course.entity.RoleEntity;
-import vn.io.ductandev.course.model.PersonDTO;
-import vn.io.ductandev.course.model.RoleDTO;
 import vn.io.ductandev.course.payload.ResponData;
 import vn.io.ductandev.course.service.PersonService;
 
 @RestController
 @RequestMapping("/api/v1/persons")
 public class PersonController {
-	
-	  @Autowired
-	  PersonService personService;
-	  
-	  @GetMapping
-	    public ResponseEntity<?> getAllCategories() {
-	        List<PersonDTO> personDTOs = personService.getListPerson();
-	        return ResponseEntity.ok(personDTOs);
-	    }
-	
-	  @PostMapping
-	  public ResponseEntity<?> addPerson(@RequestBody PersonDTO personDTO) {
-	      ResponData responData = new ResponData();
-	      
-	      Boolean isSuccess = personService.addPerson(personDTO);
 
-	      responData.setData(isSuccess);
-	      
-	      return new ResponseEntity<>(responData, HttpStatus.OK);
-	  }
-	  
-	  
-	  @PutMapping("/update/{id}")
-	  public ResponseEntity<?> updatePerson(@PathVariable int id, @RequestBody PersonDTO personDTO) {
-	      boolean isUpdated = personService.updatePerson(id, personDTO);
-	      
-	      if (isUpdated) {
-	          return new ResponseEntity<>("Person updated successfully", HttpStatus.OK);
-	      } else {        
-	          return new ResponseEntity<>("Failed to update person", HttpStatus.BAD_REQUEST);
-	      }
-	  }
+    @Autowired
+    PersonService personService;
 
-	  
-	  @PatchMapping("/delete/{id}")
-	    public ResponseEntity<?> deletePerson(@PathVariable int id) {
-	        boolean isDelete = personService.deletePerson(id);
-	        if (isDelete) {
-	            return new ResponseEntity<>("Person deleted successfully", HttpStatus.OK);
-	        } else {
-	            return new ResponseEntity<>("Failed to delete person", HttpStatus.BAD_REQUEST);
-	        }
-	    }
+	// ================================================
+	//               	GET ALL PERSON
+	// ================================================
+    @GetMapping
+    public ResponseEntity<?> getAllPerson() {
+        List<PersonDTO> personDTOs = personService.getListPerson();
+
+        ResponseDTO<PersonDTO> response = new ResponseDTO<>(
+                "Thành công !",
+                HttpStatus.OK.value(),
+                (List<PersonDTO>) personDTOs,
+                new Date()
+        );
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+	// ================================================
+	//               	CREATE PERSON
+	// ================================================
+    @PostMapping("/add")
+    public ResponseEntity<?> addPerson(@RequestBody PersonDTO personDTO) {
+        ResponData responData = new ResponData();
+
+        Boolean isSuccess = personService.addPerson(personDTO);
+
+        responData.setData(isSuccess);
+
+        return new ResponseEntity<>(responData, HttpStatus.OK);
+    }
+
+	// ================================================
+	//               	UPDATE PERSON
+	// ================================================
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updatePerson(@PathVariable int id, @RequestBody PersonDTO personDTO) {
+        boolean isUpdated = personService.updatePerson(id, personDTO);
+
+        if (isUpdated) {
+            return new ResponseEntity<>("Person updated successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failed to update person", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+	// ================================================
+	//               	DELETE PERSON
+	// ================================================
+    @PatchMapping("/delete/{id}")
+    public ResponseEntity<?> deletePerson(@PathVariable int id) {
+        boolean isDelete = personService.deletePerson(id);
+        if (isDelete) {
+            return new ResponseEntity<>("Person deleted successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failed to delete person", HttpStatus.BAD_REQUEST);
+        }
+    }
 	
 //	  private PersonDTO convertToDTO(PersonEntity personEntity) {
 //		    PersonDTO personDTO = new PersonDTO();
@@ -109,5 +133,4 @@ public class PersonController {
 //		    return personEntity;
 //		}
 
-	
 }

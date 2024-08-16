@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import vn.io.ductandev.course.entity.CourseEntity;
 import vn.io.ductandev.course.entity.VideoEntity;
-import vn.io.ductandev.course.model.CourseDTO;
-import vn.io.ductandev.course.model.VideoDTO;
+import vn.io.ductandev.course.dto.CourseDTO;
+import vn.io.ductandev.course.dto.VideoDTO;
 import vn.io.ductandev.course.repository.CourseRepository;
 import vn.io.ductandev.course.repository.VideoRepository;
 import vn.io.ductandev.course.service.VideoService;

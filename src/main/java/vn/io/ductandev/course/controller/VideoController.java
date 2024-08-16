@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import vn.io.ductandev.course.model.VideoDTO;
+import vn.io.ductandev.course.dto.VideoDTO;
 import vn.io.ductandev.course.service.VideoService;
 
 @RestController
