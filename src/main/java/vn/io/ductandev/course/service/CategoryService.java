@@ -8,11 +8,13 @@ public interface CategoryService  {
 	
 	List<CategoryDTO> getListCategory();
 	
-	boolean addCategory(String name);
+	boolean addCategory(CategoryDTO categoryDTO);
 	
 	boolean updateCategory(int id, String name);
 	
 	boolean deleteCategory(int id);
+	
+	CategoryDTO getByID(int id);
 	
 
 }

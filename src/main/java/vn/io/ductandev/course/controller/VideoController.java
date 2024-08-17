@@ -1,5 +1,6 @@
 package vn.io.ductandev.course.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import vn.io.ductandev.course.dto.CourseDTO;
 import vn.io.ductandev.course.dto.VideoDTO;
+import vn.io.ductandev.course.response.ResponseDTO;
 import vn.io.ductandev.course.service.VideoService;
 
 @RestController
@@ -22,18 +25,31 @@ public class VideoController {
     private VideoService videoService;
 
     @GetMapping
-    public ResponseEntity<List<VideoDTO>> getAllVideos() {
+    public ResponseEntity<?> getAllVideos() {
         List<VideoDTO> videos = videoService.getListVideo();
-        return ResponseEntity.ok(videos);
+        ResponseDTO<VideoDTO> response = new ResponseDTO<>(
+                "Thành công !",
+                HttpStatus.OK.value(),
+                (List<VideoDTO>) videos,
+                new Date()
+        );
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Boolean> addVideo(@RequestBody VideoDTO videoDTO) {
-        boolean isAdded = videoService.addVideo(videoDTO);
-        if (isAdded) {
-            return ResponseEntity.ok(true);
+    public ResponseEntity<?> addVideo(@RequestBody VideoDTO videoDTO) {
+        boolean isAdd = videoService.addVideo(videoDTO);
+        if (isAdd) {
+        	ResponseDTO<VideoDTO> response = new ResponseDTO<>(
+                    "Thành công !",
+                    HttpStatus.OK.value(),
+                    (VideoDTO) videoDTO,
+                    new Date()
+            );
+            
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+            return new ResponseEntity<>("Failed to add video", HttpStatus.BAD_REQUEST);
         }
     }
 	

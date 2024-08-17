@@ -3,8 +3,8 @@ package vn.io.ductandev.course.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import vn.io.ductandev.course.dto.RoleDTO;
 import vn.io.ductandev.course.entity.RoleEntity;
-import vn.io.ductandev.course.model.RoleDTO;
 import vn.io.ductandev.course.repository.RoleRepository;
 import vn.io.ductandev.course.service.RoleService;
 

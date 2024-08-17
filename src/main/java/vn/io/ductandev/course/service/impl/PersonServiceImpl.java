@@ -77,7 +77,7 @@ public class PersonServiceImpl implements PersonService{
 			
 			p.setRole(r);
 			
-			personRepository.save(p	);
+			personRepository.save(p);
 			
 			isSuccess = true;
 			
@@ -124,8 +124,27 @@ public class PersonServiceImpl implements PersonService{
 			 personRepository.save(person);
 			 isSuccess = true;
 			 return isSuccess;
+		}else {
+			return isSuccess;
 		}
-		return isSuccess;
+			
+		
+	}
+
+	@Override
+	public PersonDTO getbyID(int id) {
+		PersonEntity p = personRepository.getById(id);
+		
+		PersonDTO personDTO = new PersonDTO();
+		
+		personDTO.setId(p.getId());
+		personDTO.setFirstName(p.getFirstName());
+		personDTO.setLastName(p.getLastName());
+		personDTO.setUsername(p.getUsername());
+		personDTO.setPassword(p.getPassword());
+		personDTO.setIsDelete(p.getIsDelete());
+		
+		return personDTO;
 	}
 	
 	

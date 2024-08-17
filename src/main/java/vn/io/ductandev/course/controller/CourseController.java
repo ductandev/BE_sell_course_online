@@ -1,5 +1,6 @@
 package vn.io.ductandev.course.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,28 +13,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import vn.io.ductandev.course.dto.CourseDTO;
+import vn.io.ductandev.course.dto.PersonDTO;
+import vn.io.ductandev.course.response.ResponseDTO;
 import vn.io.ductandev.course.service.CourseService;
 
 @RestController
-@RequestMapping("/api/course")
+@RequestMapping("/api/v1/course")
 public class CourseController {
 	
 	@Autowired
 	CourseService courseService;
 	
 	 @GetMapping
-	 public ResponseEntity<List<CourseDTO>> getAllCourses() {
+	 public ResponseEntity<?> getAllCourses() {
 	     List<CourseDTO> courses = courseService.getListCourse();
-	     return ResponseEntity.ok(courses);
+	     ResponseDTO<CourseDTO> response = new ResponseDTO<>(
+	                "Thành công !",
+	                HttpStatus.OK.value(),
+	                (List<CourseDTO>) courses,
+	                new Date()
+	        );
+	        return new ResponseEntity<>(response, HttpStatus.OK);
 	 }
 	
 	 @PostMapping
-	   public ResponseEntity<Boolean> addCourse(@RequestBody CourseDTO courseDTO) {
-	        boolean isAdded = courseService.addCourse(courseDTO);
-	        if (isAdded) {
-	            return ResponseEntity.ok(true);
+	   public ResponseEntity<?> addCourse(@RequestBody CourseDTO courseDTO) {
+	        boolean isAdd = courseService.addCourse(courseDTO);
+	        if (isAdd) {
+	        	ResponseDTO<CourseDTO> response = new ResponseDTO<>(
+	                    "Thành công !",
+	                    HttpStatus.OK.value(),
+	                    (CourseDTO) courseDTO,
+	                    new Date()
+	            );
+	            
+	            return new ResponseEntity<>(response, HttpStatus.OK);
 	        } else {
-	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+	            return new ResponseEntity<>("Failed to add course", HttpStatus.BAD_REQUEST);
 	        }
 	    }
 

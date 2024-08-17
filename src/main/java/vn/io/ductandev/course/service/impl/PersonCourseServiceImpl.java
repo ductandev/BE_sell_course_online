@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import vn.io.ductandev.course.dto.PersonCourseDTO;
 import vn.io.ductandev.course.entity.CourseEntity;
 import vn.io.ductandev.course.entity.PersonCourseEntity;
 import vn.io.ductandev.course.entity.PersonEntity;
-import vn.io.ductandev.course.model.PersonCourseDTO;
 import vn.io.ductandev.course.repository.CourseRepository;
 import vn.io.ductandev.course.repository.PersonCourseRepository;
 import vn.io.ductandev.course.repository.PersonRepository;

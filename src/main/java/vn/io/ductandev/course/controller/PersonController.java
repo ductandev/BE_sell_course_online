@@ -57,13 +57,21 @@ public class PersonController {
 	// ================================================
     @PostMapping("/add")
     public ResponseEntity<?> addPerson(@RequestBody PersonDTO personDTO) {
-        ResponData responData = new ResponData();
 
-        Boolean isSuccess = personService.addPerson(personDTO);
+        Boolean isAdd = personService.addPerson(personDTO);
 
-        responData.setData(isSuccess);
-
-        return new ResponseEntity<>(responData, HttpStatus.OK);
+        if (isAdd) {
+        	ResponseDTO<PersonDTO> response = new ResponseDTO<>(
+                    "Thêm thành công !",
+                    HttpStatus.OK.value(),
+                    (PersonDTO) personDTO,
+                    new Date()
+            );
+            
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failed to add person", HttpStatus.BAD_REQUEST);
+        }
     }
 
 	// ================================================
@@ -74,9 +82,22 @@ public class PersonController {
         boolean isUpdated = personService.updatePerson(id, personDTO);
 
         if (isUpdated) {
-            return new ResponseEntity<>("Person updated successfully", HttpStatus.OK);
+        	ResponseDTO<PersonDTO> response = new ResponseDTO<>(
+                    "Update thành công !",
+                    HttpStatus.OK.value(),
+                    (PersonDTO) personDTO,
+                    new Date()
+            );
+            
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Failed to update person", HttpStatus.BAD_REQUEST);
+        	 ResponseDTO<String> response = new ResponseDTO<>(
+                     "Failed to update person: Person not found with id " + id,
+                     HttpStatus.NOT_FOUND.value(),
+                     null,
+                     new Date()
+             );
+             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -87,9 +108,22 @@ public class PersonController {
     public ResponseEntity<?> deletePerson(@PathVariable int id) {
         boolean isDelete = personService.deletePerson(id);
         if (isDelete) {
-            return new ResponseEntity<>("Person deleted successfully", HttpStatus.OK);
+        	ResponseDTO<PersonDTO> response = new ResponseDTO<>(
+                    "Delete thành công !",
+                    HttpStatus.OK.value(),
+                    (PersonDTO) personService.getbyID(id),
+                    new Date()
+            );
+            
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Failed to delete person", HttpStatus.BAD_REQUEST);
+        	 ResponseDTO<String> response = new ResponseDTO<>(
+                     "Failed to delete person: Person not found with id " + id,
+                     HttpStatus.NOT_FOUND.value(),
+                     null,
+                     new Date()
+             );
+             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 	
