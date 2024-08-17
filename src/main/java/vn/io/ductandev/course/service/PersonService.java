@@ -10,6 +10,8 @@ public interface PersonService {
 	
 	boolean addPerson(PersonDTO personDTO);
 	
+	PersonDTO getbyID(int id);
+	
 	boolean updatePerson(int id, PersonDTO personDTO );
 	
 	boolean deletePerson(int id);

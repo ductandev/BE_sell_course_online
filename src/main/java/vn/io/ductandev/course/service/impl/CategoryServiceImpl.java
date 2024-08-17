@@ -38,14 +38,15 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public boolean addCategory(String name) {
+	public boolean addCategory(CategoryDTO categoryDTO) {
 		boolean isSuccess = false;
 		
 		try {
 			
 			CategoryEntity categoryEntity = new CategoryEntity();
 			
-			categoryEntity.setName(name);
+			categoryEntity.setName(categoryDTO.getName());
+			categoryEntity.setId(categoryDTO.getId());
 			
 			categoryRepository.save(categoryEntity);
 			
@@ -95,6 +96,20 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		
 		return isSuccess;
+	}
+
+	@Override
+	public CategoryDTO getByID(int id) {
+		
+		CategoryEntity c = categoryRepository.getById(id);
+		
+		CategoryDTO categoryDTO = new CategoryDTO();
+		
+		categoryDTO.setId(c.getId());
+		categoryDTO.setIsDelete(c.getIsDelete());
+		categoryDTO.setName(c.getName());
+		
+		return categoryDTO;
 	}
 
 }

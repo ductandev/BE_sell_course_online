@@ -1,6 +1,6 @@
 package vn.io.ductandev.course.service;
 
-import vn.io.ductandev.course.model.RoleDTO;
+import vn.io.ductandev.course.dto.RoleDTO;
 
 public interface RoleService {
 	

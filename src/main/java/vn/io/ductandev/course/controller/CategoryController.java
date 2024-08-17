@@ -1,22 +1,22 @@
 package vn.io.ductandev.course.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import vn.io.ductandev.course.dto.CategoryDTO;
-import vn.io.ductandev.course.payload.ResponData;
+import vn.io.ductandev.course.response.ResponseDTO;
 import vn.io.ductandev.course.service.CategoryService;
 
 @RestController
@@ -27,56 +27,84 @@ public class CategoryController {
 	CategoryService categoryService;
 	
 	@GetMapping
-    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
+    public ResponseEntity<?> getAllCategories() {
+		
         List<CategoryDTO> categories = categoryService.getListCategory();
-        return ResponseEntity.ok(categories);
+        ResponseDTO<CategoryDTO> response = new ResponseDTO<>(
+                "Thành công !",
+                HttpStatus.OK.value(),
+                (List<CategoryDTO>) categories,
+                new Date()
+        );
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 	
 	@PostMapping
 	public ResponseEntity<?> addCategory(@RequestBody CategoryDTO categoryDTO){
-		ResponData responData = new ResponData();
-	    try {
-	        Boolean isSuccess = categoryService.addCategory(categoryDTO.getName());
+		 Boolean isAdd = categoryService.addCategory(categoryDTO);
 
-	        responData.setData(isSuccess);
-
-	        return new ResponseEntity<>(responData, HttpStatus.OK);
-	    } catch (Exception e) {
-	        Boolean isFalse = false;
-	        responData.setData(isFalse);
-
-	        return new ResponseEntity<>(responData, HttpStatus.BAD_REQUEST);
-	    }
+	        if (isAdd) {
+	        	ResponseDTO<CategoryDTO> response = new ResponseDTO<>(
+	                    "Thành công !",
+	                    HttpStatus.OK.value(),
+	                    (CategoryDTO) categoryDTO,
+	                    new Date()
+	            );
+	            
+	            return new ResponseEntity<>(response, HttpStatus.OK);
+	        } else {
+	            return new ResponseEntity<>("Failed to add category", HttpStatus.BAD_REQUEST);
+	        }
 		
 	}
 	
 	
-	@PutMapping("/update")
-	public ResponseEntity<?> updateCategory(@RequestBody CategoryDTO categoryUpdateDTO) {
-	    ResponData responData = new ResponData();
-	    try {
-	        Boolean isSuccess = categoryService.updateCategory(categoryUpdateDTO.getId(), categoryUpdateDTO.getName());
-	        
-	        responData.setData(isSuccess);
-	        
-	        return new ResponseEntity<>(responData, HttpStatus.OK);
-	    } catch (Exception e) {
-	        Boolean isFalse = false;
-	        responData.setData(isFalse);
-	        return new ResponseEntity<>(responData, HttpStatus.BAD_REQUEST);
-	    }
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> updateCategory(@PathVariable int id, @RequestBody CategoryDTO categoryUpdateDTO) {
+        Boolean isUpdate = categoryService.updateCategory(id, categoryUpdateDTO.getName());
+        if (isUpdate) {
+        	ResponseDTO<CategoryDTO> response = new ResponseDTO<>(
+                    "Thành công !",
+                    HttpStatus.OK.value(),
+                    (CategoryDTO) categoryUpdateDTO,
+                    new Date()
+            );
+            
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+        	 ResponseDTO<String> response = new ResponseDTO<>(
+                     "Failed to update category: Category not found with id " + id,
+                     HttpStatus.NOT_FOUND.value(),
+                     null,
+                     new Date()
+             );
+             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
 	}
 
 	
-	@PatchMapping("/delete")
-	public ResponseEntity<?> deleteCategory(@RequestBody CategoryDTO categoryDeleteDTO) {
-	    boolean isUpdated = categoryService.deleteCategory(categoryDeleteDTO.getId());
+	@PatchMapping("/delete/{id}")
+	public ResponseEntity<?> deleteCategory(@PathVariable int id) {
+	    boolean isDelete = categoryService.deleteCategory(id);
 	    
-	    if (isUpdated) {
-	        return new ResponseEntity<>("Category deleted successfully", HttpStatus.OK);
-	    } else {        
-	        return new ResponseEntity<>("Failed to delete category", HttpStatus.BAD_REQUEST);
-	    }
+	    if (isDelete) {
+        	ResponseDTO<CategoryDTO> response = new ResponseDTO<>(
+                    "Thành công !",
+                    HttpStatus.OK.value(),
+                    (CategoryDTO) categoryService.getByID(id),
+                    new Date()
+            );
+            
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+        	 ResponseDTO<String> response = new ResponseDTO<>(
+                     "Failed to delete category: Category not found with id " + id,
+                     HttpStatus.NOT_FOUND.value(),
+                     null,
+                     new Date()
+             );
+             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
 	}
 
 

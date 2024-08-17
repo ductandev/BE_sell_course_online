@@ -16,6 +16,7 @@ public class ResponseDTO<T> {
     String message;
     int statusCode;
     List<T> content;
+    T object;
     Date date;
 
     public ResponseDTO(String message, int statusCode, List<T> content, Date date) {
@@ -24,4 +25,14 @@ public class ResponseDTO<T> {
         this.content = content;
         this.date = date;
     }
+
+	public ResponseDTO(String message, int statusCode, T object, Date date) {
+		super();
+		this.message = message;
+		this.statusCode = statusCode;
+		this.object = object;
+		this.date = date;
+	}
+    
+    
 }
