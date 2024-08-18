@@ -1,5 +1,5 @@
 # Sử dụng hình ảnh base từ OpenJDK
-FROM openjdk:17-jdk-slim
+FROM openjdk:22-jdk-slim
 
 # Đặt thư mục làm việc
 WORKDIR /app
