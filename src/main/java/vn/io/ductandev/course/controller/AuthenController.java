@@ -18,7 +18,7 @@ import java.util.Date;
 
 @Tag(name = "Auth")
 @RestController
-@RequestMapping("/authen")
+@RequestMapping("/auth")
 public class AuthenController {
 
     @Autowired
