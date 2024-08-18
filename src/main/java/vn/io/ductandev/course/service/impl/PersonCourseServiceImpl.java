@@ -1,5 +1,6 @@
 package vn.io.ductandev.course.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class PersonCourseServiceImpl implements PersonCourseService {
 
 			personCourseEntity.setPerson(personEntity);
 			personCourseEntity.setCourse(courseEntity);
-			personCourseEntity.setDateBuy(personCourseDTO.getDateBuy());
+			personCourseEntity.setDateBuy(new Date());
 			
 			personCourseRepository.save(personCourseEntity);
 			
@@ -61,6 +62,5 @@ public class PersonCourseServiceImpl implements PersonCourseService {
 		return isSuccess;
 	}
 
-	
 
 }

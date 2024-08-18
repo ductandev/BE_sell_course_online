@@ -3,6 +3,7 @@ package vn.io.ductandev.course.service;
 import java.util.List;
 
 import vn.io.ductandev.course.dto.CourseDTO;
+import vn.io.ductandev.course.dto.ICourseTopSale;
 
 public interface CourseService {
 
@@ -16,5 +17,5 @@ public interface CourseService {
 	
 	boolean deleteCourse(int id);
 	
-	
+	List<ICourseTopSale> getTop5BestSellingBooks();	
 }
