@@ -5,7 +5,11 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Sao chép file JAR vào trong hình ảnh
-COPY target/myapp.jar myapp.jar
+COPY target/course.jar course.jar
 
 # Chạy ứng dụng
-ENTRYPOINT ["java", "-jar", "myapp.jar"]
+ENTRYPOINT ["java", "-jar", "course.jar"]
+
+
+
+
