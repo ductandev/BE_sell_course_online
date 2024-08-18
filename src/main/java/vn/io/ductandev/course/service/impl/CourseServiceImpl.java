@@ -6,10 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import vn.io.ductandev.course.entity.CategoryEntity;
-import vn.io.ductandev.course.entity.CourseEntity;
 import vn.io.ductandev.course.dto.CategoryDTO;
 import vn.io.ductandev.course.dto.CourseDTO;
+import vn.io.ductandev.course.dto.ICourseTopSale;
+import vn.io.ductandev.course.entity.CategoryEntity;
+import vn.io.ductandev.course.entity.CourseEntity;
 import vn.io.ductandev.course.repository.CategoryRepository;
 import vn.io.ductandev.course.repository.CourseRepository;
 import vn.io.ductandev.course.service.CourseService;
@@ -95,6 +96,12 @@ public class CourseServiceImpl implements CourseService {
 	public boolean deleteCourse(int id) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public List<ICourseTopSale> getTop5BestSellingBooks() {
+		List<ICourseTopSale> list = courseRepository.findTop3BestSellingCourses();
+		return list;
 	}
 
 }

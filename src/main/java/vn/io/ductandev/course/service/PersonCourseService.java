@@ -10,8 +10,7 @@ public interface PersonCourseService {
 
 	 List<PersonCourseDTO> getAllPersonCourses();
 	 
-	 
-	 
 	 boolean addPersonCourse(PersonCourseDTO personCourseDTO);
+	 
 	
 }
