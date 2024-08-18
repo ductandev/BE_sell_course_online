@@ -15,7 +15,7 @@ import jakarta.persistence.TemporalType;
 import lombok.Data;
 
 @Entity
-@Table(name = "tb_person_course")
+@Table(name = "TB_PERSON_COURSE", schema = "COURSE")
 @IdClass(PersonCourseId.class)
 @Data
 public class PersonCourseEntity {

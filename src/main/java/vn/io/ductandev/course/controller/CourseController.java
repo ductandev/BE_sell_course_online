@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import vn.io.ductandev.course.dto.CourseDTO;
-import vn.io.ductandev.course.dto.PersonDTO;
+import vn.io.ductandev.course.dto.ICourseTopSale;
 import vn.io.ductandev.course.response.ResponseDTO;
 import vn.io.ductandev.course.service.CourseService;
 
@@ -51,6 +51,12 @@ public class CourseController {
 	        } else {
 	            return new ResponseEntity<>("Failed to add course", HttpStatus.BAD_REQUEST);
 	        }
+	    }
+	 
+	 @GetMapping("/top3")
+	    public ResponseEntity<List<ICourseTopSale>> getTop3BestSellingCourses() {
+	        List<ICourseTopSale> topCourses = courseService.getTop5BestSellingBooks();
+	        return ResponseEntity.ok(topCourses);
 	    }
 
 }
