@@ -103,6 +103,7 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<finalName>course</finalName>
 				</configuration>
 			</plugin>
 		</plugins>
