@@ -1,5 +1,8 @@
 package vn.io.ductandev.course.security;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +14,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration          // Cho phép file này chạy ở tầng config trước
 @EnableWebSecurity      // cho phép custom Security
+@OpenAPIDefinition(security =  @SecurityRequirement(name = "bearer-key"),           // Fix lỗi CORS
+        servers = {@Server(url = "/", description = "Default Server URL")})
 public class SecurityConfig {
 
     @Bean
