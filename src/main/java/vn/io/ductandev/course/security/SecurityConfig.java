@@ -32,6 +32,7 @@ public class SecurityConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("http://localhost:5174");  // Chỉ định cụ thể nguồn gốc
+        config.addAllowedOrigin("https://ductandev.io.vn");  // Chỉ định cụ thể nguồn gốc
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         config.setAllowCredentials(true); // Cho phép gửi cookie cùng với request
