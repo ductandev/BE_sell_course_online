@@ -29,7 +29,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())               // Tắt csrf đi theo dạng tấn công copy token
+                .csrf(csrf -> csrf.disable())        // Tắt csrf đi theo dạng tấn công copy token
+                .cors(cors -> cors.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))       // Chặn session
                 .authorizeHttpRequests(request -> {                                      // authorizeHttpRequests: nơi quy định xem đường dẫn nào có quyền truy cập hoặc ko có quyền truy cập
 //                    // Cho phép truy cập vào Swagger UI mà không cần xác thực
