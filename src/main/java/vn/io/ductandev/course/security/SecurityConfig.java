@@ -31,15 +31,16 @@ public class SecurityConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*");
+        config.addAllowedOrigin("http://localhost:5174");  // Chỉ định cụ thể nguồn gốc
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
-        config.setAllowCredentials(false); // Cho phép gửi cookie cùng với request
+        config.setAllowCredentials(true); // Cho phép gửi cookie cùng với request
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
+
 
     // ===============================================
     //                  SECURITY
@@ -53,4 +54,5 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request.anyRequest().permitAll())
                 .build();
     }
+
 }
