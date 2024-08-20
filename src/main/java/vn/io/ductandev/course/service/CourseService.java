@@ -4,6 +4,8 @@ import java.util.List;
 
 import vn.io.ductandev.course.dto.CourseDTO;
 import vn.io.ductandev.course.dto.ICourseTopSale;
+import vn.io.ductandev.course.dto.RevenueRequestDTO;
+import vn.io.ductandev.course.dto.RevenueResponseDTO;
 
 public interface CourseService {
 
@@ -17,5 +19,7 @@ public interface CourseService {
 	
 	boolean deleteCourse(int id);
 	
-	List<ICourseTopSale> getTop5BestSellingBooks();	
+	List<ICourseTopSale> getTop5BestSellingBooks();
+	
+	List<RevenueResponseDTO> getRevenueByMonthAndYear(RevenueRequestDTO courseSalesDTO);
 }

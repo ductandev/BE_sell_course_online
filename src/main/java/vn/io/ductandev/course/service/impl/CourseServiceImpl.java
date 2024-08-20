@@ -2,6 +2,7 @@ package vn.io.ductandev.course.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import vn.io.ductandev.course.dto.CategoryDTO;
 import vn.io.ductandev.course.dto.CourseDTO;
 import vn.io.ductandev.course.dto.ICourseTopSale;
+import vn.io.ductandev.course.dto.RevenueRequestDTO;
+import vn.io.ductandev.course.dto.RevenueResponseDTO;
 import vn.io.ductandev.course.entity.CategoryEntity;
 import vn.io.ductandev.course.entity.CourseEntity;
 import vn.io.ductandev.course.repository.CategoryRepository;
@@ -103,5 +106,19 @@ public class CourseServiceImpl implements CourseService {
 		List<ICourseTopSale> list = courseRepository.findTop3BestSellingCourses();
 		return list;
 	}
+
+	@Override
+	public List<RevenueResponseDTO> getRevenueByMonthAndYear(RevenueRequestDTO requestDTO) {
+		// TODO Auto-generated method stub
+		 List<Object[]> results = courseRepository.calculateRevenueByMonthAndYear(requestDTO.getMonth(), requestDTO.getYear());
+	        return results.stream().map(result -> {
+	            RevenueResponseDTO dto = new RevenueResponseDTO();
+	            dto.setMonthYear((String) result[0]);
+	            dto.setTotalRevenue(((Number) result[1]).floatValue());
+	            return dto;
+	        }).collect(Collectors.toList());
+	}
+
+	
 
 }

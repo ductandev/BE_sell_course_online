@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import vn.io.ductandev.course.dto.CourseDTO;
 import vn.io.ductandev.course.dto.ICourseTopSale;
+import vn.io.ductandev.course.dto.RevenueRequestDTO;
+import vn.io.ductandev.course.dto.RevenueResponseDTO;
 import vn.io.ductandev.course.response.ResponseDTO;
 import vn.io.ductandev.course.service.CourseService;
 
@@ -57,6 +59,12 @@ public class CourseController {
 	    public ResponseEntity<List<ICourseTopSale>> getTop3BestSellingCourses() {
 	        List<ICourseTopSale> topCourses = courseService.getTop5BestSellingBooks();
 	        return ResponseEntity.ok(topCourses);
+	    }
+	 
+	 @PostMapping("/calculate")
+	    public ResponseEntity<List<RevenueResponseDTO>> calculateRevenue(@RequestBody RevenueRequestDTO requestDTO) {
+	        List<RevenueResponseDTO> response = courseService.getRevenueByMonthAndYear(requestDTO);
+	        return ResponseEntity.ok(response);
 	    }
 
 }
