@@ -14,6 +14,7 @@ vn\io\ductandev\course\entity\PersonEntity.class
 vn\io\ductandev\course\service\impl\VideoServiceImpl.class
 vn\io\ductandev\course\entity\CommentEntity.class
 vn\io\ductandev\course\payload\ResponData.class
+vn\io\ductandev\course\dto\RevenueRequestDTO.class
 vn\io\ductandev\course\controller\VideoController.class
 vn\io\ductandev\course\entity\PersonCourseEntity.class
 vn\io\ductandev\course\dto\VideoDTO.class
@@ -49,3 +50,4 @@ vn\io\ductandev\course\service\AuthenService.class
 vn\io\ductandev\course\config\SwaggerConfig.class
 vn\io\ductandev\course\dto\PersonCourseDTO.class
 vn\io\ductandev\course\controller\PersonCourseController.class
+vn\io\ductandev\course\dto\RevenueResponseDTO.class
