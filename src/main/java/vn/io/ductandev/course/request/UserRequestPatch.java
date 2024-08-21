@@ -1,11 +1,9 @@
 package vn.io.ductandev.course.request;
 
-public record UserRequest(
+public record UserRequestPatch(
         String username,
-        String email,
         String password,
         String avatar
-//        int role_id;
 ) {
 
 }
