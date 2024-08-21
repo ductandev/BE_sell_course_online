@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import vn.io.ductandev.course.dto.LessonDTO;
 import vn.io.ductandev.course.response.ResponseList;
-import vn.io.ductandev.course.service.VideoService;
+import vn.io.ductandev.course.service.LessonService;
 
 @Tag(name = "Lesson")
 @RestController
@@ -23,11 +23,11 @@ import vn.io.ductandev.course.service.VideoService;
 public class LessonController {
 
 	@Autowired
-    private VideoService videoService;
+    private LessonService lessonService;
 
     @GetMapping
     public ResponseEntity<?> getAllVideos() {
-        List<LessonDTO> videos = videoService.getListVideo();
+        List<LessonDTO> videos = lessonService.getListVideo();
         ResponseList<LessonDTO> response = new ResponseList<>(
                 "Thành công !",
                 HttpStatus.OK.value(),
@@ -39,7 +39,7 @@ public class LessonController {
 
     @PostMapping
     public ResponseEntity<?> addVideo(@RequestBody LessonDTO lessonDTO) {
-        boolean isAdd = videoService.addVideo(lessonDTO);
+        boolean isAdd = lessonService.addVideo(lessonDTO);
         if (isAdd) {
         	ResponseList<LessonDTO> response = new ResponseList<>(
                     "Thành công !",

@@ -6,6 +6,6 @@ import vn.io.ductandev.course.entity.LessonEntity;
 
 
 @Repository
-public interface VideoRepository extends JpaRepository<LessonEntity, Integer> {
+public interface LessonRepository extends JpaRepository<LessonEntity, Integer> {
 
 }

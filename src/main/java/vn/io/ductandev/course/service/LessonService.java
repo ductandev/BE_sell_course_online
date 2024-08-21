@@ -4,7 +4,7 @@ import java.util.List;
 
 import vn.io.ductandev.course.dto.LessonDTO;
 
-public interface VideoService {
+public interface LessonService {
 
 	List<LessonDTO> getListVideo();
 	
