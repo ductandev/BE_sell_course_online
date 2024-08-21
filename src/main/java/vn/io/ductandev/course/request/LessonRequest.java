@@ -1,5 +1,7 @@
 package vn.io.ductandev.course.request;
 
-public record LessonRequest( String name, String videoUrl, int isSuccess, int courseID) {
+import vn.io.ductandev.course.dto.CourseDTO;
+
+public record LessonRequest( String name, String videoUrl, int courseID) {
 
 }

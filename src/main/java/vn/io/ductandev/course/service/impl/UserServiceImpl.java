@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
 		userDTO.setId(p.getId());
         userDTO.setUsername(p.getUsername());
         userDTO.setPassword(p.getPassword());
-//		userDTO.setIsDelete(p.getIsDelete());
+		userDTO.setIsDelete(p.getIsDelete());
 
         return userDTO;
     }

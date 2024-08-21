@@ -3,7 +3,7 @@ package vn.io.ductandev.course.dto;
 import lombok.Data;
 
 @Data
-public class LessonDTO {
+public class LessonByIdDTO {
 
     private int id;
 
@@ -13,7 +13,7 @@ public class LessonDTO {
 
     private int isSuccess;
 
-//    private CourseDTO course;
+    private CourseDTO course;
 
     private int isDelete;
 }
