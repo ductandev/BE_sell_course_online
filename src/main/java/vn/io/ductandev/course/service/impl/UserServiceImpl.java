@@ -15,123 +15,137 @@ import vn.io.ductandev.course.dto.RoleDTO;
 import vn.io.ductandev.course.repository.UserRepository;
 import vn.io.ductandev.course.repository.RoleRepository;
 import vn.io.ductandev.course.request.UserRequest;
+import vn.io.ductandev.course.request.UserRequestPatch;
 import vn.io.ductandev.course.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
-	
-	@Autowired
-	UserRepository userRepository;
-	
-	@Autowired
-	RoleRepository roleRepository;
-	
-	@Autowired
-	Config appConfig;
-	
-	@Autowired
-	Mapper<UserDTO> personMapper;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
+    Config appConfig;
+
+    @Autowired
+    Mapper<UserDTO> personMapper;
+
+    // ================================================
+    //               	GET ALL USER
+    // ================================================
+    @Override
+    public List<UserDTO> getListUser() {
+
+        List<UserEntity> listEntities = userRepository.findAll();
+
+        List<UserDTO> listDtos = new ArrayList<>();
+
+        for (UserEntity p : listEntities) {
+
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(p.getId());
+            userDTO.setUsername(p.getUsername());
+            userDTO.setPassword(p.getPassword());
+            userDTO.setEmail(p.getEmail());
+            userDTO.setAvatar(p.getAvatar());
+
+            RoleEntity role = roleRepository.getById(p.getRole().getId());
+
+            RoleDTO roleDTO = new RoleDTO();
+
+            roleDTO.setId(role.getId());
+            roleDTO.setName(role.getName());
+
+            userDTO.setRole(p.getRole().getId());
+
+            listDtos.add(userDTO);
+        }
+
+        return listDtos;
+    }
+
+    @Override
+    public boolean addUser(UserRequest userRequest) {
+
+        boolean isSuccess = false;
+
+        try {
+            RoleEntity roleEntity = roleRepository.getById(2);
+
+            UserEntity userEntity = new UserEntity();
+
+            userEntity.setUsername(userRequest.username());
+            userEntity.setPassword(userRequest.password());
+            userEntity.setEmail(userRequest.email());
+            userEntity.setAvatar(userRequest.avatar());
+
+            userEntity.setRole(roleEntity);
+
+            userRepository.save(userEntity);
+
+            isSuccess = true;
+            return isSuccess;
+        } catch (Exception e) {
+            return isSuccess;
+        }
 
 
-	@Override
-	public List<UserDTO> getListUser() {
+    }
 
-		List<UserEntity> listEntities = userRepository.findAll();
-		
-		List<UserDTO> listDtos = new ArrayList<>();
-		
-		for(UserEntity p : listEntities) {
-			
-			UserDTO userDTO = new UserDTO();
-			
-//			userDTO.setId(p.getId());
-			userDTO.setUsername(p.getUsername());
-			userDTO.setPassword(p.getPassword());
-			
-			
-			RoleEntity role = roleRepository.getById(p.getRole().getId());
-			
-			RoleDTO roleDTO = new RoleDTO();
-			
-			roleDTO.setId(role.getId());
-			roleDTO.setName(role.getName());
-			
-			userDTO.setRole(p.getRole().getId());
-				
-			listDtos.add(userDTO);
-			
-		}
-		
-		return listDtos;
-	}
+    @Override
+    public boolean deleteUser(int id) {
 
-	@Override
-	public boolean addUser(UserRequest userRequest) {
-		
-		boolean isSuccess = false;
-		
-		try {
-			RoleEntity r = roleRepository.getById(2);
+        Boolean isSuccess = false;
 
-			UserEntity u = new UserEntity();
-			
-			u.setUsername(userRequest.username());
-			u.setPassword(userRequest.password());
-			u.setEmail(userRequest.email());
-			u.setAvatar(userRequest.avatar());
-			
-			u.setRole(r);
+        try {
+            UserEntity user = userRepository.getById(id);
 
-			userRepository.save(u);
+            user.setIsDelete(1);
 
-			isSuccess = true;
-			return isSuccess;
-		} catch (Exception e) {
-			return isSuccess;
-		}
+            userRepository.save(user);
 
-		
-	}
+            isSuccess = true;
 
-	@Override
-	public boolean deleteUser(int id) {
-		
-		Boolean isSuccess = false;
-		
-		try {
-		 UserEntity user = userRepository.getById(id);
-
-         user.setIsDelete(1);
-
-         userRepository.save(user);
-         
-         isSuccess = true;
-         
-         return isSuccess;
-     } catch (Exception e) {
-         return isSuccess;
-     }
-	}
+            return isSuccess;
+        } catch (Exception e) {
+            return isSuccess;
+        }
+    }
 
 
-	@Override
-	public UserDTO getbyID(int id) {
-		UserEntity p = userRepository.getById(id);
-		
-		UserDTO userDTO = new UserDTO();
-		
-//		userDTO.setId(p.getId());
-		userDTO.setUsername(p.getUsername());
-		userDTO.setPassword(p.getPassword());
+    @Override
+    public UserDTO getbyID(int id) {
+        UserEntity p = userRepository.getById(id);
+
+        UserDTO userDTO = new UserDTO();
+
+		userDTO.setId(p.getId());
+        userDTO.setUsername(p.getUsername());
+        userDTO.setPassword(p.getPassword());
 //		userDTO.setIsDelete(p.getIsDelete());
-		
-		return userDTO;
-	}
 
-	@Override
-	public boolean updateUser(int id, UserDTO userDTO) {
-		return false;
-	}
+        return userDTO;
+    }
 
+    @Override
+    public UserEntity updateUser(int id, UserRequestPatch userRequestPatch) {
+        try {
+            UserEntity userEntity = userRepository.getById(id);
+            if (userEntity != null && userEntity.getIsDelete() == 0) {
+                userEntity.setAvatar(userRequestPatch.avatar());
+                userEntity.setPassword(userRequestPatch.password());
+                userEntity.setUsername(userRequestPatch.username());
 
+                userRepository.save(userEntity);
+            }
+            return userEntity;
+
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
 }

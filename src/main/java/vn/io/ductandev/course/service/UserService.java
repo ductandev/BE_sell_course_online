@@ -3,7 +3,9 @@ package vn.io.ductandev.course.service;
 import java.util.List;
 
 import vn.io.ductandev.course.dto.UserDTO;
+import vn.io.ductandev.course.entity.UserEntity;
 import vn.io.ductandev.course.request.UserRequest;
+import vn.io.ductandev.course.request.UserRequestPatch;
 
 public interface UserService {
 	
@@ -13,7 +15,7 @@ public interface UserService {
 	
 	UserDTO getbyID(int id);
 	
-	boolean updateUser(int id, UserDTO userDTO);
+	UserEntity updateUser(int id, UserRequestPatch userRequestPatcht);
 	
 	boolean deleteUser(int id);
 	

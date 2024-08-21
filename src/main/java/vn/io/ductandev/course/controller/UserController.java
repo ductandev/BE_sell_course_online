@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 import vn.io.ductandev.course.dto.UserDTO;
+import vn.io.ductandev.course.entity.UserEntity;
 import vn.io.ductandev.course.request.UserRequest;
+import vn.io.ductandev.course.request.UserRequestPatch;
 import vn.io.ductandev.course.response.ResponseList;
 
 import vn.io.ductandev.course.response.ResponseObject;
@@ -25,7 +27,7 @@ public class UserController {
     UserService userService;
 
 	// ================================================
-	//               	GET ALL PERSON
+	//               	GET ALL USER
 	// ================================================
     @GetMapping
     public ResponseEntity<?> getAllUser() {
@@ -41,7 +43,7 @@ public class UserController {
     }
 
 	// ================================================
-	//               	CREATE PERSON
+	//               	CREATE USER
 	// ================================================
     @PostMapping()
     public ResponseEntity<?> addUser(@RequestBody UserRequest userRequest) {
@@ -63,17 +65,17 @@ public class UserController {
     }
 
 	// ================================================
-	//               	UPDATE PERSON
+	//               	UPDATE USER
 	// ================================================
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserDTO userDTO) {
-        boolean isUpdated = userService.updateUser(id, userDTO);
+    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserRequestPatch userRequestPatch) {
+        UserEntity isUpdated = userService.updateUser(id, userRequestPatch);
 
-        if (isUpdated) {
-        	ResponseList<UserDTO> response = new ResponseList<>(
+        if (isUpdated != null) {
+        	ResponseObject<UserRequestPatch> response = new ResponseObject<>(
                     "Update thành công !",
                     HttpStatus.OK.value(),
-                    (List<UserDTO>) userDTO,
+                    userRequestPatch,
                     new Date()
             );
             
@@ -90,7 +92,7 @@ public class UserController {
     }
 
 	// ================================================
-	//               	DELETE PERSON
+	//               	DELETE USER
 	// ================================================
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
@@ -102,7 +104,7 @@ public class UserController {
                     (List<UserDTO>) userService.getbyID(id),
                     new Date()
             );
-            
+
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
         	 ResponseList<String> response = new ResponseList<>(
