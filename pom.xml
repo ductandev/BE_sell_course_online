@@ -81,14 +81,6 @@
 		</dependency>
 		
 
-		<!-- Swagger 3 (OpenAPI 3) dependency -->
-		<!-- Kiểm tra phiên bản mới nhất tại https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
-<!--		<dependency>-->
-<!--			<groupId>org.springdoc</groupId>-->
-<!--			<artifactId>springdoc-openapi-ui</artifactId>-->
-<!--			<version>1.7.0</version>-->
-<!--		</dependency>-->
-
 		<!--	SWAGGER	-->
 		<dependency>
 			<groupId>org.springdoc</groupId>

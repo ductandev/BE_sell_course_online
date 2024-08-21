@@ -11,5 +11,5 @@ public class RoleDTO {
 
 	private String description;
 
-	private int isDelete;
+//	private int isDelete;
 }

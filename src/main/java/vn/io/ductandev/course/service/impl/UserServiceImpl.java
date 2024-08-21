@@ -14,6 +14,7 @@ import vn.io.ductandev.course.dto.UserDTO;
 import vn.io.ductandev.course.dto.RoleDTO;
 import vn.io.ductandev.course.repository.UserRepository;
 import vn.io.ductandev.course.repository.RoleRepository;
+import vn.io.ductandev.course.request.UserRequest;
 import vn.io.ductandev.course.service.UserService;
 
 @Service
@@ -33,8 +34,8 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public List<UserDTO> getListPerson() {
-		
+		public List<UserDTO> getListUser() {
+
 		List<UserEntity> listEntities = userRepository.findAll();
 		
 		List<UserDTO> listDtos = new ArrayList<>();
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService {
 			
 			UserDTO userDTO = new UserDTO();
 			
-			userDTO.setId(p.getId());
+//			userDTO.setId(p.getId());
 			userDTO.setUsername(p.getUsername());
 			userDTO.setPassword(p.getPassword());
 			
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService {
 			roleDTO.setId(role.getId());
 			roleDTO.setName(role.getName());
 			
-			userDTO.setRole(roleDTO);
+			userDTO.setRole(p.getRole().getId());
 				
 			listDtos.add(userDTO);
 			
@@ -64,40 +65,34 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean addPerson(UserDTO userDTO) {
+	public boolean addUser(UserRequest userRequest) {
 		
 		boolean isSuccess = false;
 		
 		try {
-			RoleEntity r = roleRepository.getById(2);
-			
-			UserEntity p = personMapper.convert(userDTO, UserEntity.class);
-			
-			p.setRole(r);
-			
-			userRepository.save(p);
-			
+//			RoleEntity r = roleRepository.getById(2);
+
+
+//			userRequest.setRole_id(2);
+
 			isSuccess = true;
-			
 			return isSuccess;
 		} catch (Exception e) {
-			e.printStackTrace();
+			return isSuccess;
 		}
-		return isSuccess;
+
 		
 	}
 
 	@Override
-	public boolean updatePerson(int id, UserDTO userDTO) {
+	public boolean deleteUser(int id) {
 		
 		Boolean isSuccess = false;
 		
 		try {
 		 UserEntity user = userRepository.getById(id);
 
-         user.setUsername(userDTO.getUsername());
-         user.setPassword(userDTO.getPassword());
-         user.setIsDelete(userDTO.getIsDelete());
+         user.setIsDelete(1);
 
          userRepository.save(user);
          
@@ -109,23 +104,6 @@ public class UserServiceImpl implements UserService {
      }
 	}
 
-	@Override
-	public boolean deletePerson(int id) {
-		Boolean isSuccess = false;
-		
-		UserEntity user = userRepository.getById(id);
-		 
-		if(user != null) {
-			 user.setIsDelete(1);
-			 userRepository.save(user);
-			 isSuccess = true;
-			 return isSuccess;
-		}else {
-			return isSuccess;
-		}
-			
-		
-	}
 
 	@Override
 	public UserDTO getbyID(int id) {
@@ -133,14 +111,18 @@ public class UserServiceImpl implements UserService {
 		
 		UserDTO userDTO = new UserDTO();
 		
-		userDTO.setId(p.getId());
+//		userDTO.setId(p.getId());
 		userDTO.setUsername(p.getUsername());
 		userDTO.setPassword(p.getPassword());
-		userDTO.setIsDelete(p.getIsDelete());
+//		userDTO.setIsDelete(p.getIsDelete());
 		
 		return userDTO;
 	}
-	
-	
-	
+
+	@Override
+	public boolean updateUser(int id, UserDTO userDTO) {
+		return false;
+	}
+
+
 }

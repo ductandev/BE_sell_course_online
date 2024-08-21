@@ -3,17 +3,18 @@ package vn.io.ductandev.course.service;
 import java.util.List;
 
 import vn.io.ductandev.course.dto.UserDTO;
+import vn.io.ductandev.course.request.UserRequest;
 
 public interface UserService {
 	
-	List<UserDTO> getListPerson();
+	List<UserDTO> getListUser();
 	
-	boolean addPerson(UserDTO userDTO);
+	boolean addUser(UserRequest userRequest);
 	
 	UserDTO getbyID(int id);
 	
-	boolean updatePerson(int id, UserDTO userDTO);
+	boolean updateUser(int id, UserDTO userDTO);
 	
-	boolean deletePerson(int id);
+	boolean deleteUser(int id);
 	
 }

@@ -29,7 +29,7 @@ public class UserEntity {
 	private int isDelete = 0;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "role_id", referencedColumnName = "id")
+	@JoinColumn(name = "role_id", referencedColumnName = "id", columnDefinition = "INT DEFAULT 2")
 	private RoleEntity role;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
