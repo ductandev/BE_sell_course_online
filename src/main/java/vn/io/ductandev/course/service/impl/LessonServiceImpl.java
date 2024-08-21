@@ -11,14 +11,15 @@ import vn.io.ductandev.course.entity.LessonEntity;
 import vn.io.ductandev.course.dto.CourseDTO;
 import vn.io.ductandev.course.dto.LessonDTO;
 import vn.io.ductandev.course.repository.CourseRepository;
-import vn.io.ductandev.course.repository.VideoRepository;
-import vn.io.ductandev.course.service.VideoService;
+import vn.io.ductandev.course.repository.LessonRepository;
+import vn.io.ductandev.course.request.LessonRequest;
+import vn.io.ductandev.course.service.LessonService;
 
 @Service
-public class VideoServiceImpl implements VideoService{
+public class LessonServiceImpl implements LessonService{
 
 	@Autowired
-	private VideoRepository videoRepository;
+	private LessonRepository videoRepository;
 
 	@Autowired
 	private CourseRepository courseRepository;
@@ -57,23 +58,24 @@ public class VideoServiceImpl implements VideoService{
 	}
 
 	@Override
-	public boolean addVideo(LessonDTO lessonDTO) {
+	public boolean addVideo(LessonRequest lessonRequest) {
 		boolean isSuccess = false;
         try {
             LessonEntity video = new LessonEntity();
-            video.setName(lessonDTO.getName());
-            video.setVideoUrl(lessonDTO.getVideoUrl());
-            video.setIsDelete(lessonDTO.getIsDelete());
+            video.setName(lessonRequest.name());
+            video.setVideoUrl(lessonRequest.videoUrl());
+            video.setIsDelete(lessonRequest.isSuccess());
 
-            CourseEntity course = courseRepository.getById(lessonDTO.getCourse().getId());
+            CourseEntity course = courseRepository.getById(lessonRequest.courseID());
             video.setCourse(course);
 
             videoRepository.save(video);
             isSuccess = true;
+            return isSuccess;
         } catch (Exception e) {
-            e.printStackTrace();
+        	return isSuccess;
         }
-        return isSuccess;
+        
 	}
 	
 	

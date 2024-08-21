@@ -3,16 +3,17 @@ package vn.io.ductandev.course.service;
 import java.util.List;
 
 import vn.io.ductandev.course.dto.CategoryDTO;
+import vn.io.ductandev.course.request.CategoryRequest;
 
 public interface CategoryService  {
 	
 	List<CategoryDTO> getListCategory();
 	
-	boolean addCategory(CategoryDTO categoryDTO);
+	boolean addCategory(CategoryRequest categoryRequest);
 	
-	boolean updateCategory(int id, String name);
+	CategoryRequest updateCategory(int id, CategoryRequest categoryRequest);
 	
-	boolean deleteCategory(int id);
+	CategoryDTO deleteCategory(int id);
 	
 	CategoryDTO getByID(int id);
 	

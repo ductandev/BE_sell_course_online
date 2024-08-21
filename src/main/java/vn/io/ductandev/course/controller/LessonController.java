@@ -3,7 +3,6 @@ package vn.io.ductandev.course.controller;
 import java.util.Date;
 import java.util.List;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,21 +12,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import vn.io.ductandev.course.dto.LessonDTO;
+import vn.io.ductandev.course.request.LessonRequest;
 import vn.io.ductandev.course.response.ResponseList;
-import vn.io.ductandev.course.service.VideoService;
+import vn.io.ductandev.course.response.ResponseObject;
+import vn.io.ductandev.course.service.LessonService;
 
-@Tag(name = "Video")
+@Tag(name = "Lesson")
 @RestController
-@RequestMapping("/api/video")
-public class VideoController {
+@RequestMapping("/api/lesson")
+public class LessonController {
 
 	@Autowired
-    private VideoService videoService;
+    private LessonService lessonService;
 
     @GetMapping
     public ResponseEntity<?> getAllVideos() {
-        List<LessonDTO> videos = videoService.getListVideo();
+        List<LessonDTO> videos = lessonService.getListVideo();
         ResponseList<LessonDTO> response = new ResponseList<>(
                 "Thành công !",
                 HttpStatus.OK.value(),
@@ -38,20 +40,29 @@ public class VideoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addVideo(@RequestBody LessonDTO lessonDTO) {
-        boolean isAdd = videoService.addVideo(lessonDTO);
-        if (isAdd) {
-        	ResponseList<LessonDTO> response = new ResponseList<>(
+    public ResponseEntity<?> addVideo(@RequestBody LessonRequest lessonRequest) {
+    	boolean isAdd = lessonService.addVideo(lessonRequest);
+      
+    	if(isAdd) {
+    		ResponseObject<LessonRequest> response = new ResponseObject<>(
                     "Thành công !",
                     HttpStatus.OK.value(),
-                    (List<LessonDTO>) lessonDTO,
+                    lessonRequest,
                     new Date()
             );
             
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Failed to add video", HttpStatus.BAD_REQUEST);
-        }
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+    	}else {
+    		ResponseObject<LessonRequest> response = new ResponseObject<>(
+                    "Thất bại !",
+                    HttpStatus.OK.value(),
+                    null,
+                    new Date()
+            );
+            
+            return new ResponseEntity<>(response, HttpStatus.FAILED_DEPENDENCY);
+    	}
+    	
     }
 	
 }
