@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 import vn.io.ductandev.course.dto.UserDTO;
+import vn.io.ductandev.course.request.UserRequest;
 import vn.io.ductandev.course.response.ResponseList;
 
+import vn.io.ductandev.course.response.ResponseObject;
 import vn.io.ductandev.course.service.UserService;
 
 @Tag(name = "User")
@@ -26,8 +28,8 @@ public class UserController {
 	//               	GET ALL PERSON
 	// ================================================
     @GetMapping
-    public ResponseEntity<?> getAllPerson() {
-        List<UserDTO> userDTOS = userService.getListPerson();
+    public ResponseEntity<?> getAllUser() {
+        List<UserDTO> userDTOS = userService.getListUser();
 
         ResponseList<UserDTO> response = new ResponseList<>(
                 "Thành công !",
@@ -42,15 +44,15 @@ public class UserController {
 	//               	CREATE PERSON
 	// ================================================
     @PostMapping()
-    public ResponseEntity<?> addPerson(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> addUser(@RequestBody UserRequest userRequest) {
 
-        Boolean isAdd = userService.addPerson(userDTO);
+        Boolean isAdd = userService.addUser(userRequest);
 
         if (isAdd) {
-        	ResponseList<UserDTO> response = new ResponseList<>(
+        	ResponseObject<UserRequest> response = new ResponseObject<>(
                     "Thêm thành công !",
                     HttpStatus.OK.value(),
-                    (List<UserDTO>) userDTO,
+                    userRequest,
                     new Date()
             );
             
@@ -64,8 +66,8 @@ public class UserController {
 	//               	UPDATE PERSON
 	// ================================================
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePerson(@PathVariable int id, @RequestBody UserDTO userDTO) {
-        boolean isUpdated = userService.updatePerson(id, userDTO);
+    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserDTO userDTO) {
+        boolean isUpdated = userService.updateUser(id, userDTO);
 
         if (isUpdated) {
         	ResponseList<UserDTO> response = new ResponseList<>(
@@ -78,7 +80,7 @@ public class UserController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
         	 ResponseList<String> response = new ResponseList<>(
-                     "Failed to update user: Person not found with id " + id,
+                     "Failed to update user: User not found with id " + id,
                      HttpStatus.NOT_FOUND.value(),
                      null,
                      new Date()
@@ -91,8 +93,8 @@ public class UserController {
 	//               	DELETE PERSON
 	// ================================================
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePerson(@PathVariable int id) {
-        boolean isDelete = userService.deletePerson(id);
+    public ResponseEntity<?> deleteUser(@PathVariable int id) {
+        boolean isDelete = userService.deleteUser(id);
         if (isDelete) {
         	ResponseList<UserDTO> response = new ResponseList<>(
                     "Delete thành công !",
@@ -104,7 +106,7 @@ public class UserController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
         	 ResponseList<String> response = new ResponseList<>(
-                     "Failed to delete user: Person not found with id " + id,
+                     "Failed to delete user: User not found with id " + id,
                      HttpStatus.NOT_FOUND.value(),
                      null,
                      new Date()
@@ -113,8 +115,8 @@ public class UserController {
         }
     }
 	
-//	  private PersonDTO convertToDTO(userEntity userEntity) {
-//		    PersonDTO personDTO = new PersonDTO();
+//	  private UserDTO convertToDTO(userEntity userEntity) {
+//		    UserDTO personDTO = new UserDTO();
 //		    personDTO.setId(userEntity.getId());
 //		    personDTO.setUsername(userEntity.getUsername());
 //		    personDTO.setPassword(userEntity.getPassword());
@@ -133,7 +135,7 @@ public class UserController {
 //		    return personDTO;
 //		}
 //
-//	  private userEntity convertToEntity(PersonDTO personDTO) {
+//	  private userEntity convertToEntity(UserDTO personDTO) {
 //		    userEntity userEntity = new userEntity();
 //		    userEntity.setId(personDTO.getId());
 //		    userEntity.setUsername(personDTO.getUsername());

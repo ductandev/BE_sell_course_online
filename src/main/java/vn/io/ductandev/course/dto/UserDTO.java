@@ -16,8 +16,8 @@ public class UserDTO {
 
 	private String avatar;
 
-	private int isDelete;
+//	private int isDelete;
 
-	private RoleDTO role;
+	private int role;
 
 }

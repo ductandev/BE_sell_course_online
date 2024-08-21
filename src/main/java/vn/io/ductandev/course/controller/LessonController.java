@@ -17,10 +17,10 @@ import vn.io.ductandev.course.dto.LessonDTO;
 import vn.io.ductandev.course.response.ResponseList;
 import vn.io.ductandev.course.service.VideoService;
 
-@Tag(name = "Video")
+@Tag(name = "Lesson")
 @RestController
-@RequestMapping("/api/video")
-public class VideoController {
+@RequestMapping("/api/lesson")
+public class LessonController {
 
 	@Autowired
     private VideoService videoService;

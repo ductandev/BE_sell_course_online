@@ -11,6 +11,7 @@ import vn.io.ductandev.course.service.RoleService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -23,25 +24,30 @@ public class RoleServiceImpl implements RoleService {
     // ================================================
     @Override
     public List<RoleDTO> getAllRoles() {
-        // Tạo ra 1 list userDTOS rỗng
-        List<RoleDTO> roleDTOS = new ArrayList<>();
+        List<RoleEntity> listEntity = roleRepository.findAllByIsDeleteFalse();
 
-        // LẤy danh sách user mà mình truy vấn được ở database thônng qua hàm findall
-        List<RoleEntity> roleEntities = roleRepository.findAll();
+        List<RoleDTO> listDTO = new ArrayList<>();
 
-        // Custom dữ liệu trả về bằng DTO
-        for (RoleEntity data : roleEntities) {
+        for (RoleEntity r : listEntity){
             RoleDTO roleDTO = new RoleDTO();
-            roleDTO.setId(data.getId());
-            roleDTO.setName(data.getName());
-            roleDTO.setDescription(data.getDescription());
-            roleDTO.setIsDelete(data.getIsDelete());
 
-            // Add vào List<>
-            roleDTOS.add(roleDTO);
+            roleDTO.setDescription(r.getDescription());
+            roleDTO.setName(r.getName());
+            roleDTO.setId(r.getId());
+
+            listDTO.add(roleDTO);
         }
 
-        return roleDTOS;
+
+        return listDTO;
+    }
+
+    // ================================================
+    //                GET ROLES BY ID
+    // ================================================
+    @Override
+    public Optional<RoleEntity> getRoleById(int id) {
+        return roleRepository.findByIdAndIsDeleteFalse(id);
     }
 
     // ================================================
@@ -78,7 +84,6 @@ public class RoleServiceImpl implements RoleService {
                 roleDTO.setId(roleEntity.getId());
                 roleDTO.setName(roleEntity.getName());
                 roleDTO.setDescription(roleEntity.getDescription());
-                roleDTO.setIsDelete(roleEntity.getIsDelete());
             }
             return roleDTO;
 
@@ -101,28 +106,4 @@ public class RoleServiceImpl implements RoleService {
         roleEntity.setDescription(roleDTO.getDescription());
         return roleEntity;
     }
-
-
-//	@Override
-//	public boolean addRole(String name) {
-//		boolean isSuccess = false;
-//		
-//		try {
-//			
-//			RoleEntity roleEntity = new RoleEntity();
-//			
-//			roleEntity.setName(name);
-//			
-//			roleRepository.save(roleEntity);
-//			
-//			isSuccess = true;
-//			
-//		} catch (Exception e) {
-//			System.out.println("Error add role : " + e);
-//		}
-//		
-//		return isSuccess;
-//	}
-
-
 }
