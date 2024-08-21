@@ -10,13 +10,13 @@ vn\io\ductandev\course\request\PersonRequest.class
 vn\io\ductandev\course\repository\PersonRepository.class
 vn\io\ductandev\course\repository\CategoryRepository.class
 vn\io\ductandev\course\repository\CourseRepository.class
-vn\io\ductandev\course\entity\PersonEntity.class
+vn\io\ductandev\course\entity\userEntity.class
 vn\io\ductandev\course\service\impl\VideoServiceImpl.class
 vn\io\ductandev\course\entity\CommentEntity.class
 vn\io\ductandev\course\payload\ResponData.class
 vn\io\ductandev\course\dto\RevenueRequestDTO.class
 vn\io\ductandev\course\controller\VideoController.class
-vn\io\ductandev\course\entity\PersonCourseEntity.class
+vn\io\ductandev\course\entity\userCourseEntity.class
 vn\io\ductandev\course\dto\VideoDTO.class
 vn\io\ductandev\course\service\PersonCourseService.class
 vn\io\ductandev\course\service\impl\CourseServiceImpl.class

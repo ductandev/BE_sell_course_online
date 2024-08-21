@@ -1,0 +1,156 @@
+package vn.io.ductandev.course.controller;
+
+import java.util.Date;
+import java.util.List;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import org.springframework.web.bind.annotation.*;
+import vn.io.ductandev.course.dto.UserDTO;
+import vn.io.ductandev.course.response.ResponseList;
+
+import vn.io.ductandev.course.service.UserService;
+
+@Tag(name = "User")
+@RestController
+@RequestMapping("/api/user")
+public class UserController {
+
+    @Autowired
+    UserService userService;
+
+	// ================================================
+	//               	GET ALL PERSON
+	// ================================================
+    @GetMapping
+    public ResponseEntity<?> getAllPerson() {
+        List<UserDTO> userDTOS = userService.getListPerson();
+
+        ResponseList<UserDTO> response = new ResponseList<>(
+                "Thành công !",
+                HttpStatus.OK.value(),
+                (List<UserDTO>) userDTOS,
+                new Date()
+        );
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+	// ================================================
+	//               	CREATE PERSON
+	// ================================================
+    @PostMapping()
+    public ResponseEntity<?> addPerson(@RequestBody UserDTO userDTO) {
+
+        Boolean isAdd = userService.addPerson(userDTO);
+
+        if (isAdd) {
+        	ResponseList<UserDTO> response = new ResponseList<>(
+                    "Thêm thành công !",
+                    HttpStatus.OK.value(),
+                    (List<UserDTO>) userDTO,
+                    new Date()
+            );
+            
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failed to add user", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+	// ================================================
+	//               	UPDATE PERSON
+	// ================================================
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updatePerson(@PathVariable int id, @RequestBody UserDTO userDTO) {
+        boolean isUpdated = userService.updatePerson(id, userDTO);
+
+        if (isUpdated) {
+        	ResponseList<UserDTO> response = new ResponseList<>(
+                    "Update thành công !",
+                    HttpStatus.OK.value(),
+                    (List<UserDTO>) userDTO,
+                    new Date()
+            );
+            
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+        	 ResponseList<String> response = new ResponseList<>(
+                     "Failed to update user: Person not found with id " + id,
+                     HttpStatus.NOT_FOUND.value(),
+                     null,
+                     new Date()
+             );
+             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
+
+	// ================================================
+	//               	DELETE PERSON
+	// ================================================
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePerson(@PathVariable int id) {
+        boolean isDelete = userService.deletePerson(id);
+        if (isDelete) {
+        	ResponseList<UserDTO> response = new ResponseList<>(
+                    "Delete thành công !",
+                    HttpStatus.OK.value(),
+                    (List<UserDTO>) userService.getbyID(id),
+                    new Date()
+            );
+            
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+        	 ResponseList<String> response = new ResponseList<>(
+                     "Failed to delete user: Person not found with id " + id,
+                     HttpStatus.NOT_FOUND.value(),
+                     null,
+                     new Date()
+             );
+             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
+	
+//	  private PersonDTO convertToDTO(userEntity userEntity) {
+//		    PersonDTO personDTO = new PersonDTO();
+//		    personDTO.setId(userEntity.getId());
+//		    personDTO.setUsername(userEntity.getUsername());
+//		    personDTO.setPassword(userEntity.getPassword());
+//		    personDTO.setFirstName(userEntity.getFirstName());
+//		    personDTO.setLastName(userEntity.getLastName());
+//		    personDTO.setIsDelete(userEntity.getIsDelete());
+//		    
+//		    RoleEntity role = userEntity.getRole();
+//		    
+//		    RoleDTO roleDTO = new RoleDTO();
+//		    roleDTO.setId(role.getId());
+//		    roleDTO.setName(role.getName());
+//		    
+//		    personDTO.setRole(roleDTO);
+//		    
+//		    return personDTO;
+//		}
+//
+//	  private userEntity convertToEntity(PersonDTO personDTO) {
+//		    userEntity userEntity = new userEntity();
+//		    userEntity.setId(personDTO.getId());
+//		    userEntity.setUsername(personDTO.getUsername());
+//		    userEntity.setPassword(personDTO.getPassword());
+//		    userEntity.setFirstName(personDTO.getFirstName());
+//		    userEntity.setLastName(personDTO.getLastName());
+//		    userEntity.setIsDelete(personDTO.getIsDelete());
+//		    
+//		    RoleDTO roleDTO = personDTO.getRole();
+//		    
+//		    RoleEntity roleEntity = new RoleEntity();
+//		    roleEntity.setId(roleDTO.getId());
+//		    roleEntity.setName(roleDTO.getName());
+//		    
+//		    userEntity.setRole(roleEntity);
+//		    
+//		    return userEntity;
+//		}
+
+}

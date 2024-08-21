@@ -1,12 +1,12 @@
 package vn.io.ductandev.course.dto;
 
-import java.util.Date;
-
 import lombok.Data;
+import java.sql.Date;
 
 @Data
 public class CourseDTO {
-	private int id;
+
+    private int id;
 
     private String title;
 
@@ -14,15 +14,19 @@ public class CourseDTO {
 
     private String lecturer;
 
-    private Date createDate;
-
     private String image;
 
     private String description;
 
-    private int isTopCourse = 0;
+    private Date createDate;
 
-    private int isDelete = 0;
+    private int isTopCourse;
+
+    private int isFree;
 
     private CategoryDTO category;
+
+    private int isPublic;
+
+    private int isDelete;
 }

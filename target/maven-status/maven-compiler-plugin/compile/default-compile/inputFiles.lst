@@ -21,9 +21,9 @@ C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\dto\
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\entity\CategoryEntity.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\entity\CommentEntity.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\entity\CourseEntity.java
-C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\entity\PersonCourseEntity.java
+C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\entity\userCourseEntity.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\entity\PersonCourseId.java
-C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\entity\PersonEntity.java
+C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\entity\userEntity.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\entity\RoleEntity.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\entity\VideoEntity.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\payload\ResponData.java

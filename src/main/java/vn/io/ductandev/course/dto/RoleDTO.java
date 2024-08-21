@@ -5,10 +5,11 @@ import lombok.Data;
 @Data
 public class RoleDTO {
 
-	 	private Integer id;
+	private int id;
 
-	    private String name;
+	private String name;
 
-//	    private List<PersonDTO> persons;
-	
+	private String description;
+
+	private int isDelete;
 }

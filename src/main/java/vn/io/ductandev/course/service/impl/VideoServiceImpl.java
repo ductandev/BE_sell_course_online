@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import vn.io.ductandev.course.entity.CourseEntity;
-import vn.io.ductandev.course.entity.VideoEntity;
+import vn.io.ductandev.course.entity.LessonEntity;
 import vn.io.ductandev.course.dto.CourseDTO;
-import vn.io.ductandev.course.dto.VideoDTO;
+import vn.io.ductandev.course.dto.LessonDTO;
 import vn.io.ductandev.course.repository.CourseRepository;
 import vn.io.ductandev.course.repository.VideoRepository;
 import vn.io.ductandev.course.service.VideoService;
@@ -24,16 +24,16 @@ public class VideoServiceImpl implements VideoService{
 	private CourseRepository courseRepository;
 
 	@Override
-	public List<VideoDTO> getListVideo() {
-		 List<VideoEntity> videoEntities = videoRepository.findAll();
-	        List<VideoDTO> videoDTOs = new ArrayList<>();
+	public List<LessonDTO> getListVideo() {
+		 List<LessonEntity> videoEntities = videoRepository.findAll();
+	        List<LessonDTO> lessonDTOS = new ArrayList<>();
 
-	        for (VideoEntity videoEntity : videoEntities) {
-	            VideoDTO videoDTO = new VideoDTO();
-	            videoDTO.setId(videoEntity.getId());
-	            videoDTO.setName(videoEntity.getName());
-	            videoDTO.setVideoUrl(videoEntity.getVideoUrl());
-	            videoDTO.setIsDelete(videoEntity.getIsDelete());
+	        for (LessonEntity videoEntity : videoEntities) {
+	            LessonDTO lessonDTO = new LessonDTO();
+	            lessonDTO.setId(videoEntity.getId());
+	            lessonDTO.setName(videoEntity.getName());
+	            lessonDTO.setVideoUrl(videoEntity.getVideoUrl());
+	            lessonDTO.setIsDelete(videoEntity.getIsDelete());
 
 	            // Map CourseEntity to CourseDTO
 	            CourseDTO courseDTO = new CourseDTO();
@@ -48,24 +48,24 @@ public class VideoServiceImpl implements VideoService{
 	            courseDTO.setIsDelete(videoEntity.getCourse().getIsDelete());
 //	            courseDTO.set(videoEntity.getCourse().getDescription());
 	            
-	            videoDTO.setCourse(courseDTO);
+	            lessonDTO.setCourse(courseDTO);
 
-	            videoDTOs.add(videoDTO);
+	            lessonDTOS.add(lessonDTO);
 	        }
 
-	        return videoDTOs;
+	        return lessonDTOS;
 	}
 
 	@Override
-	public boolean addVideo(VideoDTO videoDTO) {
+	public boolean addVideo(LessonDTO lessonDTO) {
 		boolean isSuccess = false;
         try {
-            VideoEntity video = new VideoEntity();
-            video.setName(videoDTO.getName());
-            video.setVideoUrl(videoDTO.getVideoUrl());
-            video.setIsDelete(videoDTO.getIsDelete());
+            LessonEntity video = new LessonEntity();
+            video.setName(lessonDTO.getName());
+            video.setVideoUrl(lessonDTO.getVideoUrl());
+            video.setIsDelete(lessonDTO.getIsDelete());
 
-            CourseEntity course = courseRepository.getById(videoDTO.getCourse().getId());
+            CourseEntity course = courseRepository.getById(lessonDTO.getCourse().getId());
             video.setCourse(course);
 
             videoRepository.save(video);

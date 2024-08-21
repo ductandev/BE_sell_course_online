@@ -9,16 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import vn.io.ductandev.course.dto.CourseDTO;
-import vn.io.ductandev.course.dto.ICourseTopSale;
-import vn.io.ductandev.course.dto.RevenueRequestDTO;
-import vn.io.ductandev.course.dto.RevenueResponseDTO;
-import vn.io.ductandev.course.response.ResponseDTO;
+import vn.io.ductandev.course.dto.*;
+import vn.io.ductandev.course.response.ResponseList;
 import vn.io.ductandev.course.service.CourseService;
 
 @Tag(name = "Course")
 @RestController
-@RequestMapping("/api/v1/course")
+@RequestMapping("/api/course")
 @CrossOrigin
 public class CourseController {
 	
@@ -28,7 +25,7 @@ public class CourseController {
 	 @GetMapping
 	 public ResponseEntity<?> getAllCourses() {
 	     List<CourseDTO> courses = courseService.getListCourse();
-	     ResponseDTO<CourseDTO> response = new ResponseDTO<>(
+	     ResponseList<CourseDTO> response = new ResponseList<>(
 	                "Thành công !",
 	                HttpStatus.OK.value(),
 	                (List<CourseDTO>) courses,
@@ -41,10 +38,10 @@ public class CourseController {
 	   public ResponseEntity<?> addCourse(@RequestBody CourseDTO courseDTO) {
 	        boolean isAdd = courseService.addCourse(courseDTO);
 	        if (isAdd) {
-	        	ResponseDTO<CourseDTO> response = new ResponseDTO<>(
+	        	ResponseList<CourseDTO> response = new ResponseList<>(
 	                    "Thành công !",
 	                    HttpStatus.OK.value(),
-	                    (CourseDTO) courseDTO,
+						(List<CourseDTO>) courseDTO,
 	                    new Date()
 	            );
 	            

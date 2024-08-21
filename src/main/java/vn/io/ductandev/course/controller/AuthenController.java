@@ -8,17 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vn.io.ductandev.course.dto.PersonDTO;
-import vn.io.ductandev.course.entity.PersonEntity;
 import vn.io.ductandev.course.request.AuthenRequest;
-import vn.io.ductandev.course.response.ResponseDTO;
 import vn.io.ductandev.course.service.AuthenService;
-
-import java.util.Date;
 
 @Tag(name = "Auth")
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 public class AuthenController {
 
     @Autowired
@@ -28,13 +23,13 @@ public class AuthenController {
     public ResponseEntity<?> authen(@RequestBody AuthenRequest authenRequest){
         boolean isSuccess = authenService.checkLogin(authenRequest);
 
-        ResponseDTO<PersonDTO> response = new ResponseDTO<>(
-                "Login Success !",
-                HttpStatus.OK.value(),
-                isSuccess,
-                new Date()
-        );
+//        ResponseDTO<UserDTO> response = new ResponseDTO<>(
+//                "Login Success !",
+//                HttpStatus.OK.value(),
+//                isSuccess,
+//                new Date()
+//        );
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

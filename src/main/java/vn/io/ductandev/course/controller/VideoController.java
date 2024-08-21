@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import vn.io.ductandev.course.dto.CourseDTO;
-import vn.io.ductandev.course.dto.VideoDTO;
-import vn.io.ductandev.course.response.ResponseDTO;
+import vn.io.ductandev.course.dto.LessonDTO;
+import vn.io.ductandev.course.response.ResponseList;
 import vn.io.ductandev.course.service.VideoService;
 
 @Tag(name = "Video")
 @RestController
-@RequestMapping("/api/v1/videos")
+@RequestMapping("/api/video")
 public class VideoController {
 
 	@Autowired
@@ -28,24 +27,24 @@ public class VideoController {
 
     @GetMapping
     public ResponseEntity<?> getAllVideos() {
-        List<VideoDTO> videos = videoService.getListVideo();
-        ResponseDTO<VideoDTO> response = new ResponseDTO<>(
+        List<LessonDTO> videos = videoService.getListVideo();
+        ResponseList<LessonDTO> response = new ResponseList<>(
                 "Thành công !",
                 HttpStatus.OK.value(),
-                (List<VideoDTO>) videos,
+                (List<LessonDTO>) videos,
                 new Date()
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> addVideo(@RequestBody VideoDTO videoDTO) {
-        boolean isAdd = videoService.addVideo(videoDTO);
+    public ResponseEntity<?> addVideo(@RequestBody LessonDTO lessonDTO) {
+        boolean isAdd = videoService.addVideo(lessonDTO);
         if (isAdd) {
-        	ResponseDTO<VideoDTO> response = new ResponseDTO<>(
+        	ResponseList<LessonDTO> response = new ResponseList<>(
                     "Thành công !",
                     HttpStatus.OK.value(),
-                    (VideoDTO) videoDTO,
+                    (List<LessonDTO>) lessonDTO,
                     new Date()
             );
             

@@ -2,13 +2,13 @@ package vn.io.ductandev.course.service;
 
 import java.util.List;
 
-import vn.io.ductandev.course.dto.VideoDTO;
+import vn.io.ductandev.course.dto.LessonDTO;
 
 public interface VideoService {
 
-	List<VideoDTO> getListVideo();
+	List<LessonDTO> getListVideo();
 	
-	boolean addVideo(VideoDTO videoDTO);
+	boolean addVideo(LessonDTO lessonDTO);
 	
 	
 }
