@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-		public List<UserDTO> getListUser() {
+	public List<UserDTO> getListUser() {
 
 		List<UserEntity> listEntities = userRepository.findAll();
 		
@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
 //			userDTO.setId(p.getId());
 			userDTO.setUsername(p.getUsername());
 			userDTO.setPassword(p.getPassword());
+			
 			
 			RoleEntity role = roleRepository.getById(p.getRole().getId());
 			
@@ -70,10 +71,18 @@ public class UserServiceImpl implements UserService {
 		boolean isSuccess = false;
 		
 		try {
-//			RoleEntity r = roleRepository.getById(2);
+			RoleEntity r = roleRepository.getById(2);
 
+			UserEntity u = new UserEntity();
+			
+			u.setUsername(userRequest.username());
+			u.setPassword(userRequest.password());
+			u.setEmail(userRequest.email());
+			u.setAvatar(userRequest.avatar());
+			
+			u.setRole(r);
 
-//			userRequest.setRole_id(2);
+			userRepository.save(u);
 
 			isSuccess = true;
 			return isSuccess;
