@@ -7,13 +7,13 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import vn.io.ductandev.course.dto.CategoryDTO;
 import vn.io.ductandev.course.dto.CourseDTO;
 import vn.io.ductandev.course.dto.ICourseTopSale;
+import vn.io.ductandev.course.dto.LessonDTO;
 import vn.io.ductandev.course.dto.RevenueRequestDTO;
 import vn.io.ductandev.course.dto.RevenueResponseDTO;
-import vn.io.ductandev.course.entity.CategoryEntity;
 import vn.io.ductandev.course.entity.CourseEntity;
+import vn.io.ductandev.course.entity.LessonEntity;
 import vn.io.ductandev.course.repository.CategoryRepository;
 import vn.io.ductandev.course.repository.CourseRepository;
 import vn.io.ductandev.course.service.CourseService;
@@ -26,10 +26,12 @@ public class CourseServiceImpl implements CourseService {
 	
 	@Autowired
 	CategoryRepository categoryRepository;
+	
+	
 
 	@Override
 	public List<CourseDTO> getListCourse() {
-		 List<CourseEntity> courseEntities = courseRepository.findAll();
+		 	List<CourseEntity> courseEntities = courseRepository.findAll();
 		    List<CourseDTO> courseDTOs = new ArrayList<>();
 
 		    for (CourseEntity courseEntity : courseEntities) {
@@ -41,14 +43,33 @@ public class CourseServiceImpl implements CourseService {
 		        courseDTO.setCreateDate(courseEntity.getCreateDate());
 		        courseDTO.setImage(courseEntity.getImage());
 		        courseDTO.setDescription(courseEntity.getDescription());
-
-		        // If you need to map the category
-		        CategoryDTO categoryDTO = new CategoryDTO();
-		        categoryDTO.setId(courseEntity.getCategory().getId());
-		        categoryDTO.setName(courseEntity.getCategory().getName());
-		        courseDTO.setCategory(categoryDTO);
-
+		        courseDTO.setIsTopCourse(courseEntity.getIsTopCourse());
+		        courseDTO.setIsFree(courseEntity.getIsFree());
+		        courseDTO.setIsPublic(courseEntity.getIsPublic());
+		        courseDTO.setIsDelete(courseEntity.getIsDelete());
+		        
 		        courseDTOs.add(courseDTO);
+		        
+		        
+		        List<LessonDTO> listDtos = new ArrayList<>();
+		        
+		        for(LessonEntity lessonEntity : courseEntity.getLessons()) {
+		        	
+		        	LessonDTO lessonDTO = new LessonDTO();
+		        	
+		        	lessonDTO.setId(lessonEntity.getId());
+		        	lessonDTO.setIsDelete(lessonEntity.getIsDelete());
+		        	lessonDTO.setIsSuccess(lessonEntity.getIsSuccess());
+		        	lessonDTO.setName(lessonEntity.getName());
+		        	lessonDTO.setVideoUrl(lessonEntity.getVideoUrl());
+		        	
+		        	listDtos.add(lessonDTO);
+		        }
+		        	
+		        
+		        courseDTO.setLessonDTOs(listDtos);
+		        
+		        
 		    }
 
 		    return courseDTOs;
@@ -66,15 +87,10 @@ public class CourseServiceImpl implements CourseService {
 		        course.setImage(courseDTO.getImage());
 		        course.setDescription(courseDTO.getDescription());
 
-		        CategoryEntity category = categoryRepository.getById(courseDTO.getCategory().getId());
 		        
-		        if(category == null) {
-		        	isSuccess = false;
-		        }else {
-		        	course.setCategory(category);
-			        courseRepository.save(course);
-			        isSuccess = true;
-		        }
+		    
+			    courseRepository.save(course);
+			  
 		        
 			return isSuccess;
 			} catch (Exception e) {
@@ -84,9 +100,47 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public boolean getCourseById(int id) {
-		// TODO Auto-generated method stub
-		return false;
+	public CourseDTO getCourseById(int id) {
+		
+		try {
+			CourseEntity courseEntity = courseRepository.getById(id);
+			
+			CourseDTO courseDTO = new CourseDTO();
+			
+			 	courseDTO.setId(courseEntity.getId());
+		        courseDTO.setTitle(courseEntity.getTitle());
+		        courseDTO.setPrice(courseEntity.getPrice());
+		        courseDTO.setLecturer(courseEntity.getLecturer());
+		        courseDTO.setCreateDate(courseEntity.getCreateDate());
+		        courseDTO.setImage(courseEntity.getImage());
+		        courseDTO.setDescription(courseEntity.getDescription());
+		        courseDTO.setIsTopCourse(courseEntity.getIsTopCourse());
+		        courseDTO.setIsFree(courseEntity.getIsFree());
+		        courseDTO.setIsPublic(courseEntity.getIsPublic());
+		        courseDTO.setIsDelete(courseEntity.getIsDelete());
+		        
+		        List<LessonDTO> listDtos = new ArrayList<>();
+		        
+		        for(LessonEntity lessonEntity : courseEntity.getLessons()) {
+		        	
+		        	LessonDTO lessonDTO = new LessonDTO();
+		        	
+		        	lessonDTO.setId(lessonEntity.getId());
+		        	lessonDTO.setIsDelete(lessonEntity.getIsDelete());
+		        	lessonDTO.setIsSuccess(lessonEntity.getIsSuccess());
+		        	lessonDTO.setName(lessonEntity.getName());
+		        	lessonDTO.setVideoUrl(lessonEntity.getVideoUrl());
+		        	
+		        	listDtos.add(lessonDTO);
+		        }
+		        	
+		        
+		        courseDTO.setLessonDTOs(listDtos);
+			
+			return courseDTO;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override

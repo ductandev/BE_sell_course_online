@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import vn.io.ductandev.course.dto.*;
 import vn.io.ductandev.course.response.ResponseList;
+import vn.io.ductandev.course.response.ResponseObject;
 import vn.io.ductandev.course.service.CourseService;
 
 @Tag(name = "Course")
@@ -50,6 +51,31 @@ public class CourseController {
 	            return new ResponseEntity<>("Failed to add course", HttpStatus.BAD_REQUEST);
 	        }
 	    }
+	 
+	 @GetMapping("/{id}")
+	 public ResponseEntity<?> getByIDCourses(@PathVariable int id) {
+	     CourseDTO course = courseService.getCourseById(id);
+	     
+	     if(course != null) {
+	    	 ResponseObject<CourseDTO> response = new ResponseObject<>(
+		                "Thành công !",
+		                HttpStatus.OK.value(),
+		                course,
+		                new Date()
+		        );
+		        return new ResponseEntity<>(response, HttpStatus.OK);
+	     }else {
+	    	 ResponseList<String> response = new ResponseList<>(
+                     "Failed to get course: Course not found with id " + id,
+                     HttpStatus.NOT_FOUND.value(),
+                     null,
+                     new Date()
+             );
+             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	     }
+	     
+	    
+	 }
 	 
 	 @GetMapping("/top3")
 	    public ResponseEntity<List<ICourseTopSale>> getTop3BestSellingCourses() {

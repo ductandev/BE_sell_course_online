@@ -42,12 +42,12 @@ public class UserCourseServiceImpl implements UserCourseService {
 			
 			UserCourseEntity userCourseEntity = new UserCourseEntity();
 			
-			UserEntity userEntity = userRepository.findById(userCourseDTO.getUser().getId()).orElse(null);
-			CourseEntity courseEntity = courseRepository.findById(userCourseDTO.getCourse().getId()).orElse(null);
+			UserEntity userEntity = userRepository.getById(userCourseDTO.getUser_id());
+			CourseEntity courseEntity = courseRepository.getById(userCourseDTO.getCourse_id());
 
 			userCourseEntity.setUser(userEntity);
 			userCourseEntity.setCourse(courseEntity);
-			userCourseEntity.setDateBuy((java.sql.Date) new Date());
+			userCourseEntity.setDateBuy(new Date());
 			
 			userCourseRepository.save(userCourseEntity);
 			
@@ -56,10 +56,10 @@ public class UserCourseServiceImpl implements UserCourseService {
 			return isSuccess;
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			return isSuccess;
 		}
 		
-		return isSuccess;
+		
 	}
 
 

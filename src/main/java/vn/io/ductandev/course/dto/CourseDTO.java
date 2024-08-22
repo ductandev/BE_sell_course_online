@@ -1,7 +1,8 @@
 package vn.io.ductandev.course.dto;
 
 import lombok.Data;
-import java.sql.Date;
+import java.util.Date;
+import java.util.List;
 
 @Data
 public class CourseDTO {
@@ -24,7 +25,7 @@ public class CourseDTO {
 
     private int isFree;
 
-    private CategoryDTO category;
+    private List<LessonDTO> lessonDTOs;;
 
     private int isPublic;
 
