@@ -3,14 +3,24 @@ package vn.io.ductandev.course.controller;
 import java.util.Date;
 import java.util.List;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import vn.io.ductandev.course.dto.CategoryDTO;
+import vn.io.ductandev.course.entity.CategoryEntity;
+import vn.io.ductandev.course.request.CategoryRequest;
 import vn.io.ductandev.course.response.ResponseList;
+import vn.io.ductandev.course.response.ResponseObject;
 import vn.io.ductandev.course.service.CategoryService;
 
 @Tag(name = "Category")
@@ -35,39 +45,36 @@ public class CategoryController {
     }
 
 	@PostMapping
-	public ResponseEntity<?> addCategory(@RequestBody CategoryDTO categoryDTO){
-		 Boolean isAdd = categoryService.addCategory(categoryDTO);
+	public ResponseEntity<?> addCategory(@RequestBody CategoryRequest categoryRequest){
+			categoryService.addCategory(categoryRequest);
 
-	        if (isAdd) {
-	        	ResponseList<CategoryDTO> response = new ResponseList<>(
+	       
+			ResponseObject<CategoryRequest> response = new ResponseObject<>(
 	                    "Thành công !",
 	                    HttpStatus.OK.value(),
-						(List<CategoryDTO>) categoryDTO,
+	                    categoryRequest,
 	                    new Date()
 	            );
 
 	            return new ResponseEntity<>(response, HttpStatus.OK);
-	        } else {
-	            return new ResponseEntity<>("Failed to add category", HttpStatus.BAD_REQUEST);
-	        }
+	        } 
 
-	}
 	
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateCategory(@PathVariable int id, @RequestBody CategoryDTO categoryUpdateDTO) {
-        Boolean isUpdate = categoryService.updateCategory(id, categoryUpdateDTO.getName());
-        if (isUpdate) {
-        	ResponseList<CategoryDTO> response = new ResponseList<>(
+	public ResponseEntity<?> updateCategory(@PathVariable int id, @RequestBody CategoryRequest categoryRequest) {
+        CategoryRequest isUpdate = categoryService.updateCategory(id, categoryRequest);
+        if (isUpdate != null) {
+        	ResponseObject<CategoryRequest> response = new ResponseObject<>(
                     "Thành công !",
                     HttpStatus.OK.value(),
-                    (List<CategoryDTO>) categoryUpdateDTO,
+                    categoryRequest,
                     new Date()
             );
             
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-        	 ResponseList<String> response = new ResponseList<>(
+        	ResponseObject<CategoryRequest> response = new ResponseObject<>(
                      "Failed to update category: Category not found with id " + id,
                      HttpStatus.NOT_FOUND.value(),
                      null,
@@ -80,13 +87,13 @@ public class CategoryController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteCategory(@PathVariable int id) {
-	    boolean isDelete = categoryService.deleteCategory(id);
+		CategoryDTO categoryDTO = categoryService.deleteCategory(id);
 	    
-	    if (isDelete) {
-        	ResponseList<CategoryDTO> response = new ResponseList<>(
+	    if (categoryDTO != null) {
+        	ResponseObject<CategoryDTO> response = new ResponseObject<>(
                     "Thành công !",
                     HttpStatus.OK.value(),
-                    (List<CategoryDTO>) categoryService.getByID(id),
+                    categoryDTO,
                     new Date()
             );
             
