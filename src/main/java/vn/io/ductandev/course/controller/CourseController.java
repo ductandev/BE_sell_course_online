@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import vn.io.ductandev.course.dto.*;
+import vn.io.ductandev.course.entity.CourseEntity;
+import vn.io.ductandev.course.request.CourseRequest;
 import vn.io.ductandev.course.response.ResponseList;
 import vn.io.ductandev.course.response.ResponseObject;
 import vn.io.ductandev.course.service.CourseService;
@@ -36,13 +38,13 @@ public class CourseController {
 	 }
 	
 	 @PostMapping
-	   public ResponseEntity<?> addCourse(@RequestBody CourseDTO courseDTO) {
-	        boolean isAdd = courseService.addCourse(courseDTO);
-	        if (isAdd) {
-	        	ResponseList<CourseDTO> response = new ResponseList<>(
+	   public ResponseEntity<?> addCourse(@RequestBody CourseRequest courseRequest) {
+	        CourseEntity course = courseService.addCourse(courseRequest);
+	        if (course != null) {
+	        	ResponseObject<CourseRequest> response = new ResponseObject<>(
 	                    "Thành công !",
 	                    HttpStatus.OK.value(),
-						(List<CourseDTO>) courseDTO,
+						courseRequest,
 	                    new Date()
 	            );
 	            

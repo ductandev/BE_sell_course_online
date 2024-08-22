@@ -6,12 +6,14 @@ import vn.io.ductandev.course.dto.CourseDTO;
 import vn.io.ductandev.course.dto.ICourseTopSale;
 import vn.io.ductandev.course.dto.RevenueRequestDTO;
 import vn.io.ductandev.course.dto.RevenueResponseDTO;
+import vn.io.ductandev.course.entity.CourseEntity;
+import vn.io.ductandev.course.request.CourseRequest;
 
 public interface CourseService {
 
 	List<CourseDTO> getListCourse();
 	
-	boolean addCourse(CourseDTO courseDTO);
+	CourseEntity addCourse(CourseRequest courseRequest);
 	
 	CourseDTO getCourseById(int id);
 	
