@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import vn.io.ductandev.course.entity.CategoryEntity;
 import vn.io.ductandev.course.dto.CategoryDTO;
 import vn.io.ductandev.course.repository.CategoryRepository;
+import vn.io.ductandev.course.request.CategoryRequest;
 import vn.io.ductandev.course.service.CategoryService;
 
 @Service
@@ -20,11 +21,11 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public List<CategoryDTO> getListCategory() {
 		
-		List<CategoryEntity> liEntities = categoryRepository.findAll();
+		List<CategoryEntity> listEntities = categoryRepository.findAll();
 		
 		List<CategoryDTO> listDTO = new ArrayList<>();
 		
-		for(CategoryEntity categoryEntity : liEntities) {
+		for(CategoryEntity categoryEntity : listEntities) {
 			
 			CategoryDTO categoryDTO = new CategoryDTO();
 			
@@ -38,15 +39,15 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public boolean addCategory(CategoryDTO categoryDTO) {
+	public boolean addCategory(CategoryRequest categoryRequest) {
 		boolean isSuccess = false;
 		
 		try {
 			
 			CategoryEntity categoryEntity = new CategoryEntity();
 			
-			categoryEntity.setName(categoryDTO.getName());
-			categoryEntity.setId(categoryDTO.getId());
+			categoryEntity.setName(categoryRequest.name());
+//			categoryEntity.setId(categoryDTO.getId());
 			
 			categoryRepository.save(categoryEntity);
 			
@@ -60,42 +61,52 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public boolean updateCategory(int id, String name) {
-		boolean isSuccess = false;
+	public CategoryRequest updateCategory(int id, CategoryRequest categoryRequest) {
 		
 		CategoryEntity categoryEntity = categoryRepository.getById(id);
 		
 		if(categoryEntity != null) {
 			
-			categoryEntity.setName(name);
-			
-			categoryRepository.save(categoryEntity);
-			
-			isSuccess = true;
+			try {
+				categoryEntity.setName(categoryRequest.name());
+				categoryRepository.save(categoryEntity);
+				return categoryRequest;
+			} catch (Exception e) {
+				System.out.println("Lỗi Update !");
+			}
 		}
-		
-		
-		return isSuccess;
+			return null;
 	}
 
 	@Override
-	public boolean deleteCategory(int id) {
+	public CategoryDTO deleteCategory(int id) {
 		
-		boolean isSuccess = false;
-		
-		CategoryEntity categoryEntity = categoryRepository.getById(id);
-		
-		if(categoryEntity != null) {	
+		try {
 			
+			CategoryEntity categoryEntity = categoryRepository.getById(id);
 			categoryEntity.setIsDelete(1);
+			CategoryDTO categoryDTO = new CategoryDTO();
 			
-			categoryRepository.save(categoryEntity);
+			if(categoryEntity != null) {
+				
+				categoryEntity.setIsDelete(1);
+				
+				
+				
+				categoryDTO.setId(categoryEntity.getId());
+				categoryDTO.setName(categoryEntity.getName());
+				categoryEntity.setIsDelete(categoryEntity.getIsDelete());
+				
+				categoryRepository.save(categoryEntity);
+				
+			}
 			
-			isSuccess = true;
-			return isSuccess;
+			return categoryDTO;
+			
+		} catch (Exception e) {
+			return null;
 		}
 		
-		return isSuccess;
 	}
 
 	@Override
