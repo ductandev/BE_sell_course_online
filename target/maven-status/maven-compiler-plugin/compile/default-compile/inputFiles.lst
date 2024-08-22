@@ -13,6 +13,7 @@ C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\dto\
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\dto\CommentDTO.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\dto\CourseDTO.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\dto\ICourseTopSale.java
+C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\dto\LessonByIdDTO.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\dto\LessonDTO.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\dto\RevenueRequestDTO.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\dto\RevenueResponseDTO.java
@@ -35,6 +36,8 @@ C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\repo
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\repository\UserCourseRepository.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\repository\UserRepository.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\request\AuthenRequest.java
+C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\request\CategoryRequest.java
+C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\request\LessonRequest.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\request\PersonRequest.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\request\RoleRequest.java
 C:\Users\tan\Desktop\Java\9_course_asm\src\main\java\vn\io\ductandev\course\request\UserRequest.java

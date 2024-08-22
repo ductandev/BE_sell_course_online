@@ -10,6 +10,7 @@ vn\io\ductandev\course\request\AuthenRequest.class
 vn\io\ductandev\course\request\PersonRequest.class
 vn\io\ductandev\course\response\ResponseObject.class
 vn\io\ductandev\course\service\impl\LessonServiceImpl.class
+vn\io\ductandev\course\request\LessonRequest.class
 vn\io\ductandev\course\repository\CategoryRepository.class
 vn\io\ductandev\course\controller\UserCourseController.class
 vn\io\ductandev\course\repository\CourseRepository.class
@@ -44,12 +45,14 @@ vn\io\ductandev\course\response\ResponseList.class
 vn\io\ductandev\course\security\SecurityConfig.class
 vn\io\ductandev\course\entity\UserEntity.class
 vn\io\ductandev\course\request\UserRequest.class
+vn\io\ductandev\course\request\CategoryRequest.class
 vn\io\ductandev\course\service\impl\UserCourseServiceImpl.class
 vn\io\ductandev\course\service\CourseService.class
 vn\io\ductandev\course\dto\CourseDTO.class
 vn\io\ductandev\course\controller\CategoryController.class
 vn\io\ductandev\course\config\Config.class
 vn\io\ductandev\course\controller\AuthenController.class
+vn\io\ductandev\course\dto\LessonByIdDTO.class
 vn\io\ductandev\course\repository\UserRepository.class
 vn\io\ductandev\course\repository\RoleRepository.class
 vn\io\ductandev\course\service\AuthenService.class
