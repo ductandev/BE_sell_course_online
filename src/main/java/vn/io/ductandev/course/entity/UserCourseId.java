@@ -3,15 +3,18 @@ package vn.io.ductandev.course.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
+import lombok.Data;
+
+
 public class UserCourseId implements Serializable {
-	private Long user;
-	private Long course;
+	private int user;
+	private int course;
 
 	// Default constructor
 	public UserCourseId() {}
 
 	// Parameterized constructor
-	public UserCourseId(Long user, Long course) {
+	public UserCourseId(int user, int course) {
 		this.user = user;
 		this.course = course;
 	}
@@ -29,20 +32,5 @@ public class UserCourseId implements Serializable {
 		return Objects.hash(user, course);
 	}
 
-	// Getters and setters
-	public Long getUser() {
-		return user;
-	}
-
-	public void setUser(Long user) {
-		this.user = user;
-	}
-
-	public Long getCourse() {
-		return course;
-	}
-
-	public void setCourse(Long course) {
-		this.course = course;
-	}
+	
 }

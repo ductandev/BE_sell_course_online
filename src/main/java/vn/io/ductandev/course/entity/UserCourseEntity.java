@@ -1,6 +1,15 @@
 package vn.io.ductandev.course.entity;
 
-import jakarta.persistence.*;
+import java.util.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
@@ -20,7 +29,7 @@ public class UserCourseEntity {
     private CourseEntity course;
 
     @Column(name = "date_buy")
-    private java.sql.Date dateBuy;
+    private Date dateBuy;
 
     @Column(name = "is_delete", nullable = false, columnDefinition = "INT DEFAULT 0")
     private int isDelete = 0;

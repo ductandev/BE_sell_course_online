@@ -6,11 +6,10 @@ import java.sql.Date;
 @Data
 public class UserCourseDTO {
 
-	private UserDTO user;
+	private int user_id;
 
-	private CourseDTO course;
+	private int course_id;
 
-	private Date dateBuy;
+//	private Date dateBuy;
 
-	private int isDelete;
 }

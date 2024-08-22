@@ -13,7 +13,7 @@ public interface CourseService {
 	
 	boolean addCourse(CourseDTO courseDTO);
 	
-	boolean getCourseById(int id);
+	CourseDTO getCourseById(int id);
 	
 	boolean updateCourse(int id, CourseDTO courseDTO);
 	
