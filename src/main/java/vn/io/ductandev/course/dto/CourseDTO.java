@@ -27,6 +27,8 @@ public class CourseDTO {
 
     private List<LessonDTO> lessonDTOs;;
 
+    private CategoryDTO categoryDTO;
+
     private int isPublic;
 
     private int isDelete;

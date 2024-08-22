@@ -8,11 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import vn.io.ductandev.course.dto.CourseDTO;
-import vn.io.ductandev.course.dto.ICourseTopSale;
-import vn.io.ductandev.course.dto.LessonDTO;
-import vn.io.ductandev.course.dto.RevenueRequestDTO;
-import vn.io.ductandev.course.dto.RevenueResponseDTO;
+import vn.io.ductandev.course.dto.*;
 import vn.io.ductandev.course.entity.CategoryEntity;
 import vn.io.ductandev.course.entity.CourseEntity;
 import vn.io.ductandev.course.entity.LessonEntity;
@@ -121,10 +117,16 @@ public class CourseServiceImpl implements CourseService {
             courseDTO.setIsPublic(courseEntity.getIsPublic());
             courseDTO.setIsDelete(courseEntity.getIsDelete());
 
+            CategoryDTO categoryDTO = new CategoryDTO();
+            categoryDTO.setId(courseEntity.getCategory().getId());
+            categoryDTO.setName(courseEntity.getCategory().getName());
+            categoryDTO.setIsDelete(courseEntity.getCategory().getIsDelete());
+
+            courseDTO.setCategoryDTO(categoryDTO);
+
             List<LessonDTO> listDtos = new ArrayList<>();
 
             for (LessonEntity lessonEntity : courseEntity.getLessons()) {
-
                 LessonDTO lessonDTO = new LessonDTO();
 
                 lessonDTO.setId(lessonEntity.getId());
@@ -135,7 +137,6 @@ public class CourseServiceImpl implements CourseService {
 
                 listDtos.add(lessonDTO);
             }
-
 
             courseDTO.setLessonDTOs(listDtos);
 
