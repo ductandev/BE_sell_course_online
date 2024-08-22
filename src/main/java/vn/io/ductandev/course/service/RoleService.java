@@ -4,7 +4,6 @@ import vn.io.ductandev.course.dto.RoleDTO;
 import vn.io.ductandev.course.entity.RoleEntity;
 import vn.io.ductandev.course.request.RoleRequest;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface RoleService {

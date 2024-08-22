@@ -1,6 +1,5 @@
 package vn.io.ductandev.course.controller;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +18,7 @@ import vn.io.ductandev.course.response.ResponseObject;
 import vn.io.ductandev.course.service.RoleService;
 
 @Tag(name = "Role")
-@RestController()
+@RestController
 @RequestMapping("/api/role")
 public class RoleController {
 
