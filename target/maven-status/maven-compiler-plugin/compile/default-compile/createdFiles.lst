@@ -58,4 +58,5 @@ vn\io\ductandev\course\repository\RoleRepository.class
 vn\io\ductandev\course\service\AuthenService.class
 vn\io\ductandev\course\config\SwaggerConfig.class
 vn\io\ductandev\course\dto\UserDTO.class
+vn\io\ductandev\course\request\CourseRequest.class
 vn\io\ductandev\course\dto\RevenueResponseDTO.class
