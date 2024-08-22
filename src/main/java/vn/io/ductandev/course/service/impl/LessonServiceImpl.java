@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import vn.io.ductandev.course.entity.CourseEntity;
 import vn.io.ductandev.course.entity.LessonEntity;
 import vn.io.ductandev.course.dto.CourseDTO;
+
 import vn.io.ductandev.course.dto.LessonByIdDTO;
 import vn.io.ductandev.course.dto.LessonDTO;
 import vn.io.ductandev.course.repository.CourseRepository;
@@ -60,6 +61,7 @@ public class LessonServiceImpl implements LessonService{
 	}
 
 	@Override
+
 	public boolean addLesson(LessonRequest lessonRequest) {
 		boolean isSuccess = false;
         try {
@@ -68,6 +70,7 @@ public class LessonServiceImpl implements LessonService{
             video.setVideoUrl(lessonRequest.videoUrl());
 
             CourseEntity course = courseRepository.getById(lessonRequest.courseID());
+
             video.setCourse(course);
 
             lessonRepository.save(video);

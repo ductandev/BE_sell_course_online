@@ -1,5 +1,6 @@
 package vn.io.ductandev.course.service.impl;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
