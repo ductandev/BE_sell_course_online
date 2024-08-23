@@ -21,6 +21,7 @@ vn\io\ductandev\course\payload\ResponData.class
 vn\io\ductandev\course\request\UserRequestPatch.class
 vn\io\ductandev\course\dto\LessonDTO.class
 vn\io\ductandev\course\dto\RevenueRequestDTO.class
+vn\io\ductandev\course\dto\UserByIdDTO.class
 vn\io\ductandev\course\entity\UserCourseEntity.class
 vn\io\ductandev\course\service\impl\CourseServiceImpl.class
 vn\io\ductandev\course\dto\CommentDTO.class

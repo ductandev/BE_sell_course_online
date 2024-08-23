@@ -48,7 +48,7 @@ public class CourseController {
     public ResponseEntity<?> getByIDCourses(@PathVariable int id) {
         CourseDTO course = courseService.getCourseById(id);
 
-        if (course != null) {
+        if(course != null) {
             ResponseObject<CourseDTO> response = new ResponseObject<>(
                     "Thành công !",
                     HttpStatus.OK.value(),
@@ -56,7 +56,7 @@ public class CourseController {
                     new Date()
             );
             return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
+        }else {
             ResponseList<String> response = new ResponseList<>(
                     "Failed to get course: Course not found with id " + id,
                     HttpStatus.NOT_FOUND.value(),
@@ -91,19 +91,82 @@ public class CourseController {
     // ================================================
     //            GET TOP 3 COURSE BEST SELLING
     // ================================================
-    @GetMapping("/top3")
-    public ResponseEntity<List<ICourseTopSale>> getTop3BestSellingCourses() {
-        List<ICourseTopSale> topCourses = courseService.getTop5BestSellingBooks();
-        return ResponseEntity.ok(topCourses);
+    @GetMapping("/top5")
+    public ResponseEntity<?> getTop3BestSellingCourses() {
+        try {
+            List<ICourseTopSale> listResponseDTOs = courseService.getTop5BestSellingBooks();
+            if(!listResponseDTOs.isEmpty()) {
+                ResponseList<ICourseTopSale> response = new ResponseList<>(
+                        "Thành công !",
+                        HttpStatus.OK.value(),
+                        (List<ICourseTopSale>) listResponseDTOs,
+                        new Date()
+                );
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }else {
+                ResponseObject<String> response = new ResponseObject<>(
+                        "Failed to get calculateRevenue !",
+                        HttpStatus.NOT_FOUND.value(),
+                        null,
+                        new Date()
+                );
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            ResponseObject<String> response = new ResponseObject<>(
+                    "An error occurred while retrieving the course: " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    null,
+                    new Date()
+            );
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // ================================================
     //          GET REVENUE BY MONTH AND YEAR
     // ================================================
     @PostMapping("/revenue")
-    public ResponseEntity<List<RevenueResponseDTO>> calculateRevenue(@RequestBody RevenueRequestDTO requestDTO) {
-        List<RevenueResponseDTO> response = courseService.getRevenueByMonthAndYear(requestDTO);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> calculateRevenue(@RequestBody RevenueRequestDTO requestDTO) {
+        try {
+            List<RevenueResponseDTO> listResponseDTOs = courseService.getRevenueByMonthAndYear(requestDTO);
+            if(!listResponseDTOs.isEmpty()) {
+                ResponseList<RevenueResponseDTO> response = new ResponseList<>(
+                        "Thành công !",
+                        HttpStatus.OK.value(),
+                        (List<RevenueResponseDTO>) listResponseDTOs,
+                        new Date()
+                );
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }else {
+                ResponseObject<String> response = new ResponseObject<>(
+                        "Failed to get calculateRevenue !",
+                        HttpStatus.NOT_FOUND.value(),
+                        null,
+                        new Date()
+                );
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            ResponseObject<String> response = new ResponseObject<>(
+                    "An error occurred while retrieving the course: " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    null,
+                    new Date()
+            );
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+
+
+
+
+
+
+
+
+
+
 
 }

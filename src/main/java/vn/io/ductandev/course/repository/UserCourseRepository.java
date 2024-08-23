@@ -1,5 +1,7 @@
 package vn.io.ductandev.course.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,5 +18,6 @@ public interface UserCourseRepository extends JpaRepository<UserCourseEntity, In
 //            "FETCH FIRST 3 ROWS ONLY", nativeQuery = true)
 //		List<CourseTop3DTO> findTop3BestSellingCourses();
 		
+	List<UserCourseEntity> findByUserId(int userId);
 
 }
