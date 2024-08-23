@@ -79,29 +79,6 @@ public class UserController {
         }
     }
 
-
-    // ================================================
-    //               	CREATE USER
-    // ================================================
-    @PostMapping()
-    public ResponseEntity<?> addUser(@RequestBody UserRequest userRequest) {
-
-        Boolean isAdd = userService.addUser(userRequest);
-
-        if (isAdd) {
-            ResponseObject<UserRequest> response = new ResponseObject<>(
-                    "Thêm thành công !",
-                    HttpStatus.OK.value(),
-                    userRequest,
-                    new Date()
-            );
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Failed to add user", HttpStatus.BAD_REQUEST);
-        }
-    }
-
     // ================================================
     //               	UPDATE USER
     // ================================================

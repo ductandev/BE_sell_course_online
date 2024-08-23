@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import vn.io.ductandev.course.config.Config;
@@ -40,6 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     Mapper<UserDTO> personMapper;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     // ================================================
     //               	GET ALL USER
@@ -89,35 +93,6 @@ public class UserServiceImpl implements UserService {
         UserByIdDTO userDTO = convertToUserDTO(userEntity);
         userDTO.setCourses(courses);
         return userDTO;
-    }
-
-    // ================================================
-    //               	CREATE USER
-    // ================================================
-    @Override
-    public boolean addUser(UserRequest userRequest) {
-
-        boolean isSuccess = false;
-
-        try {
-            RoleEntity roleEntity = roleRepository.getById(2);
-
-            UserEntity userEntity = new UserEntity();
-
-            userEntity.setUsername(userRequest.username());
-            userEntity.setPassword(userRequest.password());
-            userEntity.setEmail(userRequest.email());
-            userEntity.setAvatar(userRequest.avatar());
-
-            userEntity.setRole(roleEntity);
-
-            userRepository.save(userEntity);
-
-            isSuccess = true;
-            return isSuccess;
-        } catch (Exception e) {
-            return isSuccess;
-        }
     }
 
     // ================================================

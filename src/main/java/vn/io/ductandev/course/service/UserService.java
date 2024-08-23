@@ -12,8 +12,6 @@ public interface UserService {
 	
 	List<UserDTO> getListUser();
 	
-	boolean addUser(UserRequest userRequest);
-	
 	UserByIdDTO getbyID(int id);
 	
 	UserEntity updateUser(int id, UserRequestPatch userRequestPatcht);
