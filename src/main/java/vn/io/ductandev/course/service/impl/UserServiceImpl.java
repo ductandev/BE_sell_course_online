@@ -2,6 +2,7 @@ package vn.io.ductandev.course.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,11 +10,15 @@ import org.springframework.stereotype.Service;
 import vn.io.ductandev.course.config.Config;
 import vn.io.ductandev.course.config.Mapper;
 import vn.io.ductandev.course.entity.UserEntity;
+import vn.io.ductandev.course.entity.CourseEntity;
 import vn.io.ductandev.course.entity.RoleEntity;
 import vn.io.ductandev.course.dto.UserDTO;
+import vn.io.ductandev.course.dto.CourseDTO;
 import vn.io.ductandev.course.dto.RoleDTO;
+import vn.io.ductandev.course.dto.UserByIdDTO;
 import vn.io.ductandev.course.repository.UserRepository;
 import vn.io.ductandev.course.repository.RoleRepository;
+import vn.io.ductandev.course.repository.UserCourseRepository;
 import vn.io.ductandev.course.request.UserRequest;
 import vn.io.ductandev.course.request.UserRequestPatch;
 import vn.io.ductandev.course.service.UserService;
@@ -26,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     RoleRepository roleRepository;
+    
+    @Autowired
+    UserCourseRepository userCourseRepository;
 
     @Autowired
     Config appConfig;
@@ -117,16 +125,16 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDTO getbyID(int id) {
-        UserEntity p = userRepository.getById(id);
+    public UserByIdDTO getbyID(int id) {
+        UserEntity userEntity  = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        UserDTO userDTO = new UserDTO();
-
-		userDTO.setId(p.getId());
-        userDTO.setUsername(p.getUsername());
-        userDTO.setPassword(p.getPassword());
-		userDTO.setIsDelete(p.getIsDelete());
-
+        List<CourseDTO> courses = userCourseRepository.findByUserId(id).stream()
+                .map(uc -> convertToCourseDTO(uc.getCourse()))
+                .collect(Collectors.toList());
+        
+        UserByIdDTO userDTO = convertToUserDTO(userEntity);
+        userDTO.setCourses(courses);
         return userDTO;
     }
 
@@ -147,5 +155,25 @@ public class UserServiceImpl implements UserService {
             return null;
         }
 
+    }
+    
+    private UserByIdDTO convertToUserDTO(UserEntity userEntity) {
+        UserByIdDTO dto = new UserByIdDTO();
+        dto.setId(userEntity.getId());
+        dto.setUsername(userEntity.getUsername());
+        dto.setEmail(userEntity.getEmail());
+        dto.setAvatar(userEntity.getAvatar());
+        return dto;
+    }
+
+    private CourseDTO convertToCourseDTO(CourseEntity courseEntity) {
+        CourseDTO dto = new CourseDTO();
+        dto.setId(courseEntity.getId());
+        dto.setTitle(courseEntity.getTitle());
+        dto.setPrice(courseEntity.getPrice());
+        dto.setLecturer(courseEntity.getLecturer());
+        dto.setImage(courseEntity.getImage());
+        dto.setDescription(courseEntity.getDescription());
+        return dto;
     }
 }

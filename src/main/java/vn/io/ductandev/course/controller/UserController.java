@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
+
+import vn.io.ductandev.course.dto.UserByIdDTO;
 import vn.io.ductandev.course.dto.UserDTO;
 import vn.io.ductandev.course.entity.UserEntity;
 import vn.io.ductandev.course.request.UserRequest;
@@ -63,10 +65,6 @@ public class UserController {
             return new ResponseEntity<>("Failed to add user", HttpStatus.BAD_REQUEST);
         }
     }
-    
-    
-    
-
 	// ================================================
 	//               	UPDATE USER
 	// ================================================
@@ -120,6 +118,39 @@ public class UserController {
         }
     }
 	
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable int id) {
+        try {
+            UserByIdDTO userByIdDTO = userService.getbyID(id);
+            if (userByIdDTO != null) {
+                ResponseObject<UserByIdDTO> response = new ResponseObject<>(
+                        "User retrieved successfully!",
+                        HttpStatus.OK.value(),
+                        userByIdDTO,
+                        new Date()
+                );
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                ResponseObject<String> response = new ResponseObject<>(
+                        "Failed to get user: User not found with id " + id,
+                        HttpStatus.NOT_FOUND.value(),
+                        null,
+                        new Date()
+                );
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            ResponseObject<String> response = new ResponseObject<>(
+                    "An error occurred while retrieving the user: " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    null,
+                    new Date()
+            );
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
 //	  private UserDTO convertToDTO(userEntity userEntity) {
 //		    UserDTO personDTO = new UserDTO();
 //		    personDTO.setId(userEntity.getId());

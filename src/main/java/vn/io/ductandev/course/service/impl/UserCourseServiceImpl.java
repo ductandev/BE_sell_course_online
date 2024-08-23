@@ -34,7 +34,7 @@ public class UserCourseServiceImpl implements UserCourseService {
 	}
 
 	@Override
-	public boolean addPersonCourse(UserCourseDTO userCourseDTO) {
+	public boolean addUserCourse(UserCourseDTO userCourseDTO) {
 		
 		boolean isSuccess = false;
 		
