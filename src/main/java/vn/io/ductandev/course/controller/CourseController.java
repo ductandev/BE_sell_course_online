@@ -42,26 +42,6 @@ public class CourseController {
     }
 
     // ================================================
-    //               	CREATE COURSE
-    // ================================================
-    @PostMapping
-    public ResponseEntity<?> addCourse(@RequestBody CourseRequest courseRequest) {
-        CourseEntity course = courseService.addCourse(courseRequest);
-        if (course != null) {
-            ResponseObject<CourseRequest> response = new ResponseObject<>(
-                    "Thành công !",
-                    HttpStatus.OK.value(),
-                    courseRequest,
-                    new Date()
-            );
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Failed to add course", HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    // ================================================
     //              GET COURSE BY ID
     // ================================================
     @GetMapping("/{id}")
@@ -85,17 +65,42 @@ public class CourseController {
             );
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
-
-
     }
 
+    // ================================================
+    //               	CREATE COURSE
+    // ================================================
+    @PostMapping
+    public ResponseEntity<?> addCourse(@RequestBody CourseRequest courseRequest) {
+        CourseEntity course = courseService.addCourse(courseRequest);
+        if (course != null) {
+            ResponseObject<CourseRequest> response = new ResponseObject<>(
+                    "Thành công !",
+                    HttpStatus.OK.value(),
+                    courseRequest,
+                    new Date()
+            );
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failed to add course", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    // ================================================
+    //            GET TOP 3 COURSE BEST SELLING
+    // ================================================
     @GetMapping("/top3")
     public ResponseEntity<List<ICourseTopSale>> getTop3BestSellingCourses() {
         List<ICourseTopSale> topCourses = courseService.getTop5BestSellingBooks();
         return ResponseEntity.ok(topCourses);
     }
 
-    @PostMapping("/calculate")
+    // ================================================
+    //          GET REVENUE BY MONTH AND YEAR
+    // ================================================
+    @PostMapping("/revenue")
     public ResponseEntity<List<RevenueResponseDTO>> calculateRevenue(@RequestBody RevenueRequestDTO requestDTO) {
         List<RevenueResponseDTO> response = courseService.getRevenueByMonthAndYear(requestDTO);
         return ResponseEntity.ok(response);

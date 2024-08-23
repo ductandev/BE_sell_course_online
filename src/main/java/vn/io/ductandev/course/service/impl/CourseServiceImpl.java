@@ -67,43 +67,11 @@ public class CourseServiceImpl implements CourseService {
                 lessonDTO.setIsSuccess(lessonEntity.getIsSuccess());
                 lessonDTO.setName(lessonEntity.getName());
                 lessonDTO.setVideoUrl(lessonEntity.getVideoUrl());
-
                 listDtos.add(lessonDTO);
             }
-
             courseDTO.setLessonDTOs(listDtos);
-
-
         }
-
         return courseDTOs;
-    }
-
-    // ================================================
-    //               	CREATE COURSE
-    // ================================================
-    @Override
-    public CourseEntity addCourse(CourseRequest courseRequest) {
-        try {
-            CourseEntity course = new CourseEntity();
-
-            course.setTitle(courseRequest.title());
-            course.setPrice(courseRequest.price());
-            course.setLecturer(courseRequest.lecturer());
-            course.setImage(courseRequest.image());
-            course.setDescription(courseRequest.description());
-
-			CategoryEntity categoryEntity = categoryRepository.getById(courseRequest.category_id());
-
-			course.setCategory(categoryEntity);
-			course.setCreateDate(new Date());
-            courseRepository.save(course);
-
-            return course;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     // ================================================
@@ -149,11 +117,36 @@ public class CourseServiceImpl implements CourseService {
 
                 listDtos.add(lessonDTO);
             }
-
             courseDTO.setLessonDTOs(listDtos);
 
             return courseDTO;
         } catch (Exception e) {
+            return null;
+        }
+    }
+
+    // ================================================
+    //               	CREATE COURSE
+    // ================================================
+    @Override
+    public CourseEntity addCourse(CourseRequest courseRequest) {
+        try {
+            CourseEntity course = new CourseEntity();
+            course.setTitle(courseRequest.title());
+            course.setPrice(courseRequest.price());
+            course.setLecturer(courseRequest.lecturer());
+            course.setImage(courseRequest.image());
+            course.setDescription(courseRequest.description());
+
+			CategoryEntity categoryEntity = categoryRepository.getById(courseRequest.category_id());
+
+			course.setCategory(categoryEntity);
+			course.setCreateDate(new Date());
+            courseRepository.save(course);
+
+            return course;
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
