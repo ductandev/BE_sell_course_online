@@ -28,9 +28,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
-	// ================================================
-	//               	GET ALL USER
-	// ================================================
+    // ================================================
+    //               	GET ALL USER
+    // ================================================
     @GetMapping
     public ResponseEntity<?> getAllUser() {
         List<UserDTO> userDTOS = userService.getListUser();
@@ -44,82 +44,9 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
-	// ================================================
-	//               	CREATE USER
-	// ================================================
-    @PostMapping()
-    public ResponseEntity<?> addUser(@RequestBody UserRequest userRequest) {
-
-        Boolean isAdd = userService.addUser(userRequest);
-
-        if (isAdd) {
-        	ResponseObject<UserRequest> response = new ResponseObject<>(
-                    "Thêm thành công !",
-                    HttpStatus.OK.value(),
-                    userRequest,
-                    new Date()
-            );
-            
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Failed to add user", HttpStatus.BAD_REQUEST);
-        }
-    }
-	// ================================================
-	//               	UPDATE USER
-	// ================================================
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserRequestPatch userRequestPatch) {
-        UserEntity isUpdated = userService.updateUser(id, userRequestPatch);
-
-        if (isUpdated != null) {
-        	ResponseObject<UserRequestPatch> response = new ResponseObject<>(
-                    "Update thành công !",
-                    HttpStatus.OK.value(),
-                    userRequestPatch,
-                    new Date()
-            );
-            
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-        	 ResponseList<String> response = new ResponseList<>(
-                     "Failed to update user: User not found with id " + id,
-                     HttpStatus.NOT_FOUND.value(),
-                     null,
-                     new Date()
-             );
-             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
-    }
-
-	// ================================================
-	//               	DELETE USER
-	// ================================================
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable int id) {
-        boolean isDelete = userService.deleteUser(id);
-        if (isDelete) {
-        	ResponseList<UserDTO> response = new ResponseList<>(
-                    "Delete thành công !",
-                    HttpStatus.OK.value(),
-                    (List<UserDTO>) userService.getbyID(id),
-                    new Date()
-            );
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else {
-        	 ResponseList<String> response = new ResponseList<>(
-                     "Failed to delete user: User not found with id " + id,
-                     HttpStatus.NOT_FOUND.value(),
-                     null,
-                     new Date()
-             );
-             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }
-    }
-	
-    
+    // ================================================
+    //               	GET USER BY ID
+    // ================================================
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable int id) {
         try {
@@ -151,7 +78,84 @@ public class UserController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
+
+    // ================================================
+    //               	CREATE USER
+    // ================================================
+    @PostMapping()
+    public ResponseEntity<?> addUser(@RequestBody UserRequest userRequest) {
+
+        Boolean isAdd = userService.addUser(userRequest);
+
+        if (isAdd) {
+            ResponseObject<UserRequest> response = new ResponseObject<>(
+                    "Thêm thành công !",
+                    HttpStatus.OK.value(),
+                    userRequest,
+                    new Date()
+            );
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failed to add user", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // ================================================
+    //               	UPDATE USER
+    // ================================================
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserRequestPatch userRequestPatch) {
+        UserEntity isUpdated = userService.updateUser(id, userRequestPatch);
+
+        if (isUpdated != null) {
+            ResponseObject<UserRequestPatch> response = new ResponseObject<>(
+                    "Update thành công !",
+                    HttpStatus.OK.value(),
+                    userRequestPatch,
+                    new Date()
+            );
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            ResponseList<String> response = new ResponseList<>(
+                    "Failed to update user: User not found with id " + id,
+                    HttpStatus.NOT_FOUND.value(),
+                    null,
+                    new Date()
+            );
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // ================================================
+    //               	DELETE USER
+    // ================================================
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable int id) {
+        boolean isDelete = userService.deleteUser(id);
+        if (isDelete) {
+            ResponseList<UserDTO> response = new ResponseList<>(
+                    "Delete thành công !",
+                    HttpStatus.OK.value(),
+                    (List<UserDTO>) userService.getbyID(id),
+                    new Date()
+            );
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            ResponseList<String> response = new ResponseList<>(
+                    "Failed to delete user: User not found with id " + id,
+                    HttpStatus.NOT_FOUND.value(),
+                    null,
+                    new Date()
+            );
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 //	  private UserDTO convertToDTO(userEntity userEntity) {
 //		    UserDTO personDTO = new UserDTO();
 //		    personDTO.setId(userEntity.getId());

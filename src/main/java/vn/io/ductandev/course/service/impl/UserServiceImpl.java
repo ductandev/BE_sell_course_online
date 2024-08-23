@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
     // ================================================
     @Override
     public List<UserDTO> getListUser() {
-
         List<UserEntity> listEntities = userRepository.findAll();
 
         List<UserDTO> listDtos = new ArrayList<>();
@@ -75,6 +74,26 @@ public class UserServiceImpl implements UserService {
         return listDtos;
     }
 
+    // ================================================
+    //               	GET USER BY ID
+    // ================================================
+    @Override
+    public UserByIdDTO getbyID(int id) {
+        UserEntity userEntity  = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<CourseDTO> courses = userCourseRepository.findByUserId(id).stream()
+                .map(uc -> convertToCourseDTO(uc.getCourse()))
+                .collect(Collectors.toList());
+
+        UserByIdDTO userDTO = convertToUserDTO(userEntity);
+        userDTO.setCourses(courses);
+        return userDTO;
+    }
+
+    // ================================================
+    //               	CREATE USER
+    // ================================================
     @Override
     public boolean addUser(UserRequest userRequest) {
 
@@ -99,10 +118,33 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             return isSuccess;
         }
+    }
 
+    // ================================================
+    //               	UPDATE USER
+    // ================================================
+    @Override
+    public UserEntity updateUser(int id, UserRequestPatch userRequestPatch) {
+        try {
+            UserEntity userEntity = userRepository.getById(id);
+            if (userEntity != null && userEntity.getIsDelete() == 0) {
+                userEntity.setAvatar(userRequestPatch.avatar());
+                userEntity.setPassword(userRequestPatch.password());
+                userEntity.setUsername(userRequestPatch.username());
+
+                userRepository.save(userEntity);
+            }
+            return userEntity;
+
+        } catch (Exception e) {
+            return null;
+        }
 
     }
 
+    // ================================================
+    //               	DELETE USER
+    // ================================================
     @Override
     public boolean deleteUser(int id) {
 
@@ -124,38 +166,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    @Override
-    public UserByIdDTO getbyID(int id) {
-        UserEntity userEntity  = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        List<CourseDTO> courses = userCourseRepository.findByUserId(id).stream()
-                .map(uc -> convertToCourseDTO(uc.getCourse()))
-                .collect(Collectors.toList());
-        
-        UserByIdDTO userDTO = convertToUserDTO(userEntity);
-        userDTO.setCourses(courses);
-        return userDTO;
-    }
-
-    @Override
-    public UserEntity updateUser(int id, UserRequestPatch userRequestPatch) {
-        try {
-            UserEntity userEntity = userRepository.getById(id);
-            if (userEntity != null && userEntity.getIsDelete() == 0) {
-                userEntity.setAvatar(userRequestPatch.avatar());
-                userEntity.setPassword(userRequestPatch.password());
-                userEntity.setUsername(userRequestPatch.username());
-
-                userRepository.save(userEntity);
-            }
-            return userEntity;
-
-        } catch (Exception e) {
-            return null;
-        }
-
-    }
     
     private UserByIdDTO convertToUserDTO(UserEntity userEntity) {
         UserByIdDTO dto = new UserByIdDTO();
