@@ -27,6 +27,9 @@ public class CourseServiceImpl implements CourseService {
     CategoryRepository categoryRepository;
 
 
+    // ================================================
+    //               	GET ALL COURSE
+    // ================================================
     @Override
     public List<CourseDTO> getListCourse() {
         List<CourseEntity> courseEntities = courseRepository.findAll();
@@ -46,15 +49,19 @@ public class CourseServiceImpl implements CourseService {
             courseDTO.setIsPublic(courseEntity.getIsPublic());
             courseDTO.setIsDelete(courseEntity.getIsDelete());
 
-            courseDTOs.add(courseDTO);
+            CategoryDTO categoryDTO = new CategoryDTO();
+            categoryDTO.setId(courseEntity.getCategory().getId());
+            categoryDTO.setName(courseEntity.getCategory().getName());
+            categoryDTO.setIsDelete(courseEntity.getCategory().getIsDelete());
 
+            courseDTO.setCategoryDTO(categoryDTO);
+
+            courseDTOs.add(courseDTO);
 
             List<LessonDTO> listDtos = new ArrayList<>();
 
             for (LessonEntity lessonEntity : courseEntity.getLessons()) {
-
                 LessonDTO lessonDTO = new LessonDTO();
-
                 lessonDTO.setId(lessonEntity.getId());
                 lessonDTO.setIsDelete(lessonEntity.getIsDelete());
                 lessonDTO.setIsSuccess(lessonEntity.getIsSuccess());
@@ -64,7 +71,6 @@ public class CourseServiceImpl implements CourseService {
                 listDtos.add(lessonDTO);
             }
 
-
             courseDTO.setLessonDTOs(listDtos);
 
 
@@ -73,6 +79,9 @@ public class CourseServiceImpl implements CourseService {
         return courseDTOs;
     }
 
+    // ================================================
+    //               	CREATE COURSE
+    // ================================================
     @Override
     public CourseEntity addCourse(CourseRequest courseRequest) {
         try {
@@ -97,6 +106,9 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
+    // ================================================
+    //              GET COURSE BY ID
+    // ================================================
     @Override
     public CourseDTO getCourseById(int id) {
 
@@ -146,24 +158,36 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
+    // ================================================
+    //               	UPDATE COURSE
+    // ================================================
     @Override
     public boolean updateCourse(int id, CourseDTO courseDTO) {
         // TODO Auto-generated method stub
         return false;
     }
 
+    // ================================================
+    //               	DELETE COURSE
+    // ================================================
     @Override
     public boolean deleteCourse(int id) {
         // TODO Auto-generated method stub
         return false;
     }
 
+    // ================================================
+    //          GET TOP 5 COURSE BEST SELLING
+    // ================================================
     @Override
     public List<ICourseTopSale> getTop5BestSellingBooks() {
         List<ICourseTopSale> list = courseRepository.findTop3BestSellingCourses();
         return list;
     }
 
+    // ================================================
+    //          GET REVENUE BY MONTH AND YEAR
+    // ================================================
     @Override
     public List<RevenueResponseDTO> getRevenueByMonthAndYear(RevenueRequestDTO requestDTO) {
         // TODO Auto-generated method stub

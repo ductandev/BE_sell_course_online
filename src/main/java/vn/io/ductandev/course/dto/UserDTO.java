@@ -1,7 +1,6 @@
 package vn.io.ductandev.course.dto;
 
 import lombok.Data;
-import vn.io.ductandev.course.entity.RoleEntity;
 
 @Data
 public class UserDTO {
@@ -20,4 +19,6 @@ public class UserDTO {
 
 	private int role;
 
+	// Không bao gồm mật khẩu trong DTO để bảo mật
+	// Nếu cần truyền mật khẩu, bạn có thể tạo một DTO khác hoặc thêm vào nếu cần thiết
 }

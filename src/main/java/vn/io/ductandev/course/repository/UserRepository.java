@@ -9,5 +9,4 @@ import vn.io.ductandev.course.entity.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     UserEntity findEntityByEmail(String email);
-
 }

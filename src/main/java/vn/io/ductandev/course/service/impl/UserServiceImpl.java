@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
             UserDTO userDTO = new UserDTO();
             userDTO.setId(p.getId());
             userDTO.setUsername(p.getUsername());
-            userDTO.setPassword(p.getPassword());
+            // userDTO.setPassword(p.getPassword());
             userDTO.setEmail(p.getEmail());
             userDTO.setAvatar(p.getAvatar());
 
@@ -67,6 +67,10 @@ public class UserServiceImpl implements UserService {
         return listDtos;
     }
 
+
+    // ================================================
+    //               	CREATE USER
+    // ================================================
     @Override
     public boolean addUser(UserRequest userRequest) {
 
@@ -95,6 +99,50 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    // ================================================
+    //               	GET USER BY ID
+    // ================================================
+    @Override
+    public UserDTO getbyID(int id) {
+        UserEntity userEntity = userRepository.getById(id);
+
+        UserDTO userDTO = new UserDTO();
+
+		userDTO.setId(userEntity.getId());
+        userDTO.setUsername(userEntity.getUsername());
+        userDTO.setEmail(userEntity.getEmail());
+        userDTO.setAvatar(userEntity.getAvatar());
+        //userDTO.setPassword(userEntity.getPassword());
+		userDTO.setIsDelete(userEntity.getIsDelete());
+
+        return userDTO;
+    }
+
+    // ================================================
+    //               	UPDATE USER
+    // ================================================
+    @Override
+    public UserEntity updateUser(int id, UserRequestPatch userRequestPatch) {
+        try {
+            UserEntity userEntity = userRepository.getById(id);
+            if (userEntity != null && userEntity.getIsDelete() == 0) {
+                userEntity.setAvatar(userRequestPatch.avatar());
+                userEntity.setPassword(userRequestPatch.password());
+                userEntity.setUsername(userRequestPatch.username());
+
+                userRepository.save(userEntity);
+            }
+            return userEntity;
+
+        } catch (Exception e) {
+            return null;
+        }
+
+    }
+
+    // ================================================
+    //               	DELETE USER
+    // ================================================
     @Override
     public boolean deleteUser(int id) {
 
@@ -113,39 +161,5 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             return isSuccess;
         }
-    }
-
-
-    @Override
-    public UserDTO getbyID(int id) {
-        UserEntity p = userRepository.getById(id);
-
-        UserDTO userDTO = new UserDTO();
-
-		userDTO.setId(p.getId());
-        userDTO.setUsername(p.getUsername());
-        userDTO.setPassword(p.getPassword());
-		userDTO.setIsDelete(p.getIsDelete());
-
-        return userDTO;
-    }
-
-    @Override
-    public UserEntity updateUser(int id, UserRequestPatch userRequestPatch) {
-        try {
-            UserEntity userEntity = userRepository.getById(id);
-            if (userEntity != null && userEntity.getIsDelete() == 0) {
-                userEntity.setAvatar(userRequestPatch.avatar());
-                userEntity.setPassword(userRequestPatch.password());
-                userEntity.setUsername(userRequestPatch.username());
-
-                userRepository.save(userEntity);
-            }
-            return userEntity;
-
-        } catch (Exception e) {
-            return null;
-        }
-
     }
 }

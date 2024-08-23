@@ -42,6 +42,13 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById() {
+
+
+        return null;
+    }
+
 	// ================================================
 	//               	CREATE USER
 	// ================================================
