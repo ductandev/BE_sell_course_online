@@ -28,18 +28,36 @@ public class CourseController {
 
 
     // ================================================
-    //               	GET ALL COURSE
+    //                GET COURSE LIST
     // ================================================
     @GetMapping
-    public ResponseEntity<?> getAllCourses() {
-        List<CourseDTO> courses = courseService.getListCourse();
-        ResponseList<CourseDTO> response = new ResponseList<>(
-                "Thành công !",
-                HttpStatus.OK.value(),
-                (List<CourseDTO>) courses,
-                new Date()
-        );
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<ResponseList<CourseDTO>> getCourses(
+            @RequestParam(required = false) String searchByName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(required = false) Integer categoryID) {
+
+        try {
+            List<CourseDTO> courses;
+            if (categoryID == null) {
+                // Nếu categoryID là null, tìm tất cả khóa học không phân biệt category
+                courses = courseService.getListCourse(searchByName, page, limit, null);
+            } else {
+                courses = courseService.getListCourse(searchByName, page, limit, categoryID);
+            }
+
+            ResponseList<CourseDTO> response = new ResponseList<>(
+                    "Thành công!",
+                    HttpStatus.OK.value(),
+                    courses,
+                    new Date()
+            );
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     // ================================================

@@ -29,14 +29,21 @@ public class CourseServiceImpl implements CourseService {
 
 
     // ================================================
-    //               	GET ALL COURSE
+    //             GET ALL COURSE PAGINATION
     // ================================================
     @Override
-    public List<CourseDTO> getListCourse() {
-        List<CourseEntity> courseEntities = courseRepository.findAllByIsDeleteFalse();
-        List<CourseDTO> courseDTOs = new ArrayList<>();
+    public List<CourseDTO> getListCourse(String searchByName, int page, int limit, Integer categoryID) {
 
-        for (CourseEntity courseEntity : courseEntities) {
+        // Lấy danh sách các khóa học chưa bị xóa, tìm kiếm, lọc và sắp xếp theo tên
+        List<CourseEntity> courseEntities = courseRepository.findCourses(searchByName, categoryID);
+
+        // Phân trang
+        int start = page * limit;
+        int end = Math.min((start + limit), courseEntities.size());
+        List<CourseEntity> paginatedCourses = courseEntities.subList(start, end);
+
+        // Chuyển đổi danh sách CourseEntity thành CourseDTO
+        List<CourseDTO> courseDTOs = paginatedCourses.stream().map(courseEntity -> {
             CourseDTO courseDTO = new CourseDTO();
             courseDTO.setId(courseEntity.getId());
             courseDTO.setTitle(courseEntity.getTitle());
@@ -50,28 +57,29 @@ public class CourseServiceImpl implements CourseService {
             courseDTO.setIsPublic(courseEntity.getIsPublic());
             courseDTO.setIsDelete(courseEntity.getIsDelete());
 
+            // Thiết lập CategoryDTO
             CategoryDTO categoryDTO = new CategoryDTO();
             categoryDTO.setId(courseEntity.getCategory().getId());
             categoryDTO.setName(courseEntity.getCategory().getName());
             categoryDTO.setIsDelete(courseEntity.getCategory().getIsDelete());
-
             courseDTO.setCategoryDTO(categoryDTO);
 
-            courseDTOs.add(courseDTO);
-
-            List<LessonDTO> listDtos = new ArrayList<>();
-
-            for (LessonEntity lessonEntity : courseEntity.getLessons()) {
+            // Thiết lập danh sách LessonDTOs
+            List<LessonDTO> lessonDTOs = courseEntity.getLessons().stream().map(lessonEntity -> {
                 LessonDTO lessonDTO = new LessonDTO();
                 lessonDTO.setId(lessonEntity.getId());
                 lessonDTO.setIsDelete(lessonEntity.getIsDelete());
                 lessonDTO.setIsSuccess(lessonEntity.getIsSuccess());
                 lessonDTO.setName(lessonEntity.getName());
                 lessonDTO.setVideoUrl(lessonEntity.getVideoUrl());
-                listDtos.add(lessonDTO);
-            }
-            courseDTO.setLessonDTOs(listDtos);
-        }
+                return lessonDTO;
+            }).collect(Collectors.toList());
+
+            courseDTO.setLessonDTOs(lessonDTOs);
+
+            return courseDTO;
+        }).collect(Collectors.toList());
+
         return courseDTOs;
     }
 
@@ -125,7 +133,6 @@ public class CourseServiceImpl implements CourseService {
             return null;
         }
     }
-
 
     // ================================================
     //               	CREATE COURSE

@@ -12,7 +12,7 @@ import vn.io.ductandev.course.request.CourseRequestPatch;
 
 public interface CourseService {
 
-	List<CourseDTO> getListCourse();
+	List<CourseDTO> getListCourse(String searchByName, int page, int limit, Integer categoryID);
 
 	CourseEntity addCourse(CourseRequest courseRequest);
 

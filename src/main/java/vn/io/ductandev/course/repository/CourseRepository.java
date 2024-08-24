@@ -14,8 +14,13 @@ import vn.io.ductandev.course.entity.CourseEntity;
 @Repository
 public interface CourseRepository extends JpaRepository<CourseEntity, Integer> {
 
-	@Query("SELECT c FROM CourseEntity c WHERE c.isDelete = 0")
-	List<CourseEntity> findAllByIsDeleteFalse();
+	// Truy vấn tùy chỉnh để tìm kiếm, lọc, và sắp xếp
+	@Query("SELECT c FROM CourseEntity c WHERE c.isDelete = 0 " +
+			"AND (:searchByName IS NULL OR LOWER(c.title) LIKE LOWER(CONCAT('%', :searchByName, '%'))) " +
+			"AND (:categoryID IS NULL OR c.category.id = :categoryID) " +
+			"ORDER BY c.id ASC")
+	List<CourseEntity> findCourses(@Param("searchByName") String searchByName,
+								   @Param("categoryID") Integer categoryID);
 
 	 @Query(value = "SELECT c.id AS courseId, c.title AS courseName, COUNT(pc.course_id) AS salesCount"
 	 		+ " FROM COURSE.TB_USER_COURSE pc"
