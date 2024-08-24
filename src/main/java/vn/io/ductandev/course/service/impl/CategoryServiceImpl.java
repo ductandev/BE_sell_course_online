@@ -112,13 +112,15 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public CategoryDTO getByID(int id) {
 		
-		CategoryEntity c = categoryRepository.getById(id);
-		
+		CategoryEntity categoryEntity = categoryRepository.getById(id);
+		categoryEntity.setIsDelete(1);
+		categoryRepository.save(categoryEntity);
+
 		CategoryDTO categoryDTO = new CategoryDTO();
 		
-		categoryDTO.setId(c.getId());
-		categoryDTO.setIsDelete(c.getIsDelete());
-		categoryDTO.setName(c.getName());
+		categoryDTO.setId(categoryEntity.getId());
+		categoryDTO.setIsDelete(categoryEntity.getIsDelete());
+		categoryDTO.setName(categoryEntity.getName());
 		
 		return categoryDTO;
 	}

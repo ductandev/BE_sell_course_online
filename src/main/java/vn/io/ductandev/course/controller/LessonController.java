@@ -2,7 +2,6 @@ package vn.io.ductandev.course.controller;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,15 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import vn.io.ductandev.course.dto.CourseDTO;
 import vn.io.ductandev.course.dto.LessonByIdDTO;
 import vn.io.ductandev.course.dto.LessonDTO;
-import vn.io.ductandev.course.dto.RoleDTO;
-import vn.io.ductandev.course.entity.LessonEntity;
-import vn.io.ductandev.course.entity.RoleEntity;
 import vn.io.ductandev.course.request.LessonRequest;
 import vn.io.ductandev.course.request.LessonRequestPatch;
-import vn.io.ductandev.course.request.UserRequestPatch;
 import vn.io.ductandev.course.response.ResponseList;
 
 import vn.io.ductandev.course.response.ResponseObject;
