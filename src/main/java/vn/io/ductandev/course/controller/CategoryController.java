@@ -30,10 +30,13 @@ public class CategoryController {
 	
 	@Autowired
 	CategoryService categoryService;
-	
+
+
+	// ================================================
+	//                GET ALL CATEGORY
+	// ================================================
 	@GetMapping
     public ResponseEntity<?> getAllCategories() {
-		
         List<CategoryDTO> categories = categoryService.getListCategory();
         ResponseList<CategoryDTO> response = new ResponseList<>(
                 "Thành công !",
@@ -44,23 +47,25 @@ public class CategoryController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+	// ================================================
+	//                CREATE CATEGORY
+	// ================================================
 	@PostMapping
 	public ResponseEntity<?> addCategory(@RequestBody CategoryRequest categoryRequest){
 			categoryService.addCategory(categoryRequest);
-
-	       
 			ResponseObject<CategoryRequest> response = new ResponseObject<>(
 	                    "Thành công !",
 	                    HttpStatus.OK.value(),
 	                    categoryRequest,
 	                    new Date()
 	            );
-
 	            return new ResponseEntity<>(response, HttpStatus.OK);
-	        } 
+	        }
 
-	
-	
+
+	// ================================================
+	//             UPDATE CATEGORY BY ID
+	// ================================================
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateCategory(@PathVariable int id, @RequestBody CategoryRequest categoryRequest) {
         CategoryRequest isUpdate = categoryService.updateCategory(id, categoryRequest);
@@ -71,7 +76,6 @@ public class CategoryController {
                     categoryRequest,
                     new Date()
             );
-            
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
         	ResponseObject<CategoryRequest> response = new ResponseObject<>(
@@ -84,7 +88,9 @@ public class CategoryController {
         }
 	}
 
-	
+	// ================================================
+	//             DELETE CATEGORY BY ID
+	// ================================================
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteCategory(@PathVariable int id) {
 		CategoryDTO categoryDTO = categoryService.deleteCategory(id);
@@ -96,7 +102,6 @@ public class CategoryController {
                     categoryDTO,
                     new Date()
             );
-            
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
         	 ResponseList<String> response = new ResponseList<>(
@@ -107,6 +112,32 @@ public class CategoryController {
              );
              return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
+	}
+
+	// ================================================
+	//                GET CATEGORY BY ID
+	// ================================================
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getCategoryById(@PathVariable int id){
+		CategoryDTO categoryDTO = categoryService.getByID(id);
+
+		if (categoryDTO != null) {
+			ResponseObject<CategoryDTO> response = new ResponseObject<>(
+					"Thành công !",
+					HttpStatus.OK.value(),
+					categoryDTO,
+					new Date()
+			);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			ResponseList<String> response = new ResponseList<>(
+					"Failed to get category: Category not found with id " + id,
+					HttpStatus.NOT_FOUND.value(),
+					null,
+					new Date()
+			);
+			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		}
 	}
 
 
