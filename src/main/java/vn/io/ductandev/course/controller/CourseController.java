@@ -186,5 +186,32 @@ public class CourseController {
         }
     }
 
+    // ================================================
+    //               	DELETE COURSE
+    // ================================================
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCourseById(@PathVariable int id){
+        CourseDTO course = courseService.deleteCourseById(id);
+
+        if (course != null) {
+            ResponseObject<CourseDTO> response = new ResponseObject<>(
+                    "Deleted success!",
+                    HttpStatus.OK.value(),
+                    course,
+                    new Date()
+            );
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            ResponseObject<String> response = new ResponseObject<>(
+                    "Failed to delete course ID:" + id,
+                    HttpStatus.NOT_FOUND.value(),
+                    null,
+                    new Date()
+            );
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 }

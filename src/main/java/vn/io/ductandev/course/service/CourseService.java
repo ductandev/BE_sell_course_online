@@ -13,16 +13,16 @@ import vn.io.ductandev.course.request.CourseRequestPatch;
 public interface CourseService {
 
 	List<CourseDTO> getListCourse();
-	
+
 	CourseEntity addCourse(CourseRequest courseRequest);
-	
+
 	CourseDTO getCourseById(int id);
-	
+
 	CourseDTO updateCourseById(int id, CourseRequestPatch courseRequestPatch);
-	
-	boolean deleteCourse(int id);
-	
+
+	CourseDTO deleteCourseById(int id);
+
 	List<ICourseTopSale> getTop5BestSellingBooks();
-	
+
 	List<RevenueResponseDTO> getRevenueByMonthAndYear(RevenueRequestDTO courseSalesDTO);
 }

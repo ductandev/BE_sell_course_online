@@ -210,9 +210,38 @@ public class CourseServiceImpl implements CourseService {
     //               	DELETE COURSE
     // ================================================
     @Override
-    public boolean deleteCourse(int id) {
-        // TODO Auto-generated method stub
-        return false;
+    public CourseDTO deleteCourseById(int id) {
+        try {
+            CourseEntity courseEntity = courseRepository.getById(id);
+            courseEntity.setIsDelete(1);
+            courseRepository.save(courseEntity);
+
+            // Trả Respon data dưới dạng 1 DTO
+            CourseDTO courseDTO = new CourseDTO();
+            courseDTO.setId(courseEntity.getId());
+            courseDTO.setTitle(courseEntity.getTitle());
+            courseDTO.setPrice(courseEntity.getPrice());
+            courseDTO.setLecturer(courseEntity.getLecturer());
+            courseDTO.setImage(courseEntity.getImage());
+            courseDTO.setDescription(courseEntity.getDescription());
+            courseDTO.setCreateDate(courseEntity.getCreateDate());
+            courseDTO.setIsTopCourse(courseEntity.getIsTopCourse());
+            courseDTO.setIsFree(courseEntity.getIsFree());
+            courseDTO.setIsPublic(courseEntity.getIsPublic());
+
+            CategoryDTO categoryDTO = new CategoryDTO();
+            categoryDTO.setId(courseEntity.getCategory().getId());
+            categoryDTO.setName(courseEntity.getCategory().getName());
+            categoryDTO.setIsDelete(courseEntity.getCategory().getIsDelete());
+
+            courseDTO.setCategoryDTO(categoryDTO);
+            courseDTO.setIsDelete(courseEntity.getIsDelete());
+
+            return courseDTO;
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     // ================================================

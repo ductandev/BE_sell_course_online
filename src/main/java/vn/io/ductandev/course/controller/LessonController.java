@@ -125,7 +125,7 @@ public class LessonController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             ResponseObject<String> response = new ResponseObject<>(
-                    "Failed to update lesson ID:" + id,
+                    "Failed to delete lesson ID:" + id,
                     HttpStatus.NOT_FOUND.value(),
                     null,
                     new Date()
