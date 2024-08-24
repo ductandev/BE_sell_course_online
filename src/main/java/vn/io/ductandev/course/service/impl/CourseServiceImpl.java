@@ -6,15 +6,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import vn.io.ductandev.course.dto.*;
+import vn.io.ductandev.course.config.CourseMapper;
+import vn.io.ductandev.course.dto.CategoryDTO;
+import vn.io.ductandev.course.dto.CourseDTO;
+import vn.io.ductandev.course.dto.ICourseTopSale;
+import vn.io.ductandev.course.dto.LessonDTO;
+import vn.io.ductandev.course.dto.RevenueRequestDTO;
+import vn.io.ductandev.course.dto.RevenueResponseDTO;
 import vn.io.ductandev.course.entity.CategoryEntity;
 import vn.io.ductandev.course.entity.CourseEntity;
 import vn.io.ductandev.course.entity.LessonEntity;
 import vn.io.ductandev.course.repository.CategoryRepository;
 import vn.io.ductandev.course.repository.CourseRepository;
 import vn.io.ductandev.course.request.CourseRequest;
+import vn.io.ductandev.course.request.CourseRequestUpdate;
 import vn.io.ductandev.course.service.CourseService;
 
 @Service
@@ -155,18 +165,64 @@ public class CourseServiceImpl implements CourseService {
     //               	UPDATE COURSE
     // ================================================
     @Override
-    public boolean updateCourse(int id, CourseDTO courseDTO) {
-        // TODO Auto-generated method stub
-        return false;
+    public CourseRequestUpdate updateCourse(int id, CourseRequestUpdate courseRequestUpdate) {
+		CourseEntity courseEntity = courseRepository.getById(id);
+			
+			if(courseEntity != null) {
+				
+				try {
+					courseEntity.setTitle(courseRequestUpdate.title());
+					courseEntity.setPrice(courseRequestUpdate.price());
+					courseEntity.setLecturer(courseRequestUpdate.lecturer());
+					courseEntity.setImage(courseRequestUpdate.image());
+					courseEntity.setDescription(courseRequestUpdate.description());
+					courseEntity.setIsTopCourse(courseRequestUpdate.isTopCourse());
+					courseEntity.setIsFree(courseRequestUpdate.isFree());
+					courseEntity.setIsPublic(courseRequestUpdate.isPublic());
+					courseEntity.setIsDelete(courseRequestUpdate.isDelete());
+					
+					courseRepository.save(courseEntity);
+					
+					return courseRequestUpdate;
+				} catch (Exception e) {
+					System.out.println("Lỗi Update !");
+				}
+			}
+				return null;
     }
 
     // ================================================
     //               	DELETE COURSE
     // ================================================
     @Override
-    public boolean deleteCourse(int id) {
-        // TODO Auto-generated method stub
-        return false;
+    public CourseDTO deleteCourse(int id) {
+		try {
+					
+					CourseEntity courseEntity = courseRepository.getById(id);
+					courseEntity.setIsDelete(1);
+					CourseDTO courseDTO = new CourseDTO();
+					
+					if(courseEntity != null) {
+						courseDTO.setId(courseEntity.getId());
+						courseDTO.setTitle(courseEntity.getTitle());
+						courseDTO.setPrice(courseEntity.getPrice());
+						courseDTO.setLecturer(courseEntity.getLecturer());
+						courseDTO.setImage(courseEntity.getImage());
+						courseDTO.setDescription(courseEntity.getDescription());
+						courseDTO.setIsTopCourse(courseEntity.getIsTopCourse());
+						courseDTO.setIsFree(courseEntity.getIsFree());
+						courseDTO.setIsPublic(courseEntity.getIsPublic());
+						courseDTO.setIsDelete(courseEntity.getIsDelete());
+						
+						courseRepository.save(courseEntity);
+						
+					}
+					
+					return courseDTO;
+					
+				} catch (Exception e) {
+					return null;
+				}
     }
 
     // ================================================
@@ -193,5 +249,12 @@ public class CourseServiceImpl implements CourseService {
         }).collect(Collectors.toList());
     }
 
+    public Page<CourseDTO> getCoursesByTitleAndCategory(String title, int categoryId, int page, int limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<CourseEntity> courseEntities = courseRepository.findCoursesByTitleAndCategory(title, categoryId, pageable);
+        return courseEntities.map(CourseMapper::toDTO);
+    }
 
+
+	
 }

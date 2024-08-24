@@ -2,12 +2,13 @@ package vn.io.ductandev.course.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import vn.io.ductandev.course.dto.RevenueResponseDTO;
 import vn.io.ductandev.course.dto.ICourseTopSale;
 import vn.io.ductandev.course.entity.CourseEntity;
 
@@ -30,4 +31,12 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Integer> {
              "ORDER BY monthYear", nativeQuery = true)
 	 List<Object[]> calculateRevenueByMonthAndYear(@Param("month") String month, @Param("year") String year);
 	
+	 
+	 @Query("SELECT tc FROM CourseEntity tc " +
+	           "WHERE LOWER(tc.title) LIKE %:title% " +
+	           "AND tc.category.id = :categoryId " +
+	           "ORDER BY tc.title ASC")
+	  Page<CourseEntity> findCoursesByTitleAndCategory(@Param("title") String title, 
+	                                                     @Param("categoryId") int categoryId,
+	                                                     Pageable pageable);
 }

@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import vn.io.ductandev.course.entity.CategoryEntity;
 import vn.io.ductandev.course.dto.CategoryDTO;
+import vn.io.ductandev.course.entity.CategoryEntity;
 import vn.io.ductandev.course.repository.CategoryRepository;
 import vn.io.ductandev.course.request.CategoryRequest;
 import vn.io.ductandev.course.service.CategoryService;
@@ -117,10 +121,35 @@ public class CategoryServiceImpl implements CategoryService {
 		CategoryDTO categoryDTO = new CategoryDTO();
 		
 		categoryDTO.setId(c.getId());
-		categoryDTO.setIsDelete(c.getIsDelete());
 		categoryDTO.setName(c.getName());
+		categoryDTO.setIsDelete(c.getIsDelete());
 		
 		return categoryDTO;
 	}
+
+	@Override
+	public Page<CategoryDTO> getCategories(String nameCourse, int page, int limit, int categoryID) {
+
+	        
+//	        Pageable pageable = PageRequest.of(page, limit);
+//	        Page<CategoryEntity> categoryEntities = categoryRepository.findCategoriesWithFilters(nameCourse , pageable);
+//
+//	        return categoryEntities.map(this::convertToDTO);
+		
+		 Pageable pageable = PageRequest.of(page, limit);
+
+	        Page<CategoryEntity> categoryEntities = categoryRepository.findByNameCourseAndCategoryID(nameCourse, categoryID, pageable);
+
+	        return categoryEntities.map(this::convertToDTO);
+	}
+	
+	
+	 private CategoryDTO convertToDTO(CategoryEntity categoryEntity) {
+	        CategoryDTO dto = new CategoryDTO();
+	        dto.setId(categoryEntity.getId());
+	        dto.setName(categoryEntity.getName());
+	        dto.setIsDelete(categoryEntity.getIsDelete());
+	        return dto;
+	    }
 
 }

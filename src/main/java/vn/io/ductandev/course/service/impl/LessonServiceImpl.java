@@ -2,20 +2,21 @@ package vn.io.ductandev.course.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import vn.io.ductandev.course.entity.CourseEntity;
-import vn.io.ductandev.course.entity.LessonEntity;
+import vn.io.ductandev.course.dto.CategoryDTO;
 import vn.io.ductandev.course.dto.CourseDTO;
-
 import vn.io.ductandev.course.dto.LessonByIdDTO;
 import vn.io.ductandev.course.dto.LessonDTO;
+import vn.io.ductandev.course.entity.CategoryEntity;
+import vn.io.ductandev.course.entity.CourseEntity;
+import vn.io.ductandev.course.entity.LessonEntity;
 import vn.io.ductandev.course.repository.CourseRepository;
 import vn.io.ductandev.course.repository.LessonRepository;
 import vn.io.ductandev.course.request.LessonRequest;
+import vn.io.ductandev.course.request.LessonRequestUpdate;
 import vn.io.ductandev.course.service.LessonService;
 
 @Service
@@ -116,6 +117,55 @@ public class LessonServiceImpl implements LessonService{
 		}
 		
 		return lessonDTO;
+	}
+
+	@Override
+	public LessonRequestUpdate updateLesson(int id, LessonRequestUpdate lessonRequest) {
+		LessonEntity lessonEntity = lessonRepository.getById(id);
+		
+		if(lessonEntity != null) {
+			
+			try {
+				lessonEntity.setName(lessonRequest.name());
+				lessonEntity.setVideoUrl(lessonRequest.videoUrl());
+				lessonEntity.setIsSuccess(lessonRequest.isSuccess());
+				lessonEntity.setIsDelete(lessonEntity.getIsDelete());
+				
+				lessonRepository.save(lessonEntity);
+				
+				return lessonRequest;
+			} catch (Exception e) {
+				System.out.println("Lỗi Update !");
+			}
+		}
+			return null;
+	}
+
+	@Override
+	public LessonDTO deleteLesson(int id) {
+		try {
+			
+			LessonEntity lessonEntity = lessonRepository.getById(id);
+			lessonEntity.setIsDelete(1);
+			LessonDTO lessonDTO = new LessonDTO();
+			
+			if(lessonEntity != null) {
+				lessonDTO.setIsDelete(lessonEntity.getIsDelete());
+				lessonDTO.setId(lessonEntity.getId());
+				lessonDTO.setName(lessonEntity.getName());
+				lessonDTO.setIsDelete(lessonEntity.getIsDelete());
+				lessonDTO.setIsSuccess(lessonEntity.getIsSuccess());
+				lessonDTO.setVideoUrl(lessonEntity.getVideoUrl());
+				
+				lessonRepository.save(lessonEntity);
+				
+			}
+			
+			return lessonDTO;
+			
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	
 	
