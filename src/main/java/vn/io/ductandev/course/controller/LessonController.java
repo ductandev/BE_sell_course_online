@@ -2,22 +2,23 @@ package vn.io.ductandev.course.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import vn.io.ductandev.course.dto.CourseDTO;
 import vn.io.ductandev.course.dto.LessonByIdDTO;
 import vn.io.ductandev.course.dto.LessonDTO;
+import vn.io.ductandev.course.dto.RoleDTO;
+import vn.io.ductandev.course.entity.LessonEntity;
+import vn.io.ductandev.course.entity.RoleEntity;
 import vn.io.ductandev.course.request.LessonRequest;
+import vn.io.ductandev.course.request.LessonRequestPatch;
+import vn.io.ductandev.course.request.UserRequestPatch;
 import vn.io.ductandev.course.response.ResponseList;
 
 import vn.io.ductandev.course.response.ResponseObject;
@@ -31,6 +32,10 @@ public class LessonController {
 	@Autowired
     private LessonService lessonService;
 
+
+    // ================================================
+    //                GET ALL LESSION
+    // ================================================
     @GetMapping
     public ResponseEntity<?> getAllVideos() {
         List<LessonDTO> videos = lessonService.getListVideo();
@@ -42,24 +47,31 @@ public class LessonController {
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-//
+
+
+    // ================================================
+    //                CREATE LESSION
+    // ================================================
     @PostMapping
     public ResponseEntity<?> addVideo(@RequestBody LessonRequest lessonRequest) {
         boolean isAdd = lessonService.addLesson(lessonRequest);
         if (isAdd) {
         	ResponseObject<LessonRequest> response = new ResponseObject<>(
                     "Thành công !",
-                    HttpStatus.OK.value(),
+                    HttpStatus.CREATED.value(),
                     lessonRequest,
                     new Date()
             );
-            
+
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Failed to add video", HttpStatus.BAD_REQUEST);
         }
     }
-//    Test
+
+    // ================================================
+    //                GET LESSION BY ID
+    // ================================================
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable int id) {
         LessonByIdDTO lesson = lessonService.getByID(id);
@@ -71,5 +83,33 @@ public class LessonController {
         );
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-	
+
+
+    // ================================================
+    //             UPDATE LESSION BY ID
+    // ================================================
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateLesson(@PathVariable int id, @RequestBody LessonRequestPatch lessonRequestPatch) {
+        LessonByIdDTO lesson = lessonService.updateLesson(id, lessonRequestPatch);
+
+        if (lesson != null) {
+            ResponseObject<LessonByIdDTO> response = new ResponseObject<>(
+                    "Update success!",
+                    HttpStatus.OK.value(),
+                    lesson,
+                    new Date()
+            );
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            ResponseObject<String> response = new ResponseObject<>(
+                    "Failed to update lesson ID:" + id,
+                    HttpStatus.NOT_FOUND.value(),
+                    null,
+                    new Date()
+            );
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

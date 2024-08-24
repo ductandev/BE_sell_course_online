@@ -2,6 +2,8 @@ package vn.io.ductandev.course.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -23,6 +25,8 @@ public class LessonEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private CourseEntity course;
 
     @Column(name = "is_delete", nullable = false, columnDefinition = "INT DEFAULT 0")
