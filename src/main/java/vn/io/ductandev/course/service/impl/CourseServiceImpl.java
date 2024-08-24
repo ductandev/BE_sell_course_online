@@ -165,15 +165,15 @@ public class CourseServiceImpl implements CourseService {
             courseEntity.setLecturer(courseRequestPatch.lecturer());
             courseEntity.setImage(courseRequestPatch.image());
             courseEntity.setDescription(courseRequestPatch.description());
-            courseEntity.setCreateDate(courseRequestPatch.createDate());
-            courseEntity.setIsTopCourse(courseRequestPatch.isTopCourse());
+            //courseEntity.setCreateDate(courseRequestPatch.createDate());
+            //courseEntity.setIsTopCourse(courseRequestPatch.isTopCourse());
             courseEntity.setIsFree(courseRequestPatch.isFree());
 
             CategoryEntity categoryEntity = categoryRepository.getById(courseRequestPatch.categoryId());
             courseEntity.setCategory(categoryEntity);
 
             courseEntity.setIsPublic(courseRequestPatch.isPublic());
-            courseEntity.setIsDelete(courseRequestPatch.isDelete());
+            //courseEntity.setIsDelete(courseRequestPatch.isDelete());
 
             courseRepository.save(courseEntity);
 
@@ -186,8 +186,8 @@ public class CourseServiceImpl implements CourseService {
             courseDTO.setLecturer(courseRequestPatch.lecturer());
             courseDTO.setImage(courseRequestPatch.image());
             courseDTO.setDescription(courseRequestPatch.description());
-            courseDTO.setCreateDate(courseRequestPatch.createDate());
-            courseDTO.setIsTopCourse(courseRequestPatch.isTopCourse());
+            //courseDTO.setCreateDate(courseRequestPatch.createDate());
+            //courseDTO.setIsTopCourse(courseRequestPatch.isTopCourse());
             courseDTO.setIsFree(courseRequestPatch.isFree());
             courseDTO.setIsPublic(courseRequestPatch.isPublic());
 
@@ -197,7 +197,7 @@ public class CourseServiceImpl implements CourseService {
             categoryDTO.setIsDelete(categoryEntity.getIsDelete());
 
             courseDTO.setCategoryDTO(categoryDTO);
-            courseDTO.setIsDelete(courseRequestPatch.isDelete());
+            //courseDTO.setIsDelete(courseRequestPatch.isDelete());
 
             return courseDTO;
         } catch (Exception e){

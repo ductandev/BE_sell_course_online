@@ -18,17 +18,17 @@ public record CourseRequestPatch(
 
         String description,
 
-        Date createDate,
+        //Date createDate,
 
-        int isTopCourse,
+        //int isTopCourse,
 
         int isFree,
 
         int categoryId,
 
-        int isPublic,
+        int isPublic
 
-        int isDelete
+        //int isDelete
 
 ) {
 }
