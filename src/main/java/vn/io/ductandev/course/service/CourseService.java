@@ -8,6 +8,7 @@ import vn.io.ductandev.course.dto.RevenueRequestDTO;
 import vn.io.ductandev.course.dto.RevenueResponseDTO;
 import vn.io.ductandev.course.entity.CourseEntity;
 import vn.io.ductandev.course.request.CourseRequest;
+import vn.io.ductandev.course.request.CourseRequestPatch;
 
 public interface CourseService {
 
@@ -17,7 +18,7 @@ public interface CourseService {
 	
 	CourseDTO getCourseById(int id);
 	
-	boolean updateCourse(int id, CourseDTO courseDTO);
+	CourseDTO updateCourseById(int id, CourseRequestPatch courseRequestPatch);
 	
 	boolean deleteCourse(int id);
 	

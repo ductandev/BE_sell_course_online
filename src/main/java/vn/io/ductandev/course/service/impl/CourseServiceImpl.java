@@ -15,6 +15,7 @@ import vn.io.ductandev.course.entity.LessonEntity;
 import vn.io.ductandev.course.repository.CategoryRepository;
 import vn.io.ductandev.course.repository.CourseRepository;
 import vn.io.ductandev.course.request.CourseRequest;
+import vn.io.ductandev.course.request.CourseRequestPatch;
 import vn.io.ductandev.course.service.CourseService;
 
 @Service
@@ -32,7 +33,7 @@ public class CourseServiceImpl implements CourseService {
     // ================================================
     @Override
     public List<CourseDTO> getListCourse() {
-        List<CourseEntity> courseEntities = courseRepository.findAll();
+        List<CourseEntity> courseEntities = courseRepository.findAllByIsDeleteFalse();
         List<CourseDTO> courseDTOs = new ArrayList<>();
 
         for (CourseEntity courseEntity : courseEntities) {
@@ -125,6 +126,7 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
+
     // ================================================
     //               	CREATE COURSE
     // ================================================
@@ -152,12 +154,56 @@ public class CourseServiceImpl implements CourseService {
     }
 
     // ================================================
-    //               	UPDATE COURSE
+    //              UPDATE COURSE BY ID
     // ================================================
     @Override
-    public boolean updateCourse(int id, CourseDTO courseDTO) {
-        // TODO Auto-generated method stub
-        return false;
+    public CourseDTO updateCourseById(int id, CourseRequestPatch courseRequestPatch) {
+        try {
+            CourseEntity courseEntity = courseRepository.getById(id);
+            courseEntity.setTitle(courseRequestPatch.title());
+            courseEntity.setPrice(courseRequestPatch.price());
+            courseEntity.setLecturer(courseRequestPatch.lecturer());
+            courseEntity.setImage(courseRequestPatch.image());
+            courseEntity.setDescription(courseRequestPatch.description());
+            courseEntity.setCreateDate(courseRequestPatch.createDate());
+            courseEntity.setIsTopCourse(courseRequestPatch.isTopCourse());
+            courseEntity.setIsFree(courseRequestPatch.isFree());
+
+            CategoryEntity categoryEntity = categoryRepository.getById(courseRequestPatch.categoryId());
+            courseEntity.setCategory(categoryEntity);
+
+            courseEntity.setIsPublic(courseRequestPatch.isPublic());
+            courseEntity.setIsDelete(courseRequestPatch.isDelete());
+
+            courseRepository.save(courseEntity);
+
+            // Trả Respon data dưới dạng 1 DTO
+            CourseDTO courseDTO = new CourseDTO();
+
+            courseDTO.setId(courseEntity.getId());
+            courseDTO.setTitle(courseRequestPatch.title());
+            courseDTO.setPrice(courseRequestPatch.price());
+            courseDTO.setLecturer(courseRequestPatch.lecturer());
+            courseDTO.setImage(courseRequestPatch.image());
+            courseDTO.setDescription(courseRequestPatch.description());
+            courseDTO.setCreateDate(courseRequestPatch.createDate());
+            courseDTO.setIsTopCourse(courseRequestPatch.isTopCourse());
+            courseDTO.setIsFree(courseRequestPatch.isFree());
+            courseDTO.setIsPublic(courseRequestPatch.isPublic());
+
+            CategoryDTO categoryDTO = new CategoryDTO();
+            categoryDTO.setId(categoryEntity.getId());
+            categoryDTO.setName(categoryEntity.getName());
+            categoryDTO.setIsDelete(categoryEntity.getIsDelete());
+
+            courseDTO.setCategoryDTO(categoryDTO);
+            courseDTO.setIsDelete(courseRequestPatch.isDelete());
+
+            return courseDTO;
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     // ================================================

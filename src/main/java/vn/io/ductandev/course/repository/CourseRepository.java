@@ -14,6 +14,9 @@ import vn.io.ductandev.course.entity.CourseEntity;
 @Repository
 public interface CourseRepository extends JpaRepository<CourseEntity, Integer> {
 
+	@Query("SELECT c FROM CourseEntity c WHERE c.isDelete = 0")
+	List<CourseEntity> findAllByIsDeleteFalse();
+
 	 @Query(value = "SELECT c.id AS courseId, c.title AS courseName, COUNT(pc.course_id) AS salesCount"
 	 		+ " FROM COURSE.TB_USER_COURSE pc"
 	 		+ " JOIN COURSE.TB_COURSE c ON pc.course_id = c.id"

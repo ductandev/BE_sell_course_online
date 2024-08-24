@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import vn.io.ductandev.course.dto.*;
 import vn.io.ductandev.course.entity.CourseEntity;
 import vn.io.ductandev.course.request.CourseRequest;
+import vn.io.ductandev.course.request.CourseRequestPatch;
 import vn.io.ductandev.course.response.ResponseList;
 import vn.io.ductandev.course.response.ResponseObject;
 import vn.io.ductandev.course.service.CourseService;
@@ -48,7 +49,7 @@ public class CourseController {
     public ResponseEntity<?> getByIDCourses(@PathVariable int id) {
         CourseDTO course = courseService.getCourseById(id);
 
-        if(course != null) {
+        if (course != null) {
             ResponseObject<CourseDTO> response = new ResponseObject<>(
                     "Thành công !",
                     HttpStatus.OK.value(),
@@ -56,7 +57,7 @@ public class CourseController {
                     new Date()
             );
             return new ResponseEntity<>(response, HttpStatus.OK);
-        }else {
+        } else {
             ResponseList<String> response = new ResponseList<>(
                     "Failed to get course: Course not found with id " + id,
                     HttpStatus.NOT_FOUND.value(),
@@ -76,7 +77,7 @@ public class CourseController {
         if (course != null) {
             ResponseObject<CourseRequest> response = new ResponseObject<>(
                     "Thành công !",
-                    HttpStatus.OK.value(),
+                    HttpStatus.CREATED.value(),
                     courseRequest,
                     new Date()
             );
@@ -84,6 +85,33 @@ public class CourseController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Failed to add course", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // ================================================
+    //               	UPDATE COURSE
+    // ================================================
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateCourseById(@PathVariable int id, @RequestBody CourseRequestPatch courseRequestPatch) {
+        CourseDTO course = courseService.updateCourseById(id, courseRequestPatch);
+
+        if (course != null) {
+            ResponseObject<CourseDTO> response = new ResponseObject<>(
+                    "Update success!",
+                    HttpStatus.OK.value(),
+                    course,
+                    new Date()
+            );
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            ResponseObject<String> response = new ResponseObject<>(
+                    "Failed to update Course ID:" + id,
+                    HttpStatus.NOT_FOUND.value(),
+                    null,
+                    new Date()
+            );
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -95,7 +123,7 @@ public class CourseController {
     public ResponseEntity<?> getTop3BestSellingCourses() {
         try {
             List<ICourseTopSale> listResponseDTOs = courseService.getTop5BestSellingBooks();
-            if(!listResponseDTOs.isEmpty()) {
+            if (!listResponseDTOs.isEmpty()) {
                 ResponseList<ICourseTopSale> response = new ResponseList<>(
                         "Thành công !",
                         HttpStatus.OK.value(),
@@ -103,7 +131,7 @@ public class CourseController {
                         new Date()
                 );
                 return new ResponseEntity<>(response, HttpStatus.OK);
-            }else {
+            } else {
                 ResponseObject<String> response = new ResponseObject<>(
                         "Failed to get calculateRevenue !",
                         HttpStatus.NOT_FOUND.value(),
@@ -130,7 +158,7 @@ public class CourseController {
     public ResponseEntity<?> calculateRevenue(@RequestBody RevenueRequestDTO requestDTO) {
         try {
             List<RevenueResponseDTO> listResponseDTOs = courseService.getRevenueByMonthAndYear(requestDTO);
-            if(!listResponseDTOs.isEmpty()) {
+            if (!listResponseDTOs.isEmpty()) {
                 ResponseList<RevenueResponseDTO> response = new ResponseList<>(
                         "Thành công !",
                         HttpStatus.OK.value(),
@@ -138,7 +166,7 @@ public class CourseController {
                         new Date()
                 );
                 return new ResponseEntity<>(response, HttpStatus.OK);
-            }else {
+            } else {
                 ResponseObject<String> response = new ResponseObject<>(
                         "Failed to get calculateRevenue !",
                         HttpStatus.NOT_FOUND.value(),
@@ -157,16 +185,6 @@ public class CourseController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
-
-
-
-
-
-
-
 
 
 }

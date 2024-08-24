@@ -44,6 +44,7 @@ vn\io\ductandev\course\controller\CourseController.class
 vn\io\ductandev\course\request\RoleRequest.class
 vn\io\ductandev\course\response\ResponseList.class
 vn\io\ductandev\course\security\SecurityConfig.class
+vn\io\ductandev\course\request\CourseRequestPatch.class
 vn\io\ductandev\course\entity\UserEntity.class
 vn\io\ductandev\course\request\LessonRequestPatch.class
 vn\io\ductandev\course\request\UserRequest.class
