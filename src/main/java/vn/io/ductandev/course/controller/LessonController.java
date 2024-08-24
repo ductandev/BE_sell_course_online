@@ -112,4 +112,32 @@ public class LessonController {
         }
     }
 
+
+    // ================================================
+    //             DELETE LESSION BY ID
+    // ================================================
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteLesson(@PathVariable int id){
+        LessonDTO lesson = lessonService.deleteLesson(id);
+
+        if (lesson != null) {
+            ResponseObject<LessonDTO> response = new ResponseObject<>(
+                    "Deleted success!",
+                    HttpStatus.OK.value(),
+                    lesson,
+                    new Date()
+            );
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            ResponseObject<String> response = new ResponseObject<>(
+                    "Failed to update lesson ID:" + id,
+                    HttpStatus.NOT_FOUND.value(),
+                    null,
+                    new Date()
+            );
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

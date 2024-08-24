@@ -34,7 +34,7 @@ public class LessonServiceImpl implements LessonService {
     // ================================================
     @Override
     public List<LessonDTO> getListVideo() {
-        List<LessonEntity> videoEntities = lessonRepository.findAll();
+        List<LessonEntity> videoEntities = lessonRepository.findAllByIsDeleteFalse();
         List<LessonDTO> lessonDTOS = new ArrayList<>();
 
         for (LessonEntity videoEntity : videoEntities) {
@@ -174,9 +174,38 @@ public class LessonServiceImpl implements LessonService {
 
             return lessonByIdDTO;
         } catch (Exception e) {
+            // Log lỗi và trả về null hoặc một phản hồi phù hợp khác
+            System.err.println(e.getMessage());
             return null;
         }
     }
 
+
+
+    // ================================================
+    //             DELETE LESSION BY ID
+    // ================================================
+    @Override
+    public LessonDTO deleteLesson(int id) {
+        try {
+            LessonEntity lessonEntity = lessonRepository.getById(id);
+            lessonEntity.setIsDelete(1);
+            lessonRepository.save(lessonEntity);
+
+            LessonDTO lessonDTO = new LessonDTO();
+            lessonDTO.setId(lessonEntity.getId());
+            lessonDTO.setName(lessonEntity.getName());
+            lessonDTO.setVideoUrl(lessonEntity.getVideoUrl());
+            lessonDTO.setIsSuccess(lessonEntity.getIsSuccess());
+            lessonDTO.setIsDelete(lessonEntity.getIsDelete());
+
+            return lessonDTO;
+
+        } catch (Exception e){
+            // Log lỗi và trả về null hoặc một phản hồi phù hợp khác
+            System.err.println(e.getMessage());
+            return null;
+        }
+    }
 
 }

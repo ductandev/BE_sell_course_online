@@ -16,4 +16,7 @@ public interface LessonService {
 	boolean addLesson(LessonRequest lessonRequest);
 
 	LessonByIdDTO updateLesson(int id, LessonRequestPatch lessonRequestPatch);
+
+	LessonDTO deleteLesson(int id);
+
 }
