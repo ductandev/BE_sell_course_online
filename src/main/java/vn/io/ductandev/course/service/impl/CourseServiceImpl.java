@@ -1,6 +1,5 @@
 package vn.io.ductandev.course.service.impl;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -32,10 +31,16 @@ public class CourseServiceImpl implements CourseService {
     //             GET TOTAL ALL COURSE
     // ================================================
     @Override
-    public int getAllCourse() {
-        List<CourseEntity> courseEntities = courseRepository.findAllByIsDeleteFalse();
+    public int getAllCourse(String searchByName, Integer categoryID) {
+        try {
+            // Lấy danh total sách các khóa học chưa bị xóa, tìm kiếm, lọc và sắp xếp theo tên
+            List<CourseEntity> courseEntities = courseRepository.findCourses(searchByName, categoryID);
 
-        return courseEntities.size();
+            return courseEntities.size();
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return -1;
+        }
     }
 
     // ================================================
@@ -43,58 +48,63 @@ public class CourseServiceImpl implements CourseService {
     // ================================================
     @Override
     public List<CourseDTO> getListCourse(String searchByName, int page, int limit, Integer categoryID) {
+        try {
+            // Lấy danh sách các khóa học chưa bị xóa, tìm kiếm, lọc và sắp xếp theo tên
+            List<CourseEntity> courseEntities = courseRepository.findCourses(searchByName, categoryID);
 
-        // Lấy danh sách các khóa học chưa bị xóa, tìm kiếm, lọc và sắp xếp theo tên
-        List<CourseEntity> courseEntities = courseRepository.findCourses(searchByName, categoryID);
+            // Phân trang
+            int start = (page - 1) * limit;
+            int end = Math.min((start + limit), courseEntities.size());
+            List<CourseEntity> paginatedCourses = courseEntities.subList(start, end);
 
-        // Phân trang
-        int start = (page - 1) * limit;
-        int end = Math.min((start + limit), courseEntities.size());
-        List<CourseEntity> paginatedCourses = courseEntities.subList(start, end);
+            // Chuyển đổi danh sách CourseEntity thành CourseDTO
+            List<CourseDTO> courseDTOs = paginatedCourses.stream().map(courseEntity -> {
+                CourseDTO courseDTO = new CourseDTO();
+                courseDTO.setId(courseEntity.getId());
+                courseDTO.setTitle(courseEntity.getTitle());
+                courseDTO.setPrice(courseEntity.getPrice());
+                courseDTO.setLecturer(courseEntity.getLecturer());
+                courseDTO.setCreateDate(courseEntity.getCreateDate());
+                courseDTO.setImage(courseEntity.getImage());
+                courseDTO.setDescription(courseEntity.getDescription());
+                courseDTO.setIsTopCourse(courseEntity.getIsTopCourse());
+                courseDTO.setIsFree(courseEntity.getIsFree());
+                courseDTO.setIsPublic(courseEntity.getIsPublic());
+                courseDTO.setIsDelete(courseEntity.getIsDelete());
 
-        // Chuyển đổi danh sách CourseEntity thành CourseDTO
-        List<CourseDTO> courseDTOs = paginatedCourses.stream().map(courseEntity -> {
-            CourseDTO courseDTO = new CourseDTO();
-            courseDTO.setId(courseEntity.getId());
-            courseDTO.setTitle(courseEntity.getTitle());
-            courseDTO.setPrice(courseEntity.getPrice());
-            courseDTO.setLecturer(courseEntity.getLecturer());
-            courseDTO.setCreateDate(courseEntity.getCreateDate());
-            courseDTO.setImage(courseEntity.getImage());
-            courseDTO.setDescription(courseEntity.getDescription());
-            courseDTO.setIsTopCourse(courseEntity.getIsTopCourse());
-            courseDTO.setIsFree(courseEntity.getIsFree());
-            courseDTO.setIsPublic(courseEntity.getIsPublic());
-            courseDTO.setIsDelete(courseEntity.getIsDelete());
+                // Thiết lập CategoryDTO
+                CategoryDTO categoryDTO = new CategoryDTO();
+                categoryDTO.setId(courseEntity.getCategory().getId());
+                categoryDTO.setName(courseEntity.getCategory().getName());
+                categoryDTO.setIsDelete(courseEntity.getCategory().getIsDelete());
+                courseDTO.setCategoryDTO(categoryDTO);
 
-            // Thiết lập CategoryDTO
-            CategoryDTO categoryDTO = new CategoryDTO();
-            categoryDTO.setId(courseEntity.getCategory().getId());
-            categoryDTO.setName(courseEntity.getCategory().getName());
-            categoryDTO.setIsDelete(courseEntity.getCategory().getIsDelete());
-            courseDTO.setCategoryDTO(categoryDTO);
+                // Thiết lập danh sách LessonDTOs
+                List<LessonDTO> lessonDTOs = courseEntity.getLessons().stream()
+                        .filter(lessonEntity -> lessonEntity.getIsDelete() == 0) // Lọc các lesson chưa bị xóa
+                        .sorted(Comparator.comparing(LessonEntity::getId)) // Sắp xếp theo tên tăng dần
+                        .map(lessonEntity -> {
+                            LessonDTO lessonDTO = new LessonDTO();
+                            lessonDTO.setId(lessonEntity.getId());
+                            lessonDTO.setIsDelete(lessonEntity.getIsDelete());
+                            lessonDTO.setIsSuccess(lessonEntity.getIsSuccess());
+                            lessonDTO.setName(lessonEntity.getName());
+                            lessonDTO.setVideoUrl(lessonEntity.getVideoUrl());
+                            return lessonDTO;
+                        })
+                        .collect(Collectors.toList());
 
-            // Thiết lập danh sách LessonDTOs
-            List<LessonDTO> lessonDTOs = courseEntity.getLessons().stream()
-                    .filter(lessonEntity -> lessonEntity.getIsDelete() == 0) // Lọc các lesson chưa bị xóa
-                    .sorted(Comparator.comparing(LessonEntity::getId)) // Sắp xếp theo tên tăng dần
-                    .map(lessonEntity -> {
-                        LessonDTO lessonDTO = new LessonDTO();
-                        lessonDTO.setId(lessonEntity.getId());
-                        lessonDTO.setIsDelete(lessonEntity.getIsDelete());
-                        lessonDTO.setIsSuccess(lessonEntity.getIsSuccess());
-                        lessonDTO.setName(lessonEntity.getName());
-                        lessonDTO.setVideoUrl(lessonEntity.getVideoUrl());
-                        return lessonDTO;
-                    })
-                    .collect(Collectors.toList());
+                courseDTO.setLessonDTOs(lessonDTOs);
 
-            courseDTO.setLessonDTOs(lessonDTOs);
+                return courseDTO;
+            }).collect(Collectors.toList());
 
-            return courseDTO;
-        }).collect(Collectors.toList());
+            return courseDTOs;
 
-        return courseDTOs;
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     // ================================================

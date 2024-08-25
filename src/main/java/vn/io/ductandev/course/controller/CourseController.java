@@ -47,7 +47,7 @@ public class CourseController {
                 courses = courseService.getListCourse(searchByName, page, limit, categoryID);
             }
 
-            int totalCourse = courseService.getAllCourse();
+            int totalCourse = courseService.getAllCourse(searchByName, categoryID);
 
             ResponseListPagination<CourseDTO> response = new ResponseListPagination<>(
                     "Thành công!",

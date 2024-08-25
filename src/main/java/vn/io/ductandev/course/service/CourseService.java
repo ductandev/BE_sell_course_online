@@ -9,7 +9,7 @@ import vn.io.ductandev.course.request.CourseRequestPatch;
 
 public interface CourseService {
 
-	int getAllCourse();
+	int getAllCourse(String searchByName, Integer categoryID);
 
 	List<CourseDTO> getListCourse(String searchByName, int page, int limit, Integer categoryID);
 
