@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import vn.io.ductandev.course.dto.UserByIdDTO;
 import vn.io.ductandev.course.dto.UserDTO;
 import vn.io.ductandev.course.entity.UserEntity;
-import vn.io.ductandev.course.request.UserRequest;
 import vn.io.ductandev.course.request.UserRequestPatch;
 import vn.io.ductandev.course.response.ResponseList;
 
@@ -84,13 +83,13 @@ public class UserController {
     // ================================================
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserRequestPatch userRequestPatch) {
-        UserEntity isUpdated = userService.updateUser(id, userRequestPatch);
+        UserDTO isUpdated = userService.updateUser(id, userRequestPatch);
 
         if (isUpdated != null) {
-            ResponseObject<UserRequestPatch> response = new ResponseObject<>(
+            ResponseObject<UserDTO> response = new ResponseObject<>(
                     "Update thành công !",
                     HttpStatus.OK.value(),
-                    userRequestPatch,
+                    isUpdated,
                     new Date()
             );
 

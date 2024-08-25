@@ -33,7 +33,6 @@ public class AuthenServiceImpl implements AuthenService {
             userDTO.setId(user.getId());
             userDTO.setUsername(user.getUsername());
             userDTO.setEmail(user.getEmail());
-            userDTO.setPassword(user.getPassword());
             userDTO.setAvatar(user.getAvatar());
             userDTO.setRole(user.getRole().getId());
 

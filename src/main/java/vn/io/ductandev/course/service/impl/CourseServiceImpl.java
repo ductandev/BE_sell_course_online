@@ -124,20 +124,20 @@ public class CourseServiceImpl implements CourseService {
 
             courseDTO.setCategoryDTO(categoryDTO);
 
-            List<LessonDTO> listDtos = new ArrayList<>();
+            // Thiết lập danh sách LessonDTOs
+            List<LessonDTO> lessonDTOs = courseEntity.getLessons().stream()
+                    .filter(lessonEntity -> lessonEntity.getIsDelete() == 0) // Lọc các lesson chưa bị xóa
+                    .map(lessonEntity -> {
+                        LessonDTO lessonDTO = new LessonDTO();
+                        lessonDTO.setId(lessonEntity.getId());
+                        lessonDTO.setIsDelete(lessonEntity.getIsDelete());
+                        lessonDTO.setIsSuccess(lessonEntity.getIsSuccess());
+                        lessonDTO.setName(lessonEntity.getName());
+                        lessonDTO.setVideoUrl(lessonEntity.getVideoUrl());
+                        return lessonDTO;
+                    }).collect(Collectors.toList());
 
-            for (LessonEntity lessonEntity : courseEntity.getLessons()) {
-                LessonDTO lessonDTO = new LessonDTO();
-
-                lessonDTO.setId(lessonEntity.getId());
-                lessonDTO.setIsDelete(lessonEntity.getIsDelete());
-                lessonDTO.setIsSuccess(lessonEntity.getIsSuccess());
-                lessonDTO.setName(lessonEntity.getName());
-                lessonDTO.setVideoUrl(lessonEntity.getVideoUrl());
-
-                listDtos.add(lessonDTO);
-            }
-            courseDTO.setLessonDTOs(listDtos);
+            courseDTO.setLessonDTOs(lessonDTOs);
 
             return courseDTO;
         } catch (Exception e) {

@@ -20,7 +20,6 @@ import vn.io.ductandev.course.dto.UserByIdDTO;
 import vn.io.ductandev.course.repository.UserRepository;
 import vn.io.ductandev.course.repository.RoleRepository;
 import vn.io.ductandev.course.repository.UserCourseRepository;
-import vn.io.ductandev.course.request.UserRequest;
 import vn.io.ductandev.course.request.UserRequestPatch;
 import vn.io.ductandev.course.service.UserService;
 
@@ -96,31 +95,33 @@ public class UserServiceImpl implements UserService {
     }
 
     // ================================================
-    //               	UPDATE USER
+    //                UPDATE USER
     // ================================================
     @Override
-    public UserEntity updateUser(int id, UserRequestPatch userRequestPatch) {
+    public UserDTO updateUser(int id, UserRequestPatch userRequestPatch) {
         try {
             UserEntity userEntity = userRepository.getById(id);
-            if (userEntity != null && userEntity.getIsDelete() == 0) {
-                if (userRequestPatch.avatar() != null) {
-                    userEntity.setAvatar(userRequestPatch.avatar());
-                }
-                if (userRequestPatch.password() != null) {
-                    userEntity.setPassword(userRequestPatch.password());
-                }
-                if (userRequestPatch.username() != null) {
-                    userEntity.setUsername(userRequestPatch.username());
-                }
+            // Kiểm tra đầu vào
+            userEntity.setUsername(userRequestPatch.username() != null ? userRequestPatch.username() : userEntity.getUsername());
+            userEntity.setPassword(userRequestPatch.password() != null ? userRequestPatch.password() : userEntity.getPassword());
+            userEntity.setAvatar(userRequestPatch.avatar() != null ? userRequestPatch.avatar() : userEntity.getAvatar());
 
-                userRepository.save(userEntity);
-            }
-            return userEntity;
+            userRepository.save(userEntity);
+
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(userEntity.getId());
+            userDTO.setUsername(userEntity.getUsername());
+            userDTO.setEmail(userEntity.getEmail());
+            userDTO.setAvatar(userEntity.getAvatar());
+            userDTO.setRole(userEntity.getRole().getId());
+            userDTO.setIsDelete(userEntity.getIsDelete());
+
+            return userDTO;
 
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return null;
         }
-
     }
 
     // ================================================
