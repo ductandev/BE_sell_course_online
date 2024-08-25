@@ -130,6 +130,7 @@ public class CourseServiceImpl implements CourseService {
             // Thiết lập danh sách LessonDTOs
             List<LessonDTO> lessonDTOs = courseEntity.getLessons().stream()
                     .filter(lessonEntity -> lessonEntity.getIsDelete() == 0) // Lọc các lesson chưa bị xóa
+                    .sorted(Comparator.comparing(LessonEntity::getId)) // Sắp xếp theo tên tăng dần
                     .map(lessonEntity -> {
                         LessonDTO lessonDTO = new LessonDTO();
                         lessonDTO.setId(lessonEntity.getId());
