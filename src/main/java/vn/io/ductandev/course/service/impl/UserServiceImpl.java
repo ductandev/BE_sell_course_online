@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     RoleRepository roleRepository;
-    
+
     @Autowired
     UserCourseRepository userCourseRepository;
 
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
     // ================================================
     @Override
     public UserByIdDTO getbyID(int id) {
-        UserEntity userEntity  = userRepository.findById(id)
+        UserEntity userEntity = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         List<CourseDTO> courses = userCourseRepository.findByUserId(id).stream()
@@ -103,9 +103,15 @@ public class UserServiceImpl implements UserService {
         try {
             UserEntity userEntity = userRepository.getById(id);
             if (userEntity != null && userEntity.getIsDelete() == 0) {
-                userEntity.setAvatar(userRequestPatch.avatar());
-                userEntity.setPassword(userRequestPatch.password());
-                userEntity.setUsername(userRequestPatch.username());
+                if (userRequestPatch.avatar() != null) {
+                    userEntity.setAvatar(userRequestPatch.avatar());
+                }
+                if (userRequestPatch.password() != null) {
+                    userEntity.setPassword(userRequestPatch.password());
+                }
+                if (userRequestPatch.username() != null) {
+                    userEntity.setUsername(userRequestPatch.username());
+                }
 
                 userRepository.save(userEntity);
             }
@@ -141,7 +147,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    
     private UserByIdDTO convertToUserDTO(UserEntity userEntity) {
         UserByIdDTO dto = new UserByIdDTO();
         dto.setId(userEntity.getId());
