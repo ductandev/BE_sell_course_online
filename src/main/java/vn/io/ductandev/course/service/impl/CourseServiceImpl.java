@@ -27,6 +27,15 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     CategoryRepository categoryRepository;
 
+    // ================================================
+    //             GET TOTAL ALL COURSE
+    // ================================================
+    @Override
+    public int getAllCourse() {
+        List<CourseEntity> courseEntities = courseRepository.findAllByIsDeleteFalse();
+
+        return courseEntities.size();
+    }
 
     // ================================================
     //             GET ALL COURSE PAGINATION
@@ -65,15 +74,17 @@ public class CourseServiceImpl implements CourseService {
             courseDTO.setCategoryDTO(categoryDTO);
 
             // Thiết lập danh sách LessonDTOs
-            List<LessonDTO> lessonDTOs = courseEntity.getLessons().stream().map(lessonEntity -> {
-                LessonDTO lessonDTO = new LessonDTO();
-                lessonDTO.setId(lessonEntity.getId());
-                lessonDTO.setIsDelete(lessonEntity.getIsDelete());
-                lessonDTO.setIsSuccess(lessonEntity.getIsSuccess());
-                lessonDTO.setName(lessonEntity.getName());
-                lessonDTO.setVideoUrl(lessonEntity.getVideoUrl());
-                return lessonDTO;
-            }).collect(Collectors.toList());
+            List<LessonDTO> lessonDTOs = courseEntity.getLessons().stream()
+                    .filter(lessonEntity -> lessonEntity.getIsDelete() == 0) // Lọc các lesson chưa bị xóa
+                    .map(lessonEntity -> {
+                        LessonDTO lessonDTO = new LessonDTO();
+                        lessonDTO.setId(lessonEntity.getId());
+                        lessonDTO.setIsDelete(lessonEntity.getIsDelete());
+                        lessonDTO.setIsSuccess(lessonEntity.getIsSuccess());
+                        lessonDTO.setName(lessonEntity.getName());
+                        lessonDTO.setVideoUrl(lessonEntity.getVideoUrl());
+                        return lessonDTO;
+                    }).collect(Collectors.toList());
 
             courseDTO.setLessonDTOs(lessonDTOs);
 
@@ -147,10 +158,10 @@ public class CourseServiceImpl implements CourseService {
             course.setImage(courseRequest.image());
             course.setDescription(courseRequest.description());
 
-			CategoryEntity categoryEntity = categoryRepository.getById(courseRequest.category_id());
+            CategoryEntity categoryEntity = categoryRepository.getById(courseRequest.category_id());
 
-			course.setCategory(categoryEntity);
-			course.setCreateDate(new Date());
+            course.setCategory(categoryEntity);
+            course.setCreateDate(new Date());
             courseRepository.save(course);
 
             return course;
@@ -207,7 +218,7 @@ public class CourseServiceImpl implements CourseService {
             //courseDTO.setIsDelete(courseRequestPatch.isDelete());
 
             return courseDTO;
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
@@ -245,7 +256,7 @@ public class CourseServiceImpl implements CourseService {
             courseDTO.setIsDelete(courseEntity.getIsDelete());
 
             return courseDTO;
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }

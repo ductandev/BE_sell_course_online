@@ -35,7 +35,7 @@ public class CourseController {
     public ResponseEntity<ResponseListPagination<CourseDTO>> getCourses(
             @RequestParam(required = false) String searchByName,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(defaultValue = "20") int limit,
             @RequestParam(required = false) Integer categoryID) {
 
         try {
@@ -47,11 +47,13 @@ public class CourseController {
                 courses = courseService.getListCourse(searchByName, page, limit, categoryID);
             }
 
+            int totalCourse = courseService.getAllCourse();
+
             ResponseListPagination<CourseDTO> response = new ResponseListPagination<>(
                     "Thành công!",
                     HttpStatus.OK.value(),
                     courses,
-                    courses.size(),
+                    totalCourse,
                     page,
                     limit,
                     new Date()
