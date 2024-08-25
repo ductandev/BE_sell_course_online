@@ -14,6 +14,7 @@ import vn.io.ductandev.course.entity.CourseEntity;
 import vn.io.ductandev.course.request.CourseRequest;
 import vn.io.ductandev.course.request.CourseRequestPatch;
 import vn.io.ductandev.course.response.ResponseList;
+import vn.io.ductandev.course.response.ResponseListPagination;
 import vn.io.ductandev.course.response.ResponseObject;
 import vn.io.ductandev.course.service.CourseService;
 
@@ -31,9 +32,9 @@ public class CourseController {
     //                GET COURSE LIST
     // ================================================
     @GetMapping
-    public ResponseEntity<ResponseList<CourseDTO>> getCourses(
+    public ResponseEntity<ResponseListPagination<CourseDTO>> getCourses(
             @RequestParam(required = false) String searchByName,
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam(required = false) Integer categoryID) {
 
@@ -46,10 +47,13 @@ public class CourseController {
                 courses = courseService.getListCourse(searchByName, page, limit, categoryID);
             }
 
-            ResponseList<CourseDTO> response = new ResponseList<>(
+            ResponseListPagination<CourseDTO> response = new ResponseListPagination<>(
                     "Thành công!",
                     HttpStatus.OK.value(),
                     courses,
+                    courses.size(),
+                    page,
+                    limit,
                     new Date()
             );
 

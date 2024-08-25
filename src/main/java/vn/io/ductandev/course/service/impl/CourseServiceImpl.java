@@ -38,7 +38,7 @@ public class CourseServiceImpl implements CourseService {
         List<CourseEntity> courseEntities = courseRepository.findCourses(searchByName, categoryID);
 
         // Phân trang
-        int start = page * limit;
+        int start = (page - 1) * limit;
         int end = Math.min((start + limit), courseEntities.size());
         List<CourseEntity> paginatedCourses = courseEntities.subList(start, end);
 
