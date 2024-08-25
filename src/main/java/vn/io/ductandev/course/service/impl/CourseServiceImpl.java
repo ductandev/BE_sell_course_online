@@ -1,6 +1,7 @@
 package vn.io.ductandev.course.service.impl;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,6 +77,7 @@ public class CourseServiceImpl implements CourseService {
             // Thiết lập danh sách LessonDTOs
             List<LessonDTO> lessonDTOs = courseEntity.getLessons().stream()
                     .filter(lessonEntity -> lessonEntity.getIsDelete() == 0) // Lọc các lesson chưa bị xóa
+                    .sorted(Comparator.comparing(LessonEntity::getId)) // Sắp xếp theo tên tăng dần
                     .map(lessonEntity -> {
                         LessonDTO lessonDTO = new LessonDTO();
                         lessonDTO.setId(lessonEntity.getId());
@@ -84,7 +86,8 @@ public class CourseServiceImpl implements CourseService {
                         lessonDTO.setName(lessonEntity.getName());
                         lessonDTO.setVideoUrl(lessonEntity.getVideoUrl());
                         return lessonDTO;
-                    }).collect(Collectors.toList());
+                    })
+                    .collect(Collectors.toList());
 
             courseDTO.setLessonDTOs(lessonDTOs);
 
