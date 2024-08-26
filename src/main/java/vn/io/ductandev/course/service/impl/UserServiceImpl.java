@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
             UserEntity userEntity = userRepository.getById(id);
             // Kiểm tra đầu vào
             userEntity.setUsername(userRequestPatch.username() != null ? userRequestPatch.username() : userEntity.getUsername());
-            userEntity.setPassword(userRequestPatch.password() != null ? userRequestPatch.password() : userEntity.getPassword());
+            userEntity.setPassword(userRequestPatch.password() != null ? passwordEncoder.encode(userRequestPatch.password()) : userEntity.getPassword());
             userEntity.setAvatar(userRequestPatch.avatar() != null ? userRequestPatch.avatar() : userEntity.getAvatar());
 
             userRepository.save(userEntity);
