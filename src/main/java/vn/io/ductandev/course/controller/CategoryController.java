@@ -60,8 +60,6 @@ public class CategoryController {
 	            return new ResponseEntity<>(response, HttpStatus.OK);
 	        } 
 
-	
-	
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateCategory(@PathVariable int id, @RequestBody CategoryRequest categoryRequest) {
         CategoryRequest isUpdate = categoryService.updateCategory(id, categoryRequest);
@@ -85,7 +83,6 @@ public class CategoryController {
         }
 	}
 
-	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteCategory(@PathVariable int id) {
 		CategoryDTO categoryDTO = categoryService.deleteCategory(id);
@@ -110,37 +107,36 @@ public class CategoryController {
         }
 	}
 
-
 	@GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable int id) {
-        try {
-            CategoryDTO categoryDTO = categoryService.getByID(id);
-            if (categoryDTO != null) {
-                ResponseObject<CategoryDTO> response = new ResponseObject<>(
-                        "Get Category successfully!",
-                        HttpStatus.OK.value(),
-                        categoryDTO,
-                        new Date()
-                );
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            } else {
-                ResponseObject<String> response = new ResponseObject<>(
-                        "Failed to get category: Category not found with id " + id,
-                        HttpStatus.NOT_FOUND.value(),
-                        null,
-                        new Date()
-                );
-                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            ResponseObject<String> response = new ResponseObject<>(
-                    "An error occurred while retrieving the user: " + e.getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    null,
-                    new Date()
-            );
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        try {
+//           
+//            } else {
+//                ResponseObject<String> response = new ResponseObject<>(
+//                        "Failed to get category: Category not found with id " + id,
+//                        HttpStatus.NOT_FOUND.value(),
+//                        null,
+//                        new Date()
+//                );
+//                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+//            }
+//        } catch (Exception e) {
+//            ResponseObject<String> response = new ResponseObject<>(
+//                    "An error occurred while retrieving the user: " + e.getMessage(),
+//                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+//                    null,
+//                    new Date()
+//            );
+//            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+		 CategoryDTO categoryDTO = categoryService.getByID(id);
+             ResponseObject<CategoryDTO> response = new ResponseObject<>(
+                     "Get Category successfully!",
+                     HttpStatus.OK.value(),
+                     categoryDTO,
+                     new Date()
+             );
+             return new ResponseEntity<>(response, HttpStatus.OK);
     }
 	
 	

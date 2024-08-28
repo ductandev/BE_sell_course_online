@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import vn.io.ductandev.course.dto.CategoryDTO;
 import vn.io.ductandev.course.entity.CategoryEntity;
+import vn.io.ductandev.course.exception.CategoryNotFoundException;
 import vn.io.ductandev.course.repository.CategoryRepository;
 import vn.io.ductandev.course.request.CategoryRequest;
 import vn.io.ductandev.course.service.CategoryService;
@@ -116,15 +117,19 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public CategoryDTO getByID(int id) {
 		
-		CategoryEntity c = categoryRepository.getById(id);
 		
-		CategoryDTO categoryDTO = new CategoryDTO();
+		CategoryEntity c = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
 		
-		categoryDTO.setId(c.getId());
-		categoryDTO.setName(c.getName());
-		categoryDTO.setIsDelete(c.getIsDelete());
-		
-		return categoryDTO;
+		if(c != null) {
+			CategoryDTO categoryDTO = new CategoryDTO();
+			
+			categoryDTO.setId(c.getId());
+			categoryDTO.setName(c.getName());
+			categoryDTO.setIsDelete(c.getIsDelete());
+			
+			return categoryDTO;
+		}
+		return null;
 	}
 
 	@Override
