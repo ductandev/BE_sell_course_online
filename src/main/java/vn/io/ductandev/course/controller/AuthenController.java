@@ -75,7 +75,7 @@ public class AuthenController {
         if (isAdd) {
             ResponseObject<UserRequest> response = new ResponseObject<>(
                     "Thêm thành công !",
-                    HttpStatus.OK.value(),
+                    HttpStatus.CREATED.value(),
                     userRequest,
                     new Date()
             );

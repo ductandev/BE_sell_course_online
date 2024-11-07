@@ -54,8 +54,8 @@ public class CourseServiceImpl implements CourseService {
 
             // Phân trang
             int start = (page - 1) * limit;
-            int end = Math.min((start + limit), courseEntities.size());
-            List<CourseEntity> paginatedCourses = courseEntities.subList(start, end);
+            int end = Math.min((start + limit), courseEntities.size());       // Sử dụng hàm Math.min() để chọn ra giá trị nhỏ hơn trong hai giá trị
+            List<CourseEntity> paginatedCourses = courseEntities.subList(start, end);   // hàm cắt list
 
             // Chuyển đổi danh sách CourseEntity thành CourseDTO
             List<CourseDTO> courseDTOs = paginatedCourses.stream().map(courseEntity -> {

@@ -24,6 +24,10 @@ public class AuthenServiceImpl implements AuthenService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
+    // ================================================
+    //               	    SIGN IN
+    // ================================================
     @Override
     public UserDTO checkLogin(AuthenRequest request) {
         UserEntity user = userRepository.findUserEntityByEmail(request.email());
